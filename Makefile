@@ -1,11 +1,21 @@
-all:
-# Basic Makefile
+## Simple SDL mini code
  
-# Compilers and options
-CC=gcc
-CPPFLAGS=
-CFLAGS= -Wall -Wextra -std=c99 -O2 -g
+CC=clang
+ 
+CPPFLAGS= `pkg-config --cflags sdl`
+CFLAGS= -Wall -Wextra -Werror -std=c99 -O3
 LDFLAGS=
-LDLIBS=
+LDLIBS= `pkg-config --libs sdl` -lSDL_image
+ 
+SRC= pixel_operations.c main.c
+OBJ= ${SRC:.c=.o}
+ 
+all: main
+ 
+main: ${OBJ}
+ 
+clean:
+	rm -f *~ *.o
+	rm -f main
  
 # END
