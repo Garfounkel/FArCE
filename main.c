@@ -87,6 +87,52 @@ SDL_Surface* to_grey(SDL_Surface *img)
   return img;
 }
 
+SDL_Surface* integral_image (SDL_Surface *img)
+{
+  for(int h = 0; h < img->h; h++)
+  {
+    for(int w = 0; w < img->w; w++)
+    {
+
+      Uint8 r, sr;
+      Uint8 g, sg;
+      Uint8 b, sb;
+      
+      SDL_GetRGB(getpixel(img,w,h), img->format, &r, &g, &b);
+
+      sr = r;
+      sg = g;
+      sb = b;
+
+      SDL_GetRGB(getpixel(img,w,h - 1), img->format, &r, &g, &b);
+
+      sr += r;
+      sg += g;
+      sb += b;
+
+      SDL_GetRGB(getpixel(img,w - 1,h), img->format, &r, &g, &b);
+
+      sr += r;
+      sg += g;
+      sb += b;
+
+      SDL_GetRGB(getpixel(img,w - 1,h -1), img->format, &r, &g, &b);
+
+      sr -= r;
+      sg -= g;
+      sb -= b;
+
+      putpixel(img,w,h,SDL_MapRGB(img->format, sr, sg, sb));
+
+//      pixel(h, w)  = pixel(h, w) + pixel(h - 1, w) + pixel(h, w - 1) - pixel(h - 1, w - 1); 
+    }
+  }
+
+  return img;
+
+}
+
+
 int main(int i, char** path)
 {
 
@@ -111,6 +157,9 @@ int main(int i, char** path)
 
   display_image(surface);
 
+  integral_image(surface);
+
+  display_image(surface);
   //  wait_for_keypressed();
 
   SDL_FreeSurface(surface);
