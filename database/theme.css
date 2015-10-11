@@ -1,0 +1,247 @@
+/* ----- Global ----- */
+
+body {
+    background: #DCE8F1 url("../img/acu2016_logo.svg") no-repeat fixed 93% 70%;
+    background-size: auto 70%;
+}
+.navbar #logo {
+    width: 50px;
+    background: url("../img/acu2016_logo.svg") no-repeat center 5px;
+    background-size: 85%;
+}
+#beta_indicator { display:none !important;}
+.navbar .navbar-header {
+    margin-left: 60px;
+}
+#main-content {
+    padding: 20px 20px 0 20px;
+}
+#main-content > #main-content {
+    padding: 0;
+}
+
+
+
+/* ----- Top bar ----- */
+
+.navbar #acu {
+    background-image: url("../img/acu2016.svg");
+}
+
+.navbar, #bottom-search {
+    background: #0B0B0B url("../img/lightnoise.png") repeat;
+}
+
+
+
+/* ----- Side bar ----- */
+
+.sidebar .nav a .fa {
+    margin-right: 4px;
+    font-size: 14px;
+}
+.sidebar .nav a i.chevron {
+    position: absolute;
+    right: 14px;
+    margin: 5px;
+    font-size: 16px;
+}
+
+.sidebar ul.nav li.opn ul.dropdown-menu {
+    margin-top: 0;
+}
+
+.sidebar {
+    background: #0b0b0b url('../img/lightnoise.png') repeat;
+    width: 210px;
+}
+
+.nav > li > a {
+    color: #fff;
+}
+.nav > li > a:hover,
+.nav > li > a:focus,
+.nav > li.opn > a {
+    text-decoration: none;
+    border-left: 3px solid #fff;
+    padding-left: 12px;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+.sidebar ul.nav > li > a:hover, .sidebar ul.nav > li > a:focus {
+    color: #fff;
+}
+
+.dropdown-menu > li > a {
+    color: #fff;
+}
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+    background-color: rgba(128, 128, 128, 0.1);
+    color: #fff;
+}
+
+#user-info .box-login i.chevron {
+    margin-left: 10px;
+    margin-top: 3px;
+    font-size: 14px;
+    padding: 0;
+}
+.nav li a i.chevron, #user-info .box-login i.chevron {
+    transition: transform 400ms linear;
+    transform: none;
+    padding: 0;
+}
+.nav li.opn a i.chevron, #user-info.opn .box-login i.chevron {
+    transition: transform 400ms linear;
+    transform: rotate(-90deg);
+}
+
+.box-login {
+    margin-bottom: 10px;
+}
+
+.sidebar ul.nav {
+    margin-top: 10px;
+}
+.dropdown-menu,
+.sidebar #user-info ul.dropdown-menu,
+.sidebar ul.nav li ul.dropdown-menu {
+    border-radius: 0;
+    margin-top: 0;
+    border: none;
+    background-color: rgba(32, 32, 32, 0.4);
+}
+.dropdown-menu .divider {
+    background: #aaa;
+    margin: 5px 10px;
+}
+
+.sidebar #user-info img.user-photo {
+    margin-bottom: 10px;
+}
+
+
+
+/* ----- Box ----- */
+
+.widget-box {
+    border-radius: 3px;
+    background-color: #fff;
+    border-top: 3px solid #060606;
+    margin-bottom: 20px;
+    width: 100%;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.widget-content.widget-table {
+    padding: 0;
+}
+.widget-content.widget-table table {
+    border: none;
+}
+.widget-content.widget-table table th {
+    padding: 8px;
+    font-size: 14px;
+}
+.widget-content.widget-table table td {
+    padding: 8px;
+    font-size: 14px;
+}
+
+.widget-content .label {
+    margin-left: 1px;
+}
+
+table td .label {
+    padding: 0.2em 0.6em;
+    margin-left: 0;
+    margin-right: 1px;
+}
+table td .badge {
+    padding: 4px 7px 5px 7px;
+    border-radius: 11px;
+    margin-left: 10px;
+}
+.badge.badge-danger {
+    background-color: #D9534F;
+}
+.badge.badge-info {
+    background-color: #5BC0DE;
+}
+
+h2 .label {
+    margin-left: 4px;
+    padding: 0 0.4em 0.1em;
+    font-weight: normal;
+}
+
+.widget-header {
+    background: #0b0b0b url('../img/lightnoise.png') repeat;
+    padding: 7px 20px 10px 20px;
+    overflow: hidden;
+}
+.widget-header .title .label {
+    margin-left: 8px;
+    padding: 0.1em 0.5em 0.2em;
+}
+.widget-header input {
+    background-color: #000;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 3px;
+    line-height: 22px;
+    height: 24px;
+}
+.widget-header input[type="number"] {
+    padding: 0 0 0 6px;
+}
+
+
+
+/* ----- Trombi ----- */
+
+.trombi-container {
+    padding: 0 20px;
+    margin: -5px;
+}
+.trombi-page #trombi-container {
+    padding: 5px 5px 20px 5px;
+}
+.widget-box.trombi {
+    margin: 5px;
+    border-top: 0;
+}
+
+
+
+/* ----- Modal ----- */
+
+.modal-content {
+    border-radius: 0;
+    border: none;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.125) !important;
+}
+
+.modal-title {
+    font-size: 18px;
+    font-weight: normal;
+    font-family: "titilliumregular","AUdimat-Regular","Trebuchet MS",Arial,sans-serif;
+}
+
+.modal-footer .btn-default {
+    background-color: #F4F4F4;
+    color: #444;
+    border-color: #DDD;
+}
+.modal-footer .left {
+    float: left;
+}
+
+
+
+
+/* ----- Content header ----- */
+
+.content-nav .widget-box {
+    border-top: none;
+    border-radius: 0;
+}
