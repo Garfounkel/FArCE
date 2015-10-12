@@ -94,33 +94,45 @@ SDL_Surface* integral_image (SDL_Surface *img)
     for(int w = 0; w < img->w; w++)
     {
 
-      Uint8 r, sr;
-      Uint8 g, sg;
-      Uint8 b, sb;
+      Uint8 r, sr = 0;
+      Uint8 g, sg = 0;
+      Uint8 b, sb = 0;
       
-      SDL_GetRGB(getpixel(img,w,h), img->format, &r, &g, &b);
+      if (w < img->w && h < img->h)
+      {
+        SDL_GetRGB(getpixel(img,w,h), img->format, &r, &g, &b);
 
-      sr = r;
-      sg = g;
-      sb = b;
+        sr = r;
+        sg = g;
+        sb = b;
+      }
 
-      SDL_GetRGB(getpixel(img,w,h - 1), img->format, &r, &g, &b);
+      if (w < img->w && h - 1 > 0)
+      {
+        SDL_GetRGB(getpixel(img,w,h - 1), img->format, &r, &g, &b);
 
-      sr += r;
-      sg += g;
-      sb += b;
+        sr += r;
+        sg += g;
+        sb += b;
+      }
 
-      SDL_GetRGB(getpixel(img,w - 1,h), img->format, &r, &g, &b);
+      if (w - 1 < 0 && h < img->h)
+      {
+        SDL_GetRGB(getpixel(img,w - 1,h), img->format, &r, &g, &b);
 
-      sr += r;
-      sg += g;
-      sb += b;
+        sr += r;
+        sg += g;
+        sb += b;
+      }
 
-      SDL_GetRGB(getpixel(img,w - 1,h -1), img->format, &r, &g, &b);
+      if (w - 1 > 0 && h - 1 > 0)
+      {
+        SDL_GetRGB(getpixel(img,w - 1,h -1), img->format, &r, &g, &b);
 
-      sr -= r;
-      sg -= g;
-      sb -= b;
+        sr -= r;
+        sg -= g;
+        sb -= b;
+      }
 
       putpixel(img,w,h,SDL_MapRGB(img->format, sr, sg, sb));
 
