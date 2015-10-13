@@ -93,42 +93,51 @@ SDL_Surface* integral_image (SDL_Surface *img)
   {
     for(int w = 0; w < img->w; w++)
     {
+//      SDL_Surface* integral = malloc(sizeof(SDL_Surface) * 3);
 
+      Uint8 init ;
+       SDL_GetRGB(getpixel(img,w,h), img->format, &init, &init, &init);
+      printf ("%d->",init);
+      
       Uint8 r, sr = 0;
       Uint8 g, sg = 0;
       Uint8 b, sb = 0;
       
-      if (w < img->w && h < img->h)
+      if (w <= img->w && h <= img->h)
       {
         SDL_GetRGB(getpixel(img,w,h), img->format, &r, &g, &b);
 
+        printf ("%d",r);
         sr = r;
         sg = g;
         sb = b;
       }
 
-      if (w < img->w && h - 1 > 0)
+      if (w <= img->w && h - 1 >= 0)
       {
         SDL_GetRGB(getpixel(img,w,h - 1), img->format, &r, &g, &b);
 
+        printf ("+%d",r);
         sr += r;
         sg += g;
         sb += b;
       }
 
-      if (w - 1 < 0 && h < img->h)
+      if (w - 1 >= 0 && h <= img->h)
       {
         SDL_GetRGB(getpixel(img,w - 1,h), img->format, &r, &g, &b);
 
+        printf ("+%d",r);
         sr += r;
         sg += g;
         sb += b;
       }
 
-      if (w - 1 > 0 && h - 1 > 0)
+      if (w - 1 >= 0 && h - 1 >= 0)
       {
         SDL_GetRGB(getpixel(img,w - 1,h -1), img->format, &r, &g, &b);
 
+        printf ("-%d",r);
         sr -= r;
         sg -= g;
         sb -= b;
@@ -137,7 +146,11 @@ SDL_Surface* integral_image (SDL_Surface *img)
       putpixel(img,w,h,SDL_MapRGB(img->format, sr, sg, sb));
 
 //      pixel(h, w)  = pixel(h, w) + pixel(h - 1, w) + pixel(h, w - 1) - pixel(h - 1, w - 1); 
+      
+
+      printf("->%d|", sr);
     }
+    printf("\n");
   }
 
   return img;
