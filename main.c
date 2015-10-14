@@ -137,6 +137,7 @@ SDL_Surface* integral_image (SDL_Surface *img)
       {
         SDL_GetRGB(getpixel(img,w - 1,h -1), img->format, &r, &g, &b);
 
+
         printf ("-%d",r);
         sr -= r;
         sg -= g;
@@ -156,6 +157,27 @@ SDL_Surface* integral_image (SDL_Surface *img)
   return img;
 
 }
+
+
+Uint8 sum_rectangle(SDL_Surface* img, int h1, int w1,int h2, int w2){
+  Uint8 val_A, val_B, val_C, val_D;
+
+  SDL_GetRGB(getpixel(img,w1 - 1,h1 -1), img->format, &val_h1, &val_h1, &val_h1);
+
+  SDL_GetRGB(getpixel(img,w1 - 1,h1 -1), img->format, &val_h1, &val_h1, &val_h1);
+
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 int main(int i, char** path)
