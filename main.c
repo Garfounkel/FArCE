@@ -161,8 +161,8 @@ SDL_Surface* integral_image (SDL_Surface *img)//, SDL_Surface* new)
 
       putpixel(img,w,h,SDL_MapRGB(img->format, sr, sg, sb));
 
-//      pixel(h, w)  = pixel(h, w) + pixel(h - 1, w) + pixel(h, w - 1) - pixel(h - 1, w - 1); 
-      
+//      pixel(h, w)  = pixel(h, w) + pixel(h - 1, w) + pixel(h, w - 1) - pixel(h - 1, w - 1);
+
 
       printf("->%d|", sr);
     }
@@ -176,14 +176,35 @@ SDL_Surface* integral_image (SDL_Surface *img)//, SDL_Surface* new)
 
 Uint8 sum_rectangle(SDL_Surface* img, int h1, int w1,int h2, int w2){
   Uint8 val_A, val_B, val_C, val_D;
+// A B
+// D C
+  SDL_GetRGB(getpixel(img,w1 - 1, h1 -1), img->format, &val_A, &val_A, &val_A);
+  SDL_GetRGB(getpixel(img,w2, h1 -1), img->format, &val_B, &val_B, &val_B);
+  SDL_GetRGB(getpixel(img,w1-1, h2), img->format, &val_C, &val_C, &val_C);
+  SDL_GetRGB(getpixel(img,w2, h2), img->format, &val_D, &val_D, &val_D);
 
-  SDL_GetRGB(getpixel(img,w1 - 1,h1 -1), img->format, &val_h1, &val_h1, &val_h1);
-
-  SDL_GetRGB(getpixel(img,w1 - 1,h1 -1), img->format, &val_h1, &val_h1, &val_h1);
-
+  return val_A - val_B + val_C - val_D;
 }
 
+int* haar_features(SDL_Surface *img){
+  int *my_vect;
+  int *victor = my_vect;
+  
+  for (i = 1; i <= 24; i++) {
+    for (j = 1; j <= 24; j++) {
+      for (w = 1; i+w-1 <= 24; w++) {
+        for (h = 1; j-1+2*h <= 24; h++) {
+          int sum1 = sum_rectangle(img, i, i+h-1, j, j+w-1);
+          int sum2 = sum_rectangle(img, i, i+h-1, j+w, j+2w-1);
+          *my_vect = sum1 - sum2;
+          my_vect++;
+        }
+      }
+    }
+  }
 
+  return victor;
+}
 
 
 
