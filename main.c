@@ -178,10 +178,13 @@ Uint8 sum_rectangle(SDL_Surface* img, int h1, int w1,int h2, int w2){
   Uint8 val_A, val_B, val_C, val_D;
 // A B
 // D C
+
+// D et C etaient swap
+
   SDL_GetRGB(getpixel(img,w1 - 1, h1 -1), img->format, &val_A, &val_A, &val_A);
   SDL_GetRGB(getpixel(img,w2, h1 -1), img->format, &val_B, &val_B, &val_B);
-  SDL_GetRGB(getpixel(img,w1-1, h2), img->format, &val_C, &val_C, &val_C);
-  SDL_GetRGB(getpixel(img,w2, h2), img->format, &val_D, &val_D, &val_D);
+  SDL_GetRGB(getpixel(img,w1-1, h2), img->format, &val_D, &val_D, &val_D);
+  SDL_GetRGB(getpixel(img,w2, h2), img->format, &val_C, &val_C, &val_C);
 
   return val_A - val_B + val_C - val_D;
 }
