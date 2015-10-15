@@ -1,4 +1,7 @@
-# include <stdio.h>
+//libsdl-image1.2 ,libsdl-image1.2-dev ,libsdl-ttf2.0-0 ,libsdl-ttf2.0-dev ,libsdl-mixer1.2 ,libsdl-mixer1.2-dev.
+//Les options respectives à ajouter à la compilation avec GCC (après -lSDLmain -lSDL) sont :
+//-lSDL_image # # include <stdio.h>
+
 # include <stdlib.h>
 # include <SDL/SDL.h>
 # include <SDL/SDL_image.h>
@@ -190,15 +193,15 @@ Uint8 sum_rectangle(SDL_Surface* img, int h1, int w1,int h2, int w2){
 }
 
 int* haar_features(SDL_Surface *img){
-  int *my_vect;
+  int *my_vect = malloc(sizeof(int));
   int *victor = my_vect;
-  
-  for (i = 1; i <= 24; i++) {
-    for (j = 1; j <= 24; j++) {
-      for (w = 1; i+w-1 <= 24; w++) {
-        for (h = 1; j-1+2*h <= 24; h++) {
+   
+  for (int i = 1; i <= 24; i++) {
+    for (int j = 1; j <= 24; j++) {
+      for (int w = 1; i+w-1 <= 24; w++) {
+        for (int h = 1; j-1+2*h <= 24; h++) {
           int sum1 = sum_rectangle(img, i, i+h-1, j, j+w-1);
-          int sum2 = sum_rectangle(img, i, i+h-1, j+w, j+2w-1);
+          int sum2 = sum_rectangle(img, i, i+h-1, j+w, j+2*w-1);
           *my_vect = sum1 - sum2;
           my_vect++;
         }
@@ -206,18 +209,9 @@ int* haar_features(SDL_Surface *img){
     }
   }
 
+  
   return victor;
 }
-
-
-
-
-
-
-
-
-
-
 
 int main(int i, char** path)
 {
