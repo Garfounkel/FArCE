@@ -195,13 +195,14 @@ Uint8 sum_rectangle(SDL_Surface* img, int h1, int w1,int h2, int w2){
 int* haar_features(SDL_Surface *img){
   int *my_vect = malloc(sizeof(int));
   int *victor = my_vect;
-   
+
+//type a
   for (int i = 1; i <= 24; i++) {
     for (int j = 1; j <= 24; j++) {
-      for (int w = 1; i+w-1 <= 24; w++) {
-        for (int h = 1; j-1+2*h <= 24; h++) {
-          int sum1 = sum_rectangle(img, i, i+h-1, j, j+w-1);
-          int sum2 = sum_rectangle(img, i, i+h-1, j+w, j+2*w-1);
+      for (int h = 1; i + h - 1 <= 24; h++) {
+        for (int w = 1; j - 1 + 2 * w <= 24; w++) {
+          int sum1 = sum_rectangle(img, i, i + h - 1, j, j + w - 1);
+          int sum2 = sum_rectangle(img, i, i + h - 1, j + w, j + 2 * w - 1);
           *my_vect = sum1 - sum2;
           my_vect++;
         }
@@ -209,7 +210,21 @@ int* haar_features(SDL_Surface *img){
     }
   }
 
-  
+
+//type b
+  for (int i = 1; i <= 24; i++) {
+    for (int j = 1; j <= 24; j++) {
+      for (int h = 1; i + h - 1 <= 24; h++) {
+        for (int w = 1; j - 1 + 2 * w <= 24; w++) {
+          int sum1 = sum_rectangle(img, i, i + h - 1, j, j + w - 1);
+          int sum2 = sum_rectangle(img, i, i + h - 1, j + w, j + 2 * w - 1);
+          *my_vect = sum1 - sum2;
+          my_vect++;
+        }
+      }
+    }
+  }
+
   return victor;
 }
 
