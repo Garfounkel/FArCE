@@ -1,4 +1,7 @@
-# include <stdio.h>
+//libsdl-image1.2 ,libsdl-image1.2-dev ,libsdl-ttf2.0-0 ,libsdl-ttf2.0-dev ,libsdl-mixer1.2 ,libsdl-mixer1.2-dev.
+//Les options respectives à ajouter à la compilation avec GCC (après -lSDLmain -lSDL) sont :
+//-lSDL_image # # include <stdio.h>
+
 # include <stdlib.h>
 # include <SDL/SDL.h>
 # include <SDL/SDL_image.h>
@@ -168,11 +171,16 @@ SDL_Surface* integral_image (SDL_Surface *img)//, SDL_Surface* new)
       {
         SDL_GetRGB(getpixel(img,w - 1,h -1), img->format, &r, &g, &b);
 
+<<<<<<< HEAD
         if (w < 24 && h < 24)
         {
           printf ("-%d",r);
         }
         
+=======
+
+        printf ("-%d",r);
+>>>>>>> 52af1551c3d73d5bdad827239fb0a24c413350c7
         sr -= r;
         sg -= g;
         sb -= b;
@@ -180,8 +188,8 @@ SDL_Surface* integral_image (SDL_Surface *img)//, SDL_Surface* new)
 
       putpixel(img,w,h,SDL_MapRGB(img->format, sr, sg, sb));
 
-//      pixel(h, w)  = pixel(h, w) + pixel(h - 1, w) + pixel(h, w - 1) - pixel(h - 1, w - 1); 
-      
+//      pixel(h, w)  = pixel(h, w) + pixel(h - 1, w) + pixel(h, w - 1) - pixel(h - 1, w - 1);
+
 
       if (w < 24 && h < 24)
       {
@@ -198,6 +206,42 @@ SDL_Surface* integral_image (SDL_Surface *img)//, SDL_Surface* new)
   
 }
 
+
+Uint8 sum_rectangle(SDL_Surface* img, int h1, int w1,int h2, int w2){
+  Uint8 val_A, val_B, val_C, val_D;
+// A B
+// D C
+
+// D et C etaient swap
+
+  SDL_GetRGB(getpixel(img,w1 - 1, h1 -1), img->format, &val_A, &val_A, &val_A);
+  SDL_GetRGB(getpixel(img,w2, h1 -1), img->format, &val_B, &val_B, &val_B);
+  SDL_GetRGB(getpixel(img,w1-1, h2), img->format, &val_D, &val_D, &val_D);
+  SDL_GetRGB(getpixel(img,w2, h2), img->format, &val_C, &val_C, &val_C);
+
+  return val_A - val_B + val_C - val_D;
+}
+
+int* haar_features(SDL_Surface *img){
+  int *my_vect = malloc(sizeof(int));
+  int *victor = my_vect;
+   
+  for (int i = 1; i <= 24; i++) {
+    for (int j = 1; j <= 24; j++) {
+      for (int w = 1; i+w-1 <= 24; w++) {
+        for (int h = 1; j-1+2*h <= 24; h++) {
+          int sum1 = sum_rectangle(img, i, i+h-1, j, j+w-1);
+          int sum2 = sum_rectangle(img, i, i+h-1, j+w, j+2*w-1);
+          *my_vect = sum1 - sum2;
+          my_vect++;
+        }
+      }
+    }
+  }
+
+  
+  return victor;
+}
 
 int main(int i, char** path)
 {
