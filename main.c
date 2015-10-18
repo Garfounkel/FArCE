@@ -171,16 +171,11 @@ SDL_Surface* integral_image (SDL_Surface *img)//, SDL_Surface* new)
       {
         SDL_GetRGB(getpixel(img,w - 1,h -1), img->format, &r, &g, &b);
 
-<<<<<<< HEAD
         if (w < 24 && h < 24)
         {
           printf ("-%d",r);
         }
         
-=======
-
-        printf ("-%d",r);
->>>>>>> 52af1551c3d73d5bdad827239fb0a24c413350c7
         sr -= r;
         sg -= g;
         sb -= b;
