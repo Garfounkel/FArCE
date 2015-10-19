@@ -98,7 +98,9 @@ SDL_Surface* invert_grey(SDL_Surface *img)// , SDL_Surface *new)
     {
       Uint8 m;
       SDL_GetRGB(getpixel(img,w,h),img->format,&m,&m,&m);
+
       m = -m + 255;
+
       putpixel(img,w,h,SDL_MapRGB(img->format, m, m, m));
     }
   }
@@ -114,9 +116,11 @@ SDL_Surface* integral_image (SDL_Surface *img)//, SDL_Surface* new)
 //      SDL_Surface* integral = malloc(sizeof(SDL_Surface) * 3);
 
       Uint8 init ;
-       SDL_GetRGB(getpixel(img,w,h), img->format, &init, &init, &init);
-      printf ("%d->",init);
-      
+      SDL_GetRGB(getpixel(img,w,h), img->format, &init, &init, &init);
+      if (w < 24 && h < 24)
+      {
+        printf ("%d->",init);
+      }
       Uint8 r, sr = 0;
       Uint8 g, sg = 0;
       Uint8 b, sb = 0;
@@ -125,7 +129,11 @@ SDL_Surface* integral_image (SDL_Surface *img)//, SDL_Surface* new)
       {
         SDL_GetRGB(getpixel(img,w,h), img->format, &r, &g, &b);
 
+      if (w < 24 && h < 24)
+      {
         printf ("%d",r);
+      }
+      
         sr = r;
         sg = g;
         sb = b;
@@ -135,7 +143,11 @@ SDL_Surface* integral_image (SDL_Surface *img)//, SDL_Surface* new)
       {
         SDL_GetRGB(getpixel(img,w,h - 1), img->format, &r, &g, &b);
 
-        printf ("+%d",r);
+        if (w < 24 && h < 24)
+        {
+          printf ("+%d",r);
+        }
+        
         sr += r;
         sg += g;
         sb += b;
@@ -144,19 +156,26 @@ SDL_Surface* integral_image (SDL_Surface *img)//, SDL_Surface* new)
       if (w - 1 >= 0 && h <= img->h)
       {
         SDL_GetRGB(getpixel(img,w - 1,h), img->format, &r, &g, &b);
-
-        printf ("+%d",r);
+        
+        if (w < 24 && h < 24)
+        {
+          printf ("+%d",r);
+        }
+        
         sr += r;
         sg += g;
         sb += b;
       }
-
+      
       if (w - 1 >= 0 && h - 1 >= 0)
       {
         SDL_GetRGB(getpixel(img,w - 1,h -1), img->format, &r, &g, &b);
 
-
-        printf ("-%d",r);
+        if (w < 24 && h < 24)
+        {
+          printf ("-%d",r);
+        }
+        
         sr -= r;
         sg -= g;
         sb -= b;
@@ -167,13 +186,19 @@ SDL_Surface* integral_image (SDL_Surface *img)//, SDL_Surface* new)
 //      pixel(h, w)  = pixel(h, w) + pixel(h - 1, w) + pixel(h, w - 1) - pixel(h - 1, w - 1);
 
 
-      printf("->%d|", sr);
+      if (w < 24 && h < 24)
+      {
+        printf("->%d|", sr);
+      }
     }
-    printf("\n");
+    if (h < 24)
+    {
+      printf("\n");
+    }
   }
-
+  
   return img;
-
+  
 }
 
 
