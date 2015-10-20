@@ -2,7 +2,7 @@
 # define HAAR_H_
 
 # include <stdlib.h>
-# include <SDL.h>
+//# include <SDL.h>
 
 # ifndef ULONG_TAB_TYPE_DEF
 # define ULONG_TAB_TYPE_DEF
@@ -38,7 +38,37 @@ void set_val(Ulong_tab* tab, unsigned long x, int i, int j)
 
 # endif
 
+# ifndef HAAR_STRUCT_DEF
+# define HAAR_STRUCT_DEF
+
+typedef struct Haar Haar;
+struct Haar
+{
+    int type;
+    int i;
+    int j;
+    int w;
+    int h;
+    unsigned long sum;
+    unsigned long sum_normalized;
+};
+
+Haar create_Haar(int type, int i, int j, int w, int h, unsigned long sum)
+{
+  Haar haar; //= malloc(sizeof(int) * 5 + sizeof(unsigned long));
+  haar.type = type;
+  haar.i = i;
+  haar.j = j;
+  haar.w = w;
+  haar.h = h;
+  haar.sum = sum;
+  haar.sum_normalized = 42; // 42 Signifie que la valeur n'a pas encore été calculée.
+  return haar;
+}
+
+# endif
+
 unsigned long sum_rectangle(Ulong_tab* img, int h1, int w1, int h2, int w2);
-int* haar_features(Ulong_tab *img);
+Haar* compute_haar_features(Ulong_tab *img, long nbFeatures);
 
 # endif
