@@ -1,3 +1,4 @@
+
 #include "haar.h"
 
 unsigned long sum_rectangle(Ulong_tab* img, int h1, int w1, int h2, int w2){
@@ -24,7 +25,7 @@ Haar* compute_haar_features(Ulong_tab *img, long nbFeatures){
   Haar *my_vect = malloc((sizeof(int) * 4 + sizeof(unsigned long)) * nbFeatures);
   Haar *res = my_vect;
 
-//type a avec les paramètres (1,i,j,w,h)
+  //type a avec les paramètres (1,i,j,w,h)
   for (int i = 1; i <= 24; i++) {
     for (int j = 1; j <= 24; j++) {
       for (int h = 1; i + h - 1 <= 24; h++) {
@@ -42,7 +43,7 @@ Haar* compute_haar_features(Ulong_tab *img, long nbFeatures){
   }
 
 
-//type b avec les paramètres (2,i,j,w,h)
+  //type b avec les paramètres (2,i,j,w,h)
   for (int i = 1; i <= 24; i++) {
     for (int j = 1; j <= 24; j++) {
       for (int h = 1; i + h - 1 <= 24; h++) {
@@ -60,7 +61,7 @@ Haar* compute_haar_features(Ulong_tab *img, long nbFeatures){
     }
   }
 
-//type c avec les paramètres (3,i,j,w,h)
+  //type c avec les paramètres (3,i,j,w,h)
   for (int i = 1; i <= 24; i++) {
     for (int j = 1; j <= 24; j++) {
       for (int h = 1; i + 2*h - 1 <= 24; h++) {
@@ -77,7 +78,7 @@ Haar* compute_haar_features(Ulong_tab *img, long nbFeatures){
     }
   }
 
-//type d avec les paramètres (4,i,j,w,h)
+  //type d avec les paramètres (4,i,j,w,h)
   for (int i = 1; i <= 24; i++) {
     for (int j = 1; j <= 24; j++) {
       for (int h = 1; i +3* h - 1 <= 24; h++) {
@@ -94,7 +95,7 @@ Haar* compute_haar_features(Ulong_tab *img, long nbFeatures){
     }
   }
 
-//type e avec les paramètres (5,i,j,w,h)
+  //type e avec les paramètres (5,i,j,w,h)
   for (int i = 1; i <= 24; i++) {
     for (int j = 1; j <= 24; j++) {
       for (int h = 1; i + 2*h - 1 <= 24; h++) {
