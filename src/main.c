@@ -8,6 +8,39 @@
 # include <err.h>
 # include "ViolaJones/pixel_operations.h"
 
+struct Uint64_tab
+{
+  int h;
+  int w;
+  unsigned long *arr;
+};
+
+struct Uint64_tab* create_Uint64_tab(int h_val, int w_val)
+{
+  struct Uint64_tab* tab = malloc(sizeof(int) * 2 + sizeof( unsigned long*));
+  tab->h = h_val;
+  tab->w = w_val;
+  tab->arr = malloc(sizeof(unsigned long) * h_val * w_val);
+  return tab;
+}
+
+
+
+
+long get_val(struct Uint64_tab* tab, int i, int j)
+{
+  return tab->arr[i * tab->w + j];
+}
+void set_val(struct Uint64_tab* tab, unsigned long x, int i, int j)
+{
+  //printf ("begin setval\n");
+  //printf ("h = %d\n",i);
+  //printf ("w = %d\n",j);
+  tab->arr[i * tab->w + j] = x;
+}
+
+
+
 //# include <warnx.h>
 
 void wait_for_keypressed(void) {
@@ -18,11 +51,11 @@ void wait_for_keypressed(void) {
     SDL_PollEvent( &event );
     // Switch on event type
     switch (event.type) {
-    // Someone pressed a key -> leave the function
+      // Someone pressed a key -> leave the function
     case SDL_KEYDOWN: return;
     default: break;
     }
-  // Loop until we got the expected event
+    // Loop until we got the expected event
   }
 }
 
@@ -54,17 +87,17 @@ SDL_Surface* display_image(SDL_Surface *img) {
     errx(1, "Couldn't set %dx%d video mode: %s\n",
          img->w, img->h, SDL_GetError());
   }
-
+ 
   /* Blit onto the screen surface */
   if(SDL_BlitSurface(img, NULL, screen, NULL) < 0)
     warnx("BlitSurface error: %s\n", SDL_GetError());
-
+ 
   // Update the screen
   SDL_UpdateRect(screen, 0, 0, img->w, img->h);
-
+ 
   // wait for a key
   wait_for_keypressed();
-
+ 
   // return the screen for further uses
   return screen;
 }
@@ -107,98 +140,71 @@ SDL_Surface* invert_grey(SDL_Surface *img)// , SDL_Surface *new)
   return img;
 }
 
-SDL_Surface* integral_image (SDL_Surface *img)//, SDL_Surface* new)
+struct Uint64_tab* integral_image (SDL_Surface *img, struct Uint64_tab* new)
 {
-  for(int h = 0; h < img->h; h++)
+  for(int h = 0; h <= img->h; h++)
   {
-    for(int w = 0; w < img->w; w++)
+    for(int w = 0; w <= img->w; w++)
     {
-//      SDL_Surface* integral = malloc(sizeof(SDL_Surface) * 3);
+      unsigned long r, sr = 0;
 
-      Uint8 init ;
-      SDL_GetRGB(getpixel(img,w,h), img->format, &init, &init, &init);
-      if (w < 24 && h < 24)
       {
-        printf ("%d->",init);
-      }
-      Uint8 r, sr = 0;
-      Uint8 g, sg = 0;
-      Uint8 b, sb = 0;
+        Uint8 tmp;
+        SDL_GetRGB(getpixel(img,w,h), img->format, &tmp, &tmp, &tmp);
 
-      if (w <= img->w && h <= img->h)
-      {
-        SDL_GetRGB(getpixel(img,w,h), img->format, &r, &g, &b);
+        sr = r = tmp;
 
-      if (w < 24 && h < 24)
-      {
-        printf ("%d",r);
-      }
-
-        sr = r;
-        sg = g;
-        sb = b;
+        if (w >= 149 && h >= 149)
+          printf ("%ld->%ld", r, r);
       }
 
       if (w <= img->w && h - 1 >= 0)
       {
-        SDL_GetRGB(getpixel(img,w,h - 1), img->format, &r, &g, &b);
+        r = get_val(new, h - 1, w);
 
-        if (w < 24 && h < 24)
-        {
-          printf ("+%d",r);
-        }
+        if (w >= 149 && h >= 149)
+          printf ("+%ld",r);
 
         sr += r;
-        sg += g;
-        sb += b;
       }
+
 
       if (w - 1 >= 0 && h <= img->h)
       {
-        SDL_GetRGB(getpixel(img,w - 1,h), img->format, &r, &g, &b);
+        r = get_val(new, h, w - 1);
 
-        if (w < 24 && h < 24)
-        {
-          printf ("+%d",r);
-        }
+        if (w >= 149 && h >= 149)
+          printf ("+%ld",r);
 
         sr += r;
-        sg += g;
-        sb += b;
       }
+
 
       if (w - 1 >= 0 && h - 1 >= 0)
       {
-        SDL_GetRGB(getpixel(img,w - 1,h -1), img->format, &r, &g, &b);
+        r = get_val(new, h - 1, w - 1);
 
-        if (w < 24 && h < 24)
-        {
-          printf ("-%d",r);
-        }
+        if (w >= 149 && h >= 149)
+          printf ("-%ld",r);
 
         sr -= r;
-        sg -= g;
-        sb -= b;
       }
 
-      putpixel(img,w,h,SDL_MapRGB(img->format, sr, sg, sb));
 
-//      pixel(h, w)  = pixel(h, w) + pixel(h - 1, w) + pixel(h, w - 1) - pixel(h - 1, w - 1);
+      set_val(new, sr, h, w);
 
 
-      if (w < 24 && h < 24)
-      {
-        printf("->%d|", sr);
-      }
+      if (w >= 149 && h >= 149)
+        printf("->%ld|", get_val(new,h,w));
+
     }
-    if (h < 24)
-    {
+
+    if (h >= 149)
       printf("\n");
-    }
+
   }
 
-  return img;
-
+  return new;
 }
 
 int main(int i, char** path)
@@ -213,7 +219,7 @@ int main(int i, char** path)
   init_sdl();
   // open window
 
-  //  SDL_SetVideoMode(640, 480, 0, 0);
+//  SDL_SetVideoMode(640, 480, 0, 0);
   //load image
   SDL_Surface* surface = load_image(path[1]);
   //display image
@@ -229,7 +235,10 @@ int main(int i, char** path)
 
   display_image(surface);
 
-  integral_image(surface);//,surface);
+  //printf ("surface->w = %d\n",surface->w);
+  struct Uint64_tab* tab = create_Uint64_tab(surface->h, surface->w);
+
+  integral_image(surface, tab);//,surface);
 
   display_image(surface);
   //  wait_for_keypressed();
