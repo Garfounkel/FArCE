@@ -1,6 +1,6 @@
-#include "haars.h"
+//#include "haars.h"
 
-unsigned long sum_rectangle(struct Ulong_tab* img, int h1, int w1, int h2, int w2){
+unsigned long sum_rectangle(Ulong_tab* img, int h1, int w1, int h2, int w2){
   unsigned long val_A, val_B, val_C, val_D;
   // A B
   // D C
