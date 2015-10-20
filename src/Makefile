@@ -16,5 +16,6 @@ main: ${OBJ}
 
 clean:
 	rm -fr *~ *.o
-	rm -fr main
+	rm -fr ViolaJones/*~ ViolaJones/*.o
+	rm -f main
 # END
