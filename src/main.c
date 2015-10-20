@@ -6,18 +6,18 @@
 # include <SDL/SDL.h>
 # include <SDL/SDL_image.h>
 # include <err.h>
-# include "ViolaJones/pixel_operations.h"
+# include "pixel_operations.h"
 
-struct Uint64_tab
+struct Ulong_tab
 {
   int h;
   int w;
   unsigned long *arr;
 };
 
-struct Uint64_tab* create_Uint64_tab(int h_val, int w_val)
+struct Ulong_tab* create_Ulong_tab(int h_val, int w_val)
 {
-  struct Uint64_tab* tab = malloc(sizeof(int) * 2 + sizeof( unsigned long*));
+  struct Ulong_tab* tab = malloc(sizeof(int) * 2 + sizeof( unsigned long*));
   tab->h = h_val;
   tab->w = w_val;
   tab->arr = malloc(sizeof(unsigned long) * h_val * w_val);
@@ -27,11 +27,11 @@ struct Uint64_tab* create_Uint64_tab(int h_val, int w_val)
 
 
 
-long get_val(struct Uint64_tab* tab, int i, int j)
+long get_val(struct Ulong_tab* tab, int i, int j)
 {
   return tab->arr[i * tab->w + j];
 }
-void set_val(struct Uint64_tab* tab, unsigned long x, int i, int j)
+void set_val(struct Ulong_tab* tab, unsigned long x, int i, int j)
 {
   //printf ("begin setval\n");
   //printf ("h = %d\n",i);
@@ -140,7 +140,7 @@ SDL_Surface* invert_grey(SDL_Surface *img)// , SDL_Surface *new)
   return img;
 }
 
-struct Uint64_tab* integral_image (SDL_Surface *img, struct Uint64_tab* new)
+struct Ulong_tab* integral_image (SDL_Surface *img, struct Ulong_tab* new)
 {
   for(int h = 0; h <= img->h; h++)
   {
@@ -207,6 +207,7 @@ struct Uint64_tab* integral_image (SDL_Surface *img, struct Uint64_tab* new)
   return new;
 }
 
+
 int main(int i, char** path)
 {
 
@@ -236,7 +237,7 @@ int main(int i, char** path)
   display_image(surface);
 
   //printf ("surface->w = %d\n",surface->w);
-  struct Uint64_tab* tab = create_Uint64_tab(surface->h, surface->w);
+  struct Ulong_tab* tab = create_Ulong_tab(surface->h, surface->w);
 
   integral_image(surface, tab);//,surface);
 

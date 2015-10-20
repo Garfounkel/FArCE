@@ -1,20 +1,26 @@
 #include "haars.h"
 
-Uint8 sum_rectangle(SDL_Surface* img, int h1, int w1,int h2, int w2){
+unsigned long sum_rectangle(struct Ulong_tab* img, int h1, int w1, int h2, int w2){
+  unsigned long val_A, val_B, val_C, val_D;
   // A B
   // D C
 
-  Uint8 val_A, val_B, val_C, val_D;
+  val_A = get_val(img, h1 - 1, w1 - 1);
+  // previous code : SDL_GetRGB(getpixel(img,w1 - 1, h1 -1), img->format, &val_A, &val_A, &val_A);
 
-  SDL_GetRGB(getpixel(img,w1 - 1, h1 -1), img->format, &val_A, &val_A, &val_A);
-  SDL_GetRGB(getpixel(img,w2, h1 -1), img->format, &val_B, &val_B, &val_B);
-  SDL_GetRGB(getpixel(img,w1-1, h2), img->format, &val_D, &val_D, &val_D);
-  SDL_GetRGB(getpixel(img,w2, h2), img->format, &val_C, &val_C, &val_C);
+  val_B = get_val(img, h1 - 1, w2);
+  // previous code : SDL_GetRGB(getpixel(img,w2, h1 -1), img->format, &val_B, &val_B, &val_B);
+
+  val_C = get_val(img, h2, w2);
+  // previous code : SDL_GetRGB(getpixel(img,w2, h2), img->format, &val_C, &val_C, &val_C);
+
+  val_D = get_val(img, h2, w1 - 1);
+  // previous code : SDL_GetRGB(getpixel(img,w1-1, h2), img->format, &val_D, &val_D, &val_D);
 
   return val_A - val_B + val_C - val_D;
 }
 
-int* haar_features(SDL_Surface *img){
+int* haar_features(Ulong_tab *img){
   int *my_vect = malloc(sizeof(int));
   int *victor = my_vect;
 
