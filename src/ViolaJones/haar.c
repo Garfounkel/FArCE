@@ -1,4 +1,3 @@
-
 #include "haar.h"
 
 unsigned long sum_rectangle(Ulong_tab* img, int h1, int w1, int h2, int w2){
@@ -31,7 +30,7 @@ Haar* compute_haar_features(Ulong_tab *img, long nbFeatures){
       for (int h = 1; i + h - 1 <= 24; h++) {
         for (int w = 1; j - 1 + 2 * w <= 24; w++) {
 
-          int sum1 = sum_rectangle(img, i, i + h - 1, j, j + w - 1);
+          int sum1 = sum_rectangle(img, i, i + h - 1, j,     j + w - 1);
           int sum2 = sum_rectangle(img, i, i + h - 1, j + w, j + 2 * w - 1);
 
           Haar my_haar = create_Haar(1, i, j, w, h, sum1 - sum2);
@@ -49,9 +48,9 @@ Haar* compute_haar_features(Ulong_tab *img, long nbFeatures){
       for (int h = 1; i + h - 1 <= 24; h++) {
         for (int w = 1; j - 1 + 2 * w <= 24; w++) {
 
-          int sum1 = sum_rectangle(img, i, i + h - 1, j, j + w - 1);
+          int sum1 = sum_rectangle(img, i, i + h - 1, j,     j + w - 1);
           int sum2 = sum_rectangle(img, i, i + h - 1, j + w, j + 2 * w - 1);
-          int sum3 = sum_rectangle(img, i, i+h-1,j+2*w, j+3*w-1);
+          int sum3 = sum_rectangle(img, i, i+h-1,     j+2*w, j+3*w-1);
 
           Haar my_haar = create_Haar(2, i, j, w, h, sum1 - sum2 + sum3);
           *my_vect = my_haar;
@@ -67,8 +66,8 @@ Haar* compute_haar_features(Ulong_tab *img, long nbFeatures){
       for (int h = 1; i + 2*h - 1 <= 24; h++) {
         for (int w = 1; j +w-1 <= 24; w++) {
 
-          int sum1 = sum_rectangle(img, i, i + h - 1, j, j + w - 1);
-          int sum2 = sum_rectangle(img, i+h, i +2* h - 1, j, j +w - 1);
+          int sum1 = sum_rectangle(img, i,   i + h - 1,   j, j + w - 1);
+          int sum2 = sum_rectangle(img, i+h, i +2* h - 1, j, j + w - 1);
 
           Haar my_haar = create_Haar(3, i, j, w, h, sum1 - sum2);
           *my_vect = my_haar;
@@ -83,9 +82,10 @@ Haar* compute_haar_features(Ulong_tab *img, long nbFeatures){
     for (int j = 1; j <= 24; j++) {
       for (int h = 1; i +3* h - 1 <= 24; h++) {
         for (int w = 1; j - 1 + w <= 24; w++) {
-          int sum1 = sum_rectangle(img, i, i + h - 1, j, j + w - 1);
-          int sum2 = sum_rectangle(img, i+h, i + 2*h - 1, j, j +w - 1);
-          int sum3 = sum_rectangle(img, i+2*h,i+3*h-1,j,j+w-1);
+
+          int sum1 = sum_rectangle(img, i,     i + h - 1,   j, j + w - 1);
+          int sum2 = sum_rectangle(img, i+h,   i + 2*h - 1, j, j +w - 1);
+          int sum3 = sum_rectangle(img, i+2*h, i+3*h-1,     j, j+w-1);
 
           Haar my_haar = create_Haar(4, i, j, w, h, sum1 - sum2 + sum3);
           *my_vect = my_haar;
@@ -100,19 +100,13 @@ Haar* compute_haar_features(Ulong_tab *img, long nbFeatures){
     for (int j = 1; j <= 24; j++) {
       for (int h = 1; i + 2*h - 1 <= 24; h++) {
         for (int w = 1; j - 1 + 2 * w <= 24; w++) {
-          int sum1 = sum_rectangle(img, i, i + h - 1, j, j + w - 1);
-          int sum2 = sum_rectangle(img, i+h, i +2* h - 1, j, j + w - 1);
-          int sum3 = sum_rectangle(img,i,i+h-1,j+w,j+2*w-1);
-          int sum4 = sum_rectangle(img,i+h,i+2*h-1,j+w,j+2*w-1);
+
+          int sum1 = sum_rectangle(img, i,   i + h - 1,   j,   j + w - 1);
+          int sum2 = sum_rectangle(img, i+h, i +2* h - 1, j,   j + w - 1);
+          int sum3 = sum_rectangle(img, i,   i+h-1,       j+w, j+2*w-1);
+          int sum4 = sum_rectangle(img, i+h, i+2*h-1,     j+w, j+2*w-1);
 
           Haar my_haar = create_Haar(5, i, j, w, h, sum1 - sum2 - sum3 + sum4);
-          my_haar.type = 5;
-          my_haar.i = i;
-          my_haar.j = j;
-          my_haar.w = w;
-          my_haar.h = h;
-          my_haar.sum = sum1 - sum2 - sum3 + sum4;
-
           *my_vect = my_haar;
           my_vect++;
         }
@@ -122,3 +116,4 @@ Haar* compute_haar_features(Ulong_tab *img, long nbFeatures){
 
   return res;
 }
+
