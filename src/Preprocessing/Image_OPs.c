@@ -37,3 +37,19 @@ SDL_Surface* invert_grey(SDL_Surface *img)
   }
   return img;
 }
+
+Uint8 mean(SDL_Surface *img)
+{
+  unsigned long sum = 0;
+  for (int h = 0; h < img->h; h++)
+  {
+    for (int w = 0; w < img->w; w++)
+    {
+      Uint8 m;
+      SDL_GetRGB(getpixel(img,w,h),img->format,&m,&m,&m);
+
+      sum += m;
+    }
+  }
+  return sum / (img->h * img->w);
+}

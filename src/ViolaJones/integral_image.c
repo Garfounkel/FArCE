@@ -6,9 +6,10 @@
 
 Ulong_tab* integral_image (SDL_Surface *img, Ulong_tab* new)
 {
-  for(int h = 0; h <= img->h; h++)
+  printf ("integral\n");
+  for(int h = 0; h < img->h; h++)
   {
-    for(int w = 0; w <= img->w; w++)
+    for(int w = 0; w < img->w; w++)
     {
       unsigned long r, sr = 0;
 
@@ -18,26 +19,26 @@ Ulong_tab* integral_image (SDL_Surface *img, Ulong_tab* new)
 
         sr = r = tmp;
 
-        if (w >= 149 && h >= 149)
+        if (w >= 148 && h >= 24)
           printf ("%ld->%ld", r, r);
       }
 
-      if (w <= img->w && h - 1 >= 0)
+      if (h - 1 >= 0)
       {
         r = get_val(new, h - 1, w);
 
-        if (w >= 149 && h >= 149)
+        if (w >= 148 && h >= 24)
           printf ("+%ld",r);
 
         sr += r;
       }
 
 
-      if (w - 1 >= 0 && h <= img->h)
+      if (w - 1 >= 0)
       {
         r = get_val(new, h, w - 1);
 
-        if (w >= 149 && h >= 149)
+        if (w >= 148 && h >= 24)
           printf ("+%ld",r);
 
         sr += r;
@@ -48,7 +49,7 @@ Ulong_tab* integral_image (SDL_Surface *img, Ulong_tab* new)
       {
         r = get_val(new, h - 1, w - 1);
 
-        if (w >= 149 && h >= 149)
+        if (w >= 148 && h >= 24)
           printf ("-%ld",r);
 
         sr -= r;
@@ -58,12 +59,12 @@ Ulong_tab* integral_image (SDL_Surface *img, Ulong_tab* new)
       set_val(new, sr, h, w);
 
 
-      if (w >= 149 && h >= 149)
+      if (w >= 148 && h >= 24)
         printf("->%ld|", get_val(new,h,w));
 
     }
 
-    if (h >= 149)
+    if (h >= 24)
       printf("\n");
 
   }

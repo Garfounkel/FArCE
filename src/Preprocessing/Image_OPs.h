@@ -8,5 +8,6 @@
 
 SDL_Surface* to_grey(SDL_Surface *img);
 SDL_Surface* invert_grey(SDL_Surface *img);
+Uint8 mean(SDL_Surface *img);
 
 # endif
