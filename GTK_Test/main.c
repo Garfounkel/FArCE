@@ -8,7 +8,7 @@ static void stfu( GtkWidget *widget, gpointer   data )
   g_print ("STFU\n");
 }
 
-static gboolean delete_event( GtkWidget *widget, GdkEvent  *event, gpointer   data )
+static gboolean delete_event( GtkWidget *widget, GdkEvent *event, gpointer data)
 {
   return FALSE;
 }

@@ -1,5 +1,7 @@
-//libsdl-image1.2 ,libsdl-image1.2-dev ,libsdl-ttf2.0-0 ,libsdl-ttf2.0-dev ,libsdl-mixer1.2 ,libsdl-mixer1.2-dev.
-//Les options respectives à ajouter à la compilation avec GCC (après -lSDLmain -lSDL) sont :
+//libsdl-image1.2 ,libsdl-image1.2-dev ,libsdl-ttf2.0-0 ,libsdl-ttf2.0-dev ,
+//libsdl-mixer1.2 ,libsdl-mixer1.2-dev.
+//Les options respectives à ajouter à la compilation
+//avec GCC (après -lSDLmain -lSDL) sont :
 //-lSDL_image # # include <stdio.h>
 
 # include <stdlib.h>

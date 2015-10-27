@@ -10,6 +10,7 @@ Haar create_Haar(int type, int i, int j, int w, int h, unsigned long sum)
   haar.w = w;
   haar.h = h;
   haar.sum = sum;
-  haar.sum_normalized = 42; // 42 Signifie que la valeur n'a pas encore été calculée.
+  haar.sum_normalized = 42;
+  // 42 Signifie que la valeur n'a pas encore été calculée.
   return haar;
 }

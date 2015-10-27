@@ -6,22 +6,26 @@ unsigned long sum_rectangle(Ulong_tab* img, int h1, int w1, int h2, int w2){
   // D C
 
   val_A = get_val(img, h1 - 1, w1 - 1);
-  // previous code : SDL_GetRGB(getpixel(img,w1 - 1, h1 -1), img->format, &val_A, &val_A, &val_A);
+  // previous code :
+  //SDL_GetRGB(getpixel(img,w1 - 1, h1-1), img->format, &val_A, &val_A, &val_A);
 
   val_B = get_val(img, h1 - 1, w2);
-  // previous code : SDL_GetRGB(getpixel(img,w2, h1 -1), img->format, &val_B, &val_B, &val_B);
+  // previous code :
+  //SDL_GetRGB(getpixel(img,w2, h1 -1), img->format, &val_B, &val_B, &val_B);
 
   val_C = get_val(img, h2, w2);
-  // previous code : SDL_GetRGB(getpixel(img,w2, h2), img->format, &val_C, &val_C, &val_C);
+  // previous code :
+  //SDL_GetRGB(getpixel(img,w2, h2), img->format, &val_C, &val_C, &val_C);
 
   val_D = get_val(img, h2, w1 - 1);
-  // previous code : SDL_GetRGB(getpixel(img,w1-1, h2), img->format, &val_D, &val_D, &val_D);
+  // previous code :
+  //SDL_GetRGB(getpixel(img,w1-1, h2), img->format, &val_D, &val_D, &val_D);
 
   return val_A - val_B + val_C - val_D;
 }
 
-Haar* compute_haar_features(Ulong_tab *img, long nbFeatures){
-  Haar *my_vect = malloc((sizeof(int) * 4 + sizeof(unsigned long)) * nbFeatures);
+Haar* compute_haar_features(Ulong_tab *img, long nbFeature){
+  Haar *my_vect = malloc((sizeof(int) * 4 + sizeof(unsigned long)) * nbFeature);
   Haar *res = my_vect;
 
   //type a avec les paramètres (1,i,j,w,h)
@@ -116,4 +120,3 @@ Haar* compute_haar_features(Ulong_tab *img, long nbFeatures){
 
   return res;
 }
-
