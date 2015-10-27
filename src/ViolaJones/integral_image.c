@@ -6,7 +6,6 @@
 
 Ulong_tab* integral_image (SDL_Surface *img, Ulong_tab* new)
 {
-  printf ("integral\n");
   for(int h = 0; h < img->h; h++)
   {
     for(int w = 0; w < img->w; w++)
