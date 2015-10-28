@@ -1,25 +1,34 @@
 #include "haar.h"
 
 unsigned long sum_rectangle(Ulong_tab* img, int h1, int w1, int h2, int w2){
-  unsigned long val_A, val_B, val_C, val_D;
+  unsigned long val_A = 0, val_B = 0, val_C = 0, val_D = 0;
   // A B
   // D C
 
-  val_A = get_val(img, h1 - 1, w1 - 1);
-  // previous code :
-  //SDL_GetRGB(getpixel(img,w1 - 1, h1-1), img->format, &val_A, &val_A, &val_A);
+  if (h1 - 1 > 0 && w1 - 1 > 0)
+  {
+    val_A = get_val(img, h1 - 1, w1 - 1);
+    // previous code :
+    //SDL_GetRGB(getpixel(img,w1-1, h1-1), img->format, &val_A, &val_A, &val_A);
+  }
 
-  val_B = get_val(img, h1 - 1, w2);
-  // previous code :
-  //SDL_GetRGB(getpixel(img,w2, h1 -1), img->format, &val_B, &val_B, &val_B);
+  if (h1 - 1 > 0)
+  {
+    val_B = get_val(img, h1 - 1, w2);
+    // previous code :
+    //SDL_GetRGB(getpixel(img,w2, h1 -1), img->format, &val_B, &val_B, &val_B);
+  }
 
   val_C = get_val(img, h2, w2);
   // previous code :
   //SDL_GetRGB(getpixel(img,w2, h2), img->format, &val_C, &val_C, &val_C);
 
-  val_D = get_val(img, h2, w1 - 1);
-  // previous code :
-  //SDL_GetRGB(getpixel(img,w1-1, h2), img->format, &val_D, &val_D, &val_D);
+  if (w1 - 1 > 0)
+  {
+    val_D = get_val(img, h2, w1 - 1);
+    // previous code :
+    //SDL_GetRGB(getpixel(img,w1-1, h2), img->format, &val_D, &val_D, &val_D);
+  }
 
   return val_A - val_B + val_C - val_D;
 }
