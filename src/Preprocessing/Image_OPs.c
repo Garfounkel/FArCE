@@ -78,7 +78,7 @@ Uint8 standard_var(Uint8 mean, SDL_Surface* img)
   return((Uint8) sqrt(sum/(img->h*img->w)));
 }
 
-void normalize(SDL_Surface* img)
+void standardize(SDL_Surface* img)
 {
   Uint8 m = mean(img);
   //printf ("mean = %d\n", m);
@@ -108,4 +108,70 @@ void normalize(SDL_Surface* img)
     }
   }
 
+}
+
+Uint8 max(SDL_Surface* img)
+{
+  Uint8 max;
+
+  for (int h = 0; h < img->h; ++h)
+  {
+    for (int w = 0; w < img->w; ++w)
+    {
+      Uint8 val;
+
+      SDL_GetRGB(getpixel(img, w, h), img->format, &val, &val, &val);
+
+      if(val > max)
+      {
+        max = val;
+      }
+
+    }
+  }
+  return max;
+}
+
+Uint8 min(SDL_Surface* img)
+{
+  Uint8 min;
+
+  for (int h = 0; h < img->h; ++h)
+  {
+    for (int w = 0; w < img->w; ++w)
+    {
+      Uint8 val;
+
+      SDL_GetRGB(getpixel(img, w, h), img->format, &val, &val, &val);
+
+      if(val < min)
+      {
+        min = val;
+      }
+
+    }
+  }
+  return min;
+}
+
+void normalize(SDL_Surface* img)
+{
+  Uint8 mi = min(img);
+  Uint8 ma = max(img);
+
+  printf ("max = %d\nmin = %d\n",ma,mi);
+
+  for (int h = 0; h < img->h; ++h)
+  {
+    for (int w = 0; w < img->w; ++w)
+    {
+      Uint8 val;
+
+      SDL_GetRGB(getpixel(img, w, h), img->format, &val, &val, &val);
+
+      val = (val - mi)*255/(ma - mi);
+
+      putpixel(img, w, h, SDL_MapRGB(img->format, val, val, val));
+    }
+  }
 }
