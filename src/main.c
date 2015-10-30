@@ -95,6 +95,10 @@ int main(int i, char** path)
 
   display_image(surface);
 
+  normalize(surface);
+
+  display_image(surface);
+
   invert_grey(surface);
 
   display_image(surface);

@@ -6,8 +6,10 @@
 # include <SDL/SDL_image.h>
 # include "../ViolaJones/pixel_operations.h"
 
-SDL_Surface* to_grey(SDL_Surface *img);
-SDL_Surface* invert_grey(SDL_Surface *img);
-Uint8 mean(SDL_Surface *img);
+SDL_Surface* to_grey(SDL_Surface* img);
+SDL_Surface* invert_grey(SDL_Surface* img);
+Uint8 mean(SDL_Surface* img);
+Uint8 standard_var(Uint8 mean, SDL_Surface* img);
+void normalize(SDL_Surface* img);
 
 # endif
