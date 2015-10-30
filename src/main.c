@@ -109,6 +109,9 @@ int main(int i, char** path)
 
   display_image(surface);
 
+  compute_haar_features(tab, 1600000);
+//  print_Haar(compute_feature_a(tab));
+
   SDL_FreeSurface(surface);
 
   return 0;

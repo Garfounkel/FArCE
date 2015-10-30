@@ -14,5 +14,6 @@ struct Haar
 };
 
 Haar create_Haar(int type, int i, int j, int w, int h, unsigned long sum);
+void print_Haar(Haar h);
 
 # endif

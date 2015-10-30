@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "haar.h"
 
 unsigned long sum_rectangle(Ulong_tab* img, int h1, int w1, int h2, int w2){
@@ -33,6 +34,14 @@ unsigned long sum_rectangle(Ulong_tab* img, int h1, int w1, int h2, int w2){
   return val_A - val_B + val_C - val_D;
 }
 
+Haar compute_feature_a(Ulong_tab *img){
+  // Assuming the img is 24x24 pixels
+  int sum1 = sum_rectangle(img, 0, 12, 0, 12);
+  int sum2 = sum_rectangle(img, 12, 24, 12, 24);
+  Haar my_haar = create_Haar(1, 0, 12, 0, 12, sum1 - sum2);
+  return my_haar;
+}
+
 Haar* compute_haar_features(Ulong_tab *img, long nbFeature){
   Haar *my_vect = malloc((sizeof(int) * 4 + sizeof(unsigned long)) * nbFeature);
   Haar *res = my_vect;
@@ -49,6 +58,7 @@ Haar* compute_haar_features(Ulong_tab *img, long nbFeature){
           Haar my_haar = create_Haar(1, i, j, w, h, sum1 - sum2);
           *my_vect = my_haar;
           my_vect++;
+          print_Haar(my_haar);
         }
       }
     }
@@ -68,6 +78,7 @@ Haar* compute_haar_features(Ulong_tab *img, long nbFeature){
           Haar my_haar = create_Haar(2, i, j, w, h, sum1 - sum2 + sum3);
           *my_vect = my_haar;
           my_vect++;
+          print_Haar(my_haar);
         }
       }
     }
@@ -85,6 +96,7 @@ Haar* compute_haar_features(Ulong_tab *img, long nbFeature){
           Haar my_haar = create_Haar(3, i, j, w, h, sum1 - sum2);
           *my_vect = my_haar;
           my_vect++;
+          print_Haar(my_haar);
         }
       }
     }
@@ -103,6 +115,7 @@ Haar* compute_haar_features(Ulong_tab *img, long nbFeature){
           Haar my_haar = create_Haar(4, i, j, w, h, sum1 - sum2 + sum3);
           *my_vect = my_haar;
           my_vect++;
+          print_Haar(my_haar);
         }
       }
     }
@@ -122,6 +135,7 @@ Haar* compute_haar_features(Ulong_tab *img, long nbFeature){
           Haar my_haar = create_Haar(5, i, j, w, h, sum1 - sum2 - sum3 + sum4);
           *my_vect = my_haar;
           my_vect++;
+          print_Haar(my_haar);
         }
       }
     }

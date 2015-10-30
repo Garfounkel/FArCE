@@ -1,4 +1,4 @@
-
+# include <stdio.h>
 # include "Haar_type.h"
 
 Haar create_Haar(int type, int i, int j, int w, int h, unsigned long sum)
@@ -13,4 +13,9 @@ Haar create_Haar(int type, int i, int j, int w, int h, unsigned long sum)
   haar.sum_normalized = 42;
   // 42 Signifie que la valeur n'a pas encore été calculée.
   return haar;
+}
+
+void print_Haar(Haar h){
+  printf("| type = %d | i = %2d | j = %2d | w = %2d | h = %2d | sum = %lu | sum_normalized = %lu\n",
+         h.type, h.i, h.j, h.w, h.h, h.sum, h.sum_normalized);
 }
