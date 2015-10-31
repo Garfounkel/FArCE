@@ -78,39 +78,23 @@ SDL_Surface* display_image(SDL_Surface *img) {
 
 void print(Ulong_tab* img)
 {
-
-
   for (int h = 0; h < img->h; h++)
   {
-
-
     for (int w = 0; w < img->w; w++)
     {
-
-
       Uint8 m;
-
 
       m = get_val(img, h,w);
 
-
       printf ("%d|",m);
 
-
     }
-
     printf ("\n");
-
   }
-
-
-
-
 }
 
 void Ulong_tab_to_SDL(Ulong_tab* tab, SDL_Surface* img)
 {
-
   unsigned long ma;
 
   for (int h = 0; h < img->h; ++h)
@@ -123,7 +107,7 @@ void Ulong_tab_to_SDL(Ulong_tab* tab, SDL_Surface* img)
         ma = val;
     }
   }
-printf ("max = %lu\n",ma);
+
   for (int h = 0; h < img->h; ++h)
   {
     for (int w = 0; w < img->w; ++w)
@@ -131,9 +115,7 @@ printf ("max = %lu\n",ma);
       unsigned long val = get_val(tab,h,w);
 
       val = 255*val/ma;
-      printf("%lu\n",val);
-
-
+      printf("%lu",val);
 
       putpixel(img,w,h,SDL_MapRGB(img->format, val, val, val));
     }
