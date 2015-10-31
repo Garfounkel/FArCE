@@ -161,7 +161,29 @@ Haar_vect compute_haar_features(Ulong_tab *img){
     }
   }
 
+  //printf ("type d :\n");
+  //type d avec les paramètres (4,i,j,w,h)
+  for (int i = 0; i < 24; i++) {
+    for (int j = 0; j < 24; j++) {
+      for (int h = 1; i +3* h - 1 < 24; h++) {
+        for (int w = 1; j - 1 + w < 24; w++) {
 
+          int sum1 = sum_rect(img,  i,        j,  i + h - 1,    j + w - 1);
+          int sum2 = sum_rect(img,  i + h,    j,  i + 2*h - 1,  j + w - 1);
+          int sum3 = sum_rect(img,  i + 2*h,  j,  i + 3*h - 1,  j + w - 1);
+
+          Haar my_haar = create_Haar(4, i, j, w, h, sum1 - sum2 + sum3);
+          haar_vect = create_Haar_vect(my_haar);
+          haar_vect = *haar_vect.next;
+          if (sum1 - sum2 + sum3 != 0) {
+            //print_Haar(my_haar);
+            //printf ("sum1 = %d, sum2 = %d,sum3 = %d\n",sum1, sum2,sum3);
+          }
+        }
+
+      }
+    }
+  }
 
   //printf ("type e :\n");
   //type e avec les paramètres (5,i,j,w,h)
@@ -182,31 +204,6 @@ Haar_vect compute_haar_features(Ulong_tab *img){
             //print_Haar(my_haar);
             //printf ("sum1 = %d, sum2 = %d,sum3 = %d, sum4 = %d\n",
             //        sum1, sum2,sum3,sum4);
-          }
-        }
-
-      }
-    }
-  }
-
-
-  //printf ("type d :\n");
-  //type d avec les paramètres (4,i,j,w,h)
-  for (int i = 0; i < 24; i++) {
-    for (int j = 0; j < 24; j++) {
-      for (int h = 1; i +3* h - 1 < 24; h++) {
-        for (int w = 1; j - 1 + w < 24; w++) {
-
-          int sum1 = sum_rect(img,  i,        j,  i + h - 1,    j + w - 1);
-          int sum2 = sum_rect(img,  i + h,    j,  i + 2*h - 1,  j + w - 1);
-          int sum3 = sum_rect(img,  i + 2*h,  j,  i + 3*h - 1,  j + w - 1);
-
-          Haar my_haar = create_Haar(4, i, j, w, h, sum1 - sum2 + sum3);
-          haar_vect = create_Haar_vect(my_haar);
-          haar_vect = *haar_vect.next;
-          if (sum1 - sum2 + sum3 != 0) {
-            //print_Haar(my_haar);
-            //printf ("sum1 = %d, sum2 = %d,sum3 = %d\n",sum1, sum2,sum3);
           }
         }
 
