@@ -1,6 +1,5 @@
 
 # include "Image_OPs.h"
-# include <math.h>
 
 SDL_Surface* to_grey(SDL_Surface* img)
 {
