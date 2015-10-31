@@ -7,7 +7,6 @@
 # include "Haar_type.h"
 
 unsigned long sum_rectangle(Ulong_tab* img, int h1, int w1, int h2, int w2);
-Haar compute_feature_a(Ulong_tab *img);
-Haar* compute_haar_features(Ulong_tab *img, long nbFeature);
+Haar_vect compute_haar_features(Ulong_tab *img);
 
 # endif
