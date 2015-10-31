@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdio.h>
 #include "haar.h"
 #include <assert.h>
@@ -133,6 +134,7 @@ Haar_vect compute_haar_features(Ulong_tab *img){
           Haar my_haar = create_Haar(2, i, j, w, h, sum1 - sum2 + sum3);
           haar_vect = create_Haar_vect(my_haar);
           haar_vect = *haar_vect.next;
+          print_Haar(my_haar);
           if (sum1 - sum2 + sum3 != 0) {
 //          print_Haar(my_haar);
           printf ("sum1 = %d, sum2 = %d, sum3 = %d\n",sum1, sum2,sum3);
@@ -158,6 +160,7 @@ Haar_vect compute_haar_features(Ulong_tab *img){
           Haar my_haar = create_Haar(3, i, j, w, h, sum1 - sum2);
           haar_vect = create_Haar_vect(my_haar);
           haar_vect = *haar_vect.next;
+          print_Haar(my_haar);
            if (sum1 - sum2 != 0) {
 //         print_Haar(my_haar);
 
@@ -189,6 +192,7 @@ Haar_vect compute_haar_features(Ulong_tab *img){
           Haar my_haar = create_Haar(5, i, j, w, h, sum1 - sum2 - sum3 + sum4);
           haar_vect = create_Haar_vect(my_haar);
           haar_vect = *haar_vect.next;
+          print_Haar(my_haar);
          if (sum1 - sum2 - sum3 + sum4 != 0) {
 //           print_Haar(my_haar);
            printf ("sum1 = %d, sum2 = %d,sum3 = %d, sum4 = %d\n",sum1, sum2,sum3,sum4);
@@ -218,6 +222,7 @@ Haar_vect compute_haar_features(Ulong_tab *img){
           Haar my_haar = create_Haar(4, i, j, w, h, sum1 - sum2 + sum3);
           haar_vect = create_Haar_vect(my_haar);
           haar_vect = *haar_vect.next;
+          print_Haar(my_haar);
            if (sum1 - sum2 + sum3 != 0) {
 //         print_Haar(my_haar);
          printf ("sum1 = %d, sum2 = %d,sum3 = %d\n",sum1, sum2,sum3);
@@ -229,4 +234,15 @@ Haar_vect compute_haar_features(Ulong_tab *img){
   }
 
   return res;
+}
+
+long my_Round(float f){
+  return (long)roundf(f*10.0f)/10.0f;
+}
+
+// Not useful for the moment.
+void compute_Feature_Scaling(Haar h){
+  if(h.type == 1){
+
+  }
 }
