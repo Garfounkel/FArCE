@@ -1,10 +1,43 @@
 #include <stdio.h>
 #include "haar.h"
+#include <assert.h>
 
 unsigned long sum_rectangle(Ulong_tab* img, int h1, int w1, int h2, int w2){
   unsigned long val_A = 0, val_B = 0, val_C = 0, val_D = 0;
   // A B
   // D C
+
+  if (h1 > img->h) {
+
+    printf ("h1 = %d,",h1);
+    assert(0);
+
+  }
+
+
+  if (h2 > img->h) {
+
+    printf ("h2 = %d,",h2);
+assert(0);
+
+  }
+
+
+  if (w1 > img->w) {
+
+    printf ("w1 = %d,",w1);
+assert(0);
+
+  }
+
+
+  if (w2 > img->w) {
+
+    printf ("w2 = %d\n",w2);
+assert(0);
+
+  }
+
 
   if (h1 - 1 > 0 && w1 - 1 > 0)
   {
@@ -63,7 +96,7 @@ Haar_vect compute_haar_features(Ulong_tab *img){
   for (int i = 1; i <= 24; i++) {
     for (int j = 1; j <= 24; j++) {
       for (int h = 1; i + h - 1 <= 24; h++) {
-        for (int w = 1; j - 1 + 2 * w <= 24; w++) {
+        for (int w = 1; j - 1 + 3 * w <= 24; w++) {
 
           int sum1 = sum_rectangle(img, i, i + h - 1, j,     j + w - 1);
           int sum2 = sum_rectangle(img, i, i + h - 1, j + w, j + 2 * w - 1);
