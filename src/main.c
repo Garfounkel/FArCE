@@ -75,6 +75,38 @@ SDL_Surface* display_image(SDL_Surface *img) {
   return screen;
 }
 
+void print(Ulong_tab* img)
+{
+
+
+  for (int h = 0; h < img->h; h++)
+  {
+
+
+    for (int w = 0; w < img->w; w++)
+    {
+
+
+      Uint8 m;
+
+
+      m = get_val(img, h,w);
+
+
+      printf ("%d|",m);
+
+
+    }
+
+    printf ("\n");
+
+  }
+
+
+
+
+}
+
 
 int main(int i, char** path)
 {
@@ -106,9 +138,12 @@ int main(int i, char** path)
   Ulong_tab* tab = create_Ulong_tab(surface->h, surface->w);
 
   integral_image(surface, tab);
+printf ("print :\n");
+  print(tab);
 
-  display_image(surface);
+//  display_image(surface);
 
+  printf ("haar :\n");
   compute_haar_features(tab);
 //  print_Haar(compute_feature_a(tab));
 
