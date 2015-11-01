@@ -20,7 +20,7 @@
 
 //# include <warnx.h>
 
-//load library
+// Load SDL library
 void init_sdl(void) {
   // Init only the video part
   if( SDL_Init(SDL_INIT_VIDEO)==-1 ) {
@@ -30,7 +30,7 @@ void init_sdl(void) {
   // We don't really need a function for that ...
 }
 
-//load image
+// Load an image
 SDL_Surface* load_image(char *path) {
   SDL_Surface          *img;
   // Load an image using SDL_image with format detection
@@ -41,7 +41,7 @@ SDL_Surface* load_image(char *path) {
   return img;
 }
 
-//affiche Ulong_tab
+// Print an Ulong_tab
 void print(Ulong_tab* img)
 {
   for (int h = 0; h < img->h; h++)
@@ -59,7 +59,7 @@ void print(Ulong_tab* img)
   }
 }
 
-// convert a Ulongtab to SDL_Surface//
+// Convert an Ulongtab to SDL_Surface
 void Ulong_tab_to_SDL(Ulong_tab* tab, SDL_Surface* img)
 {
   unsigned long ma;
@@ -92,16 +92,19 @@ void Ulong_tab_to_SDL(Ulong_tab* tab, SDL_Surface* img)
 
 int main(int i, char** path)
 {
-
+// Parsing
   if(i > 2 || i == 1)
   {
     printf("please specify an image to display\n");
     return -1;
   }
 
+// Code to get a list of files and folders in /database/ and to print it
+/*
   size_t *lenght = malloc(sizeof(int));
   char **list = get_Files_List("../database", lenght);
   print_images_list(list, *lenght);
+*/
 
   init_sdl();
 
@@ -109,23 +112,26 @@ int main(int i, char** path)
 
   display_image(surface);
 
+// Function to convert to grey, mean, invert color and normalize our image
   preprocessing(surface);
 
+// Create an Ulong_tab from an image
   Ulong_tab* tab = create_Ulong_tab(surface->h, surface->w);
 
+// Compute the integral image
   integral_image(surface, tab);
 
+// For debugging:
 //  print(tab);
 
   Ulong_tab_to_SDL(tab, surface);
 
   display_image(surface);
 
+// Compute all haar features of the image
   compute_haar_features(tab);
 
   SDL_FreeSurface(surface);
-
-  printf("\n");
 
   return 0;
 }

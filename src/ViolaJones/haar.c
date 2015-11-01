@@ -1,6 +1,5 @@
 #include "haar.h"
 
-
 long sum_rect(Ulong_tab* img, int h1, int w1, int h2, int w2){
   unsigned long val_A = 0, val_B = 0, val_C = 0, val_D = 0;
   // A B
