@@ -4,6 +4,7 @@
 //avec GCC (après -lSDLmain -lSDL) sont :
 //-lSDL_image # # include <stdio.h>
 
+# include <dirent.h>
 # include <stdlib.h>
 # include <SDL/SDL.h>
 # include <SDL/SDL_image.h>
@@ -124,6 +125,60 @@ void Ulong_tab_to_SDL(Ulong_tab* tab, SDL_Surface* img)
 
 }
 
+size_t dirLenght(char* path)
+{
+  DIR *dir;
+  struct dirent *ent;
+  size_t nbr = 0;
+  if ((dir = opendir(path)) != NULL) {
+    while ((ent = readdir(dir)) != NULL) {
+      if (strcmp(ent->d_name, ".") != 0 && strcmp(ent->d_name, "..") != 0)
+        nbr++;
+    }
+    closedir(dir);
+  }
+
+  return nbr;
+}
+
+
+char** get_Files_List(char* path, size_t *nb){
+  DIR *dir;
+  struct dirent *ent;
+  if ((dir = opendir(path)) != NULL) {
+    size_t lenght = dirLenght(path);
+    char **list = malloc(sizeof(char*) * (lenght + 1));
+    size_t i = 0;
+    while((ent = readdir(dir)) != NULL){
+      char *fileName = ent->d_name;
+      if (strcmp(fileName, ".") != 0 && strcmp(fileName, "..") != 0){
+        size_t slenght = strlen(fileName);
+        list[i] = malloc(slenght + 1);
+        strncpy(list[i], fileName, slenght);
+        i++;
+       }
+    }
+    closedir(dir);
+    *nb = i;
+    return list;
+  }
+  else {
+    *nb = 0;
+    printf("Couldn't open directory :(\n");
+    return NULL;
+  }
+}
+
+void print_strings(char **list, size_t lenght){
+  if (list == NULL) {
+    printf("list is empty :(\n");
+    return;
+  }
+  printf("List of files:\n");
+  for (size_t i = 0; i < lenght; i++) {
+    printf("%s\n", list[i]);
+  }
+}
 
 int main(int i, char** path)
 {
@@ -133,6 +188,10 @@ int main(int i, char** path)
     printf("please specify an image to display\n");
     return -1;
   }
+
+  size_t *lenght = malloc(sizeof(int));
+  char **list = get_Files_List("HaarTests", lenght);
+  print_strings(list, *lenght);
 
   init_sdl();
 
@@ -165,6 +224,8 @@ int main(int i, char** path)
   compute_haar_features(tab);
 
   SDL_FreeSurface(surface);
+
+  printf("\n");
 
   return 0;
 }
