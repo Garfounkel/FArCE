@@ -1,6 +1,16 @@
 #include <dirent.h>
 #include "adaboost.h"
 
+Triplet create_Triplet(SDL_Surface img, int weight){
+  Triplet triplet;
+  triplet.img = img;
+  triplet.weight = weight;
+  triplet.is_a_face = 42;
+
+  return triplet;
+}
+
+
 //void adaboost(char* directory)
 //{
   //char** images = list_images(directory);

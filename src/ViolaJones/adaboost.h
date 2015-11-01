@@ -10,6 +10,15 @@
 # include "Haar_type.h"
 # include "haar.h"
 
+typedef struct Triplet Triplet;
+struct Triplet{
+    SDL_Surface img;
+    int weight;
+    int is_a_face; // 1 = is a face, 0 = isn't a face, 42 = not initialized
+};
+
+Triplet create_Triplet(SDL_Surface img, int weight);
+
 void adaboost(char* directory);
 size_t dirLenght(char* path);
 char** get_Files_List(char* path, size_t *nb);
