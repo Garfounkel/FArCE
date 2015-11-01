@@ -10,9 +10,18 @@ Haar create_Haar(int type, int i, int j, int w, int h, unsigned long sum){
   haar.w = w;
   haar.h = h;
   haar.sum = sum;
-  haar.sum_normalized = 42;
-  // 42 means that the value has not been calculated yet.
+  haar.sum_normalized = -1;
   return haar;
+}
+
+void fill_Haar(Haar* haar, int type, int i, int j, int w, int h, unsigned long sum){
+  haar->type = type;
+  haar->i = i;
+  haar->j = j;
+  haar->w = w;
+  haar->h = h;
+  haar->sum = sum;
+  haar->sum_normalized = -1;
 }
 
 // Print a haar feature for debug purpose

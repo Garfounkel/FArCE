@@ -1,5 +1,7 @@
 #include "haar.h"
 
+// Compute the sum of pixels using integral image
+// in a rectangle defined by h1, w1, h2 and w2 inside img
 long sum_rect(Ulong_tab* img, int h1, int w1, int h2, int w2){
   unsigned long val_A = 0, val_B = 0, val_C = 0, val_D = 0;
   // A B
@@ -75,14 +77,13 @@ long sum_rect(Ulong_tab* img, int h1, int w1, int h2, int w2){
   return val_A - val_B + val_C - val_D;
 }
 
-Haar_vect* compute_haar_features(Ulong_tab *img){
-  //Haar *my_vect = malloc((sizeof(int) * 4 + sizeof(unsigned long)) * nbFeature);
-  //Haar *res = my_vect;
-  //printf ("malloc\n");
-  Haar_vect* haar_vect = malloc(sizeof(Haar_vect));
-  Haar_vect* res = haar_vect;
 
-  //printf ("type a :\n");
+// Compute all haar features inside a 24*24 image
+Haar* compute_haar_features(Ulong_tab *img, size_t* size){
+  Haar* haar_vect = malloc(sizeof(Haar) * 160000);
+  Haar* res = haar_vect;
+
+  printf ("type a :\n");
   //type a avec les paramètres (1,i,j,w,h)
   for (int i = 0; i < 24; i++) {
     for (int j = 0; j < 24; j++) {
@@ -91,11 +92,10 @@ Haar_vect* compute_haar_features(Ulong_tab *img){
 
           int sum1 = sum_rect(img,  i,  j,      i + h - 1,  j + w - 1    );
           int sum2 = sum_rect(img,  i,  j + w,  i + h - 1,  j + 2 * w - 1);
-          Haar my_haar = create_Haar(1, i, j, w, h, sum1 - sum2);
 
-          haar_vect->haar = my_haar;
-          haar_vect->next = malloc(sizeof(Haar_vect));
-          haar_vect = haar_vect->next;
+          fill_Haar(haar_vect, 1, i, j, w, h, sum1 - sum2);
+          haar_vect++;
+          //printf ("index = %d\n",haar_vect - res);
           //haar_vect = create_Haar_vect(my_haar);
           //haar_vect = *haar_vect.next;
           if (sum1 - sum2 != 0) {
@@ -110,7 +110,7 @@ Haar_vect* compute_haar_features(Ulong_tab *img){
 
 
 
-  //printf ("type b :\n");
+  printf ("type b :\n");
   //type b avec les paramètres (2,i,j,w,h)
   for (int i = 0; i < 24; i++) {
     for (int j = 0; j < 24; j++) {
@@ -121,10 +121,9 @@ Haar_vect* compute_haar_features(Ulong_tab *img){
           int sum2 = sum_rect(img, i, j + w,    i + h - 1,  j + 2*w - 1);
           int sum3 = sum_rect(img, i, j + 2*w,  i + h - 1,  j + 3*w - 1);
 
-          Haar my_haar = create_Haar(2, i, j, w, h, sum1 - sum2 + sum3);
-          haar_vect->haar = my_haar;
-          haar_vect->next = malloc(sizeof(Haar_vect));
-          haar_vect = haar_vect->next;
+          fill_Haar(haar_vect, 2, i, j, w, h, sum1 - sum2 + sum3);
+          haar_vect++;
+          //printf ("index = %d\n",haar_vect - res);
           //haar_vect = create_Haar_vect(my_haar);
           //haar_vect = *haar_vect.next;
           if (sum1 - sum2 + sum3 != 0) {
@@ -137,7 +136,7 @@ Haar_vect* compute_haar_features(Ulong_tab *img){
     }
   }
 
-  //printf ("type c :\n");
+  printf ("type c :\n");
   //type c avec les paramètres (3,i,j,w,h)
   for (int i = 0; i < 24; i++) {
     for (int j = 0; j < 24; j++) {
@@ -147,10 +146,9 @@ Haar_vect* compute_haar_features(Ulong_tab *img){
           int sum1 = sum_rect(img,  i,      j,  i + h - 1,    j + w - 1);
           int sum2 = sum_rect(img,  i + h,  j,  i + 2*h - 1,  j + w - 1);
 
-          Haar my_haar = create_Haar(3, i, j, w, h, sum1 - sum2);
-          haar_vect->haar = my_haar;
-          haar_vect->next = malloc(sizeof(Haar_vect));
-          haar_vect = haar_vect->next;
+          fill_Haar(haar_vect, 3, i, j, w, h, sum1 - sum2);
+          haar_vect++;
+          //printf ("index = %d\n",haar_vect - res);
           //haar_vect = create_Haar_vect(my_haar);
           //haar_vect = *haar_vect.next;
           if (sum1 - sum2 != 0) {
@@ -163,7 +161,7 @@ Haar_vect* compute_haar_features(Ulong_tab *img){
     }
   }
 
-  //printf ("type d :\n");
+  printf ("type d :\n");
   //type d avec les paramètres (4,i,j,w,h)
   for (int i = 0; i < 24; i++) {
     for (int j = 0; j < 24; j++) {
@@ -174,10 +172,9 @@ Haar_vect* compute_haar_features(Ulong_tab *img){
           int sum2 = sum_rect(img,  i + h,    j,  i + 2*h - 1,  j + w - 1);
           int sum3 = sum_rect(img,  i + 2*h,  j,  i + 3*h - 1,  j + w - 1);
 
-          Haar my_haar = create_Haar(4, i, j, w, h, sum1 - sum2 + sum3);
-          haar_vect->haar = my_haar;
-          haar_vect->next = malloc(sizeof(Haar_vect));
-          haar_vect = haar_vect->next;
+          fill_Haar(haar_vect, 4, i, j, w, h, sum1 - sum2 + sum3);
+          haar_vect++;
+          //printf ("index = %d\n",haar_vect - res);
           //haar_vect = create_Haar_vect(my_haar);
           //haar_vect = *haar_vect.next;
           if (sum1 - sum2 + sum3 != 0) {
@@ -190,7 +187,7 @@ Haar_vect* compute_haar_features(Ulong_tab *img){
     }
   }
 
-  //printf ("type e :\n");
+  printf ("type e :\n");
   //type e avec les paramètres (5,i,j,w,h)
   for (int i = 0; i < 24; i++) {
     for (int j = 0; j < 24; j++) {
@@ -202,10 +199,9 @@ Haar_vect* compute_haar_features(Ulong_tab *img){
           int sum3 = sum_rect(img, i,     j + w, i + h - 1,   j + 2*w - 1);
           int sum4 = sum_rect(img, i + h, j + w, i + 2*h - 1, j + 2*w - 1);
 
-          Haar my_haar = create_Haar(5, i, j, w, h, sum1-sum2-sum3+sum4);
-          haar_vect->haar = my_haar;
-          haar_vect->next = malloc(sizeof(Haar_vect));
-          haar_vect = haar_vect->next;
+          fill_Haar(haar_vect, 5, i, j, w, h, sum1-sum2-sum3+sum4);
+          haar_vect++;
+          //printf ("index = %d\n",haar_vect - res);
           //haar_vect = create_Haar_vect(my_haar);
           //haar_vect = *haar_vect.next;
           if (sum1 - sum2 - sum3 + sum4 != 0) {
@@ -219,9 +215,12 @@ Haar_vect* compute_haar_features(Ulong_tab *img){
     }
   }
 
+  *size = haar_vect - res;
   return res;
 }
 
+
+// Compute a single haar feature sum
 void compute_haar_sum(Ulong_tab *img, Haar* haar){
   int i = haar->i;
   int j = haar->j;
@@ -255,7 +254,7 @@ void compute_haar_sum(Ulong_tab *img, Haar* haar){
     haar->sum = sum1 - sum2 + sum3;
   }
   // Type e:
-  else if (haar->type == 4){
+  else if (haar->type == 5){
     int sum1 = sum_rect(img, i,     j,     i + h - 1,   j + w - 1);
     int sum2 = sum_rect(img, i + h, j,     i + 2*h - 1, j + w - 1);
     int sum3 = sum_rect(img, i,     j + w, i + h - 1,   j + 2*w - 1);

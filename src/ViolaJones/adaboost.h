@@ -7,6 +7,7 @@
 # include <SDL/SDL_image.h>
 # include <err.h>
 # include <dirent.h>
+# include <math.h>
 # include "pixel_operations.h"
 # include "Haar_type.h"
 # include "haar.h"

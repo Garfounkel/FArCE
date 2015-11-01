@@ -9,7 +9,7 @@
 # include <stdio.h>
 
 long sum_rect(Ulong_tab* img, int h1, int w1, int h2, int w2);
-Haar_vect* compute_haar_features(Ulong_tab *img);
+Haar* compute_haar_features(Ulong_tab *img, size_t* size);
 void compute_haar_sum(Ulong_tab *img, Haar* h);
 
 # endif
