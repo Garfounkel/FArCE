@@ -1,4 +1,4 @@
-#include <dirent.h>
+
 #include "adaboost.h"
 
 Triplet create_Triplet(SDL_Surface img, int weight){
