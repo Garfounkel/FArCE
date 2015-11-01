@@ -1,5 +1,7 @@
 #include "haar.h"
 
+// Compute the sum of pixels using integral image
+// in a rectangle defined by h1, w1, h2 and w2 inside img
 long sum_rect(Ulong_tab* img, int h1, int w1, int h2, int w2){
   unsigned long val_A = 0, val_B = 0, val_C = 0, val_D = 0;
   // A B
@@ -75,10 +77,8 @@ long sum_rect(Ulong_tab* img, int h1, int w1, int h2, int w2){
   return val_A - val_B + val_C - val_D;
 }
 
+// Compute all haar features inside a 24*24 image
 Haar_vect* compute_haar_features(Ulong_tab *img){
-  //Haar *my_vect = malloc((sizeof(int) * 4 + sizeof(unsigned long)) * nbFeature);
-  //Haar *res = my_vect;
-  //printf ("malloc\n");
   Haar_vect* haar_vect = malloc(sizeof(Haar_vect));
   Haar_vect* res = haar_vect;
 
@@ -96,13 +96,6 @@ Haar_vect* compute_haar_features(Ulong_tab *img){
           haar_vect->haar = my_haar;
           haar_vect->next = malloc(sizeof(Haar_vect));
           haar_vect = haar_vect->next;
-          //haar_vect = create_Haar_vect(my_haar);
-          //haar_vect = *haar_vect.next;
-          if (sum1 - sum2 != 0) {
-            //print_Haar(my_haar);
-            //printf ("sum1 = %d, sum2 = %d\n",sum1, sum2);
-          }
-
         }
       }
     }
@@ -151,13 +144,6 @@ Haar_vect* compute_haar_features(Ulong_tab *img){
           haar_vect->haar = my_haar;
           haar_vect->next = malloc(sizeof(Haar_vect));
           haar_vect = haar_vect->next;
-          //haar_vect = create_Haar_vect(my_haar);
-          //haar_vect = *haar_vect.next;
-          if (sum1 - sum2 != 0) {
-            //print_Haar(my_haar);
-            //printf ("sum1 = %d, sum2 = %d\n",sum1, sum2);   }
-          }
-
         }
       }
     }
@@ -178,14 +164,6 @@ Haar_vect* compute_haar_features(Ulong_tab *img){
           haar_vect->haar = my_haar;
           haar_vect->next = malloc(sizeof(Haar_vect));
           haar_vect = haar_vect->next;
-          //haar_vect = create_Haar_vect(my_haar);
-          //haar_vect = *haar_vect.next;
-          if (sum1 - sum2 + sum3 != 0) {
-            //print_Haar(my_haar);
-            //printf ("sum1 = %d, sum2 = %d,sum3 = %d\n",sum1, sum2,sum3);
-          }
-        }
-
       }
     }
   }
@@ -206,15 +184,6 @@ Haar_vect* compute_haar_features(Ulong_tab *img){
           haar_vect->haar = my_haar;
           haar_vect->next = malloc(sizeof(Haar_vect));
           haar_vect = haar_vect->next;
-          //haar_vect = create_Haar_vect(my_haar);
-          //haar_vect = *haar_vect.next;
-          if (sum1 - sum2 - sum3 + sum4 != 0) {
-            //print_Haar(my_haar);
-            //printf ("sum1 = %d, sum2 = %d,sum3 = %d, sum4 = %d\n",
-            //        sum1, sum2,sum3,sum4);
-          }
-        }
-
       }
     }
   }
@@ -222,6 +191,7 @@ Haar_vect* compute_haar_features(Ulong_tab *img){
   return res;
 }
 
+// Compute a single haar feature sum
 void compute_haar_sum(Ulong_tab *img, Haar haar){
   int i = haar.i;
   int j = haar.j;
