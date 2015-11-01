@@ -174,3 +174,21 @@ void normalize(SDL_Surface* img)
     }
   }
 }
+
+
+void preprocessing(SDL_Surface* img)
+{
+
+  to_grey(img);
+
+  display_image(img);
+
+  normalize(img);
+
+  display_image(img);
+
+  invert_grey(img);
+
+  display_image(img);
+
+}

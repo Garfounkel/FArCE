@@ -80,7 +80,7 @@ long sum_rect(Ulong_tab* img, int h1, int w1, int h2, int w2){
 Haar_vect* compute_haar_features(Ulong_tab *img){
   //Haar *my_vect = malloc((sizeof(int) * 4 + sizeof(unsigned long)) * nbFeature);
   //Haar *res = my_vect;
-  printf ("malloc\n");
+  //printf ("malloc\n");
   Haar_vect* haar_vect = malloc(sizeof(Haar_vect));
   Haar_vect* res = haar_vect;
 
