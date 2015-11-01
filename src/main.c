@@ -115,7 +115,9 @@ void Ulong_tab_to_SDL(Ulong_tab* tab, SDL_Surface* img)
     for (int w = 0; w < img->w; ++w)
     {
       unsigned long val = get_val(tab,h,w);
-
+      if (ma == 0) {
+        ma = 255;
+      }
       val = 255*val/ma;
       printf("%lu",val);
 
@@ -145,6 +147,7 @@ size_t dirLenght(char* path)
 char** get_Files_List(char* path, size_t *nb){
   DIR *dir;
   struct dirent *ent;
+  size_t pathLenght = strlen(path);
   if ((dir = opendir(path)) != NULL) {
     size_t lenght = dirLenght(path);
     char **list = malloc(sizeof(char*) * (lenght + 1));
@@ -153,8 +156,8 @@ char** get_Files_List(char* path, size_t *nb){
       char *fileName = ent->d_name;
       if (strcmp(fileName, ".") != 0 && strcmp(fileName, "..") != 0){
         size_t slenght = strlen(fileName);
-        list[i] = malloc(slenght + 1);
-        strncpy(list[i], fileName, slenght);
+        list[i] = malloc(pathLenght + slenght + 2);
+        snprintf(list[i], (pathLenght + slenght + 2), "%s/%s", path, fileName);
         i++;
        }
     }
@@ -190,7 +193,7 @@ int main(int i, char** path)
   }
 
   size_t *lenght = malloc(sizeof(int));
-  char **list = get_Files_List("HaarTests", lenght);
+  char **list = get_Files_List("../database", lenght);
   print_strings(list, *lenght);
 
   init_sdl();
