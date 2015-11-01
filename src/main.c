@@ -124,63 +124,6 @@ void Ulong_tab_to_SDL(Ulong_tab* tab, SDL_Surface* img)
       putpixel(img,w,h,SDL_MapRGB(img->format, val, val, val));
     }
   }
-
-}
-
-size_t dirLenght(char* path)
-{
-  DIR *dir;
-  struct dirent *ent;
-  size_t nbr = 0;
-  if ((dir = opendir(path)) != NULL) {
-    while ((ent = readdir(dir)) != NULL) {
-      if (strcmp(ent->d_name, ".") != 0 && strcmp(ent->d_name, "..") != 0)
-        nbr++;
-    }
-    closedir(dir);
-  }
-
-  return nbr;
-}
-
-
-char** get_Files_List(char* path, size_t *nb){
-  DIR *dir;
-  struct dirent *ent;
-  size_t pathLenght = strlen(path);
-  if ((dir = opendir(path)) != NULL) {
-    size_t lenght = dirLenght(path);
-    char **list = malloc(sizeof(char*) * (lenght + 1));
-    size_t i = 0;
-    while((ent = readdir(dir)) != NULL){
-      char *fileName = ent->d_name;
-      if (strcmp(fileName, ".") != 0 && strcmp(fileName, "..") != 0){
-        size_t slenght = strlen(fileName);
-        list[i] = malloc(pathLenght + slenght + 2);
-        snprintf(list[i], (pathLenght + slenght + 2), "%s/%s", path, fileName);
-        i++;
-       }
-    }
-    closedir(dir);
-    *nb = i;
-    return list;
-  }
-  else {
-    *nb = 0;
-    printf("Couldn't open directory :(\n");
-    return NULL;
-  }
-}
-
-void print_strings(char **list, size_t lenght){
-  if (list == NULL) {
-    printf("list is empty :(\n");
-    return;
-  }
-  printf("List of files:\n");
-  for (size_t i = 0; i < lenght; i++) {
-    printf("%s\n", list[i]);
-  }
 }
 
 int main(int i, char** path)
@@ -194,7 +137,7 @@ int main(int i, char** path)
 
   size_t *lenght = malloc(sizeof(int));
   char **list = get_Files_List("../database", lenght);
-  print_strings(list, *lenght);
+  print_images_list(list, *lenght);
 
   init_sdl();
 

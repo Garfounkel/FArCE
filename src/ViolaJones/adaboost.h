@@ -11,6 +11,8 @@
 # include "haar.h"
 
 void adaboost(char* directory);
-char** list_images(char* directory);
+size_t dirLenght(char* path);
+char** get_Files_List(char* path, size_t *nb);
+void print_images_list(char **list, size_t lenght);
 
 # endif
