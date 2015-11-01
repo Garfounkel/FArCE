@@ -81,7 +81,7 @@ Model adaboost(Triplet* imgs, size_t len)
 
   size_t size_features;
   Haar* features = compute_haar_features(imgs->img, &size_features);
-  unsigned long threshold = 10;
+  long threshold = 10;
 
   while (1) {
 

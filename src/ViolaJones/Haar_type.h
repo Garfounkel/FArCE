@@ -9,13 +9,13 @@ struct Haar
   int j;
   int w;
   int h;
-  unsigned long sum;
-  unsigned long sum_normalized;
+  long sum;
+  long sum_normalized;
 };
 
-Haar create_Haar(int type, int i, int j, int w, int h, unsigned long sum);
+Haar create_Haar(int type, int i, int j, int w, int h, long sum);
 void print_Haar(Haar h);
-void fill_Haar(Haar* haar, int type, int i, int j, int w, int h, unsigned long sum);
+void fill_Haar(Haar* haar, int type, int i, int j, int w, int h, long sum);
 
 
 typedef struct Haar_vect Haar_vect;

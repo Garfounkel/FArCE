@@ -2,7 +2,7 @@
 # include "Haar_type.h"
 
 // Creates a Struct Haar, and initialize its attributes
-Haar create_Haar(int type, int i, int j, int w, int h, unsigned long sum){
+Haar create_Haar(int type, int i, int j, int w, int h, long sum){
   Haar haar; //= malloc(sizeof(int) * 5 + sizeof(unsigned long));
   haar.type = type;
   haar.i = i;
@@ -14,7 +14,7 @@ Haar create_Haar(int type, int i, int j, int w, int h, unsigned long sum){
   return haar;
 }
 
-void fill_Haar(Haar* haar, int type, int i, int j, int w, int h, unsigned long sum){
+void fill_Haar(Haar* haar, int type, int i, int j, int w, int h, long sum){
   haar->type = type;
   haar->i = i;
   haar->j = j;
@@ -26,7 +26,8 @@ void fill_Haar(Haar* haar, int type, int i, int j, int w, int h, unsigned long s
 
 // Print a haar feature for debug purpose
 void print_Haar(Haar h){
-  printf("| type = %d | i = %2d | j = %2d | w = %2d | h = %2d | sum = %lu | sum_normalized = %lu\n",
+  printf(
+    "| type = %d | i = %2d | j = %2d | w = %2d | h = %2d | sum = %ld | sum_normalized = %ld\n",
          h.type, h.i, h.j, h.w, h.h, h.sum, h.sum_normalized);
 }
 
