@@ -27,7 +27,7 @@ void fill_Haar(Haar* haar, int type, int i, int j, int w, int h, long sum){
 // Print a haar feature for debug purpose
 void print_Haar(Haar h){
   printf(
-    "| type = %d | i = %2d | j = %2d | w = %2d | h = %2d | sum = %ld | sum_normalized = %ld\n",
+    "| type = %d | i = %2d | j = %2d | w = %2d | h = %2d | sum = %4ld | sum_normalized = %ld\n",
          h.type, h.i, h.j, h.w, h.h, h.sum, h.sum_normalized);
 }
 

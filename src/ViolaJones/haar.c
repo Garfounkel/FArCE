@@ -80,7 +80,7 @@ long sum_rect(Ulong_tab* img, int h1, int w1, int h2, int w2){
 
 // Compute all haar features inside a 24*24 image
 Haar* compute_haar_features(Ulong_tab *img, size_t* size){
-  Haar* haar_vect = malloc(sizeof(Haar) * 160000);
+  Haar* haar_vect = malloc(sizeof(Haar) * 200000);
   Haar* res = haar_vect;
 
   printf ("type a :\n");
@@ -201,7 +201,7 @@ Haar* compute_haar_features(Ulong_tab *img, size_t* size){
 
           fill_Haar(haar_vect, 5, i, j, w, h, sum1-sum2-sum3+sum4);
           haar_vect++;
-          //printf ("index = %d\n",haar_vect - res);
+          printf ("index = %d\n",haar_vect - res);
           //haar_vect = create_Haar_vect(my_haar);
           //haar_vect = *haar_vect.next;
           if (sum1 - sum2 - sum3 + sum4 != 0) {
