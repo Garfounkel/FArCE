@@ -1,4 +1,3 @@
-
 #include "haar.h"
 
 
@@ -80,7 +79,7 @@ long sum_rect(Ulong_tab* img, int h1, int w1, int h2, int w2){
 Haar_vect* compute_haar_features(Ulong_tab *img){
   //Haar *my_vect = malloc((sizeof(int) * 4 + sizeof(unsigned long)) * nbFeature);
   //Haar *res = my_vect;
-  printf ("malloc\n");
+  //printf ("malloc\n");
   Haar_vect* haar_vect = malloc(sizeof(Haar_vect));
   Haar_vect* res = haar_vect;
 
@@ -222,4 +221,46 @@ Haar_vect* compute_haar_features(Ulong_tab *img){
   }
 
   return res;
+}
+
+void compute_haar_sum(Ulong_tab *img, Haar haar){
+  int i = haar.i;
+  int j = haar.j;
+  int h = haar.h;
+  int w = haar.w;
+
+  // Type a:
+  if (haar.type == 1) {
+    int sum1 = sum_rect(img,  i,  j,      i + h - 1,  j + w - 1    );
+    int sum2 = sum_rect(img,  i,  j + w,  i + h - 1,  j + 2 * w - 1);
+    haar.sum = sum1 - sum2;
+  }
+  // Type b:
+  else if (haar.type == 2) {
+    int sum1 = sum_rect(img, i, j,        i + h - 1,  j + w - 1  );
+    int sum2 = sum_rect(img, i, j + w,    i + h - 1,  j + 2*w - 1);
+    int sum3 = sum_rect(img, i, j + 2*w,  i + h - 1,  j + 3*w - 1);
+    haar.sum = sum1 - sum2 + sum3;
+  }
+  // Type c:
+  else if (haar.type == 3) {
+    int sum1 = sum_rect(img,  i,      j,  i + h - 1,    j + w - 1);
+    int sum2 = sum_rect(img,  i + h,  j,  i + 2*h - 1,  j + w - 1);
+    haar.sum = sum1 - sum2;
+  }
+  // Type d:
+  else if (haar.type == 4){
+    int sum1 = sum_rect(img,  i,        j,  i + h - 1,    j + w - 1);
+    int sum2 = sum_rect(img,  i + h,    j,  i + 2*h - 1,  j + w - 1);
+    int sum3 = sum_rect(img,  i + 2*h,  j,  i + 3*h - 1,  j + w - 1);
+    haar.sum = sum1 - sum2 + sum3;
+  }
+  // Type e:
+  else {
+    int sum1 = sum_rect(img, i,     j,     i + h - 1,   j + w - 1);
+    int sum2 = sum_rect(img, i + h, j,     i + 2*h - 1, j + w - 1);
+    int sum3 = sum_rect(img, i,     j + w, i + h - 1,   j + 2*w - 1);
+    int sum4 = sum_rect(img, i + h, j + w, i + 2*h - 1, j + 2*w - 1);
+    haar.sum = sum1 - sum2 - sum3 + sum4;
+  }
 }

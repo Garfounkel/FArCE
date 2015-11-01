@@ -6,15 +6,17 @@
 # include <SDL/SDL.h>
 # include <SDL/SDL_image.h>
 # include <err.h>
+# include <dirent.h>
 # include "pixel_operations.h"
 # include "Haar_type.h"
 # include "haar.h"
+# include "../SDL_operations/SDL_OPs.h"
 
 typedef struct Triplet Triplet;
 struct Triplet{
     SDL_Surface img;
     int weight;
-    int is_a_face; // 1 = is a face, 0 = isn't a face, 42 = not initialized
+    int is_a_face; // 1 = is a face, -1 = isn't a face, 42 = not initialized
 };
 
 Triplet create_Triplet(SDL_Surface img, int weight);

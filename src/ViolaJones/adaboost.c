@@ -1,4 +1,4 @@
-#include <dirent.h>
+
 #include "adaboost.h"
 
 Triplet create_Triplet(SDL_Surface img, int weight){
@@ -10,24 +10,6 @@ Triplet create_Triplet(SDL_Surface img, int weight){
   return triplet;
 }
 
-
-//void adaboost(char* directory)
-//{
-  //char** images = list_images(directory);
-
-  //Ulong_tab* img = integral_image(preprocessing(SDL_Load(images[0])))
-
-  //while(1)
-  //{
-    //Haar_vect* features = compute_haar_features(img);
-    //while (features != null)
-    //{
-      //features = features->next;
-//}
-    //Charger image suivante;
-//}
-
-//}
 
 
 // Images list:
@@ -85,3 +67,27 @@ void print_images_list(char **list, size_t lenght){
   }
 }
 
+<<<<<<< HEAD
+=======
+// Adaboost pseudo-code:
+/*
+void adaboost(char* directory)
+{
+  char** images = list_images(directory);
+
+  Ulong_tab* img = integral_image(preprocessing(SDL_Load(images[0])))
+
+  while(1)
+  {
+    Haar_vect* features = compute_haar_features(img);
+    while (features != null)
+    {
+
+      features = features->next;
+    }
+    Charger image suivante;
+  }
+
+}
+*/
+>>>>>>> e0cb564317ba3ea753e4bd3509c246be33960ad0
