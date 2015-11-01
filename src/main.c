@@ -129,7 +129,9 @@ int main(int i, char** path)
   display_image(surface);
 
 // Compute all haar features of the image
-  compute_haar_features(tab);
+  size_t size;
+
+  compute_haar_features(tab, &size);
 
   SDL_FreeSurface(surface);
 

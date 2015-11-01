@@ -215,6 +215,11 @@ Haar* compute_haar_features(Ulong_tab *img, size_t* size){
     }
   }
 
+  for (Haar* i = res; i < haar_vect; ++i)
+  {
+    print_Haar(*i);
+
+  }
   *size = haar_vect - res;
   return res;
 }
