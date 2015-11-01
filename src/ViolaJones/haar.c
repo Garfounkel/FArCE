@@ -1,13 +1,13 @@
-#include <stdio.h>
+
 #include "haar.h"
-#include <assert.h>
+
 
 long sum_rect(Ulong_tab* img, int h1, int w1, int h2, int w2){
   unsigned long val_A = 0, val_B = 0, val_C = 0, val_D = 0;
   // A B
   // D C
-/*
-  if (h1 > 24) {
+
+  if (h1 > 24 || h1 < 0) {
 
   printf ("h1 = %d,",h1);
   assert(0);
@@ -15,7 +15,7 @@ long sum_rect(Ulong_tab* img, int h1, int w1, int h2, int w2){
   }
 
 
-  if (h2 > img->h) {
+  if (h2 > img->h || h2 < 0) {
 
   printf ("h2 = %d,",h2);
   assert(0);
@@ -23,7 +23,7 @@ long sum_rect(Ulong_tab* img, int h1, int w1, int h2, int w2){
   }
 
 
-  if (w1 > 24) {
+  if (w1 > 24 || w1 < 0) {
 
   printf ("w1 = %d,",w1);
   assert(0);
@@ -31,22 +31,21 @@ long sum_rect(Ulong_tab* img, int h1, int w1, int h2, int w2){
   }
 
 
-  if (w2 > 24) {
+  if (w2 > 24 || w2 < 0) {
 
   printf ("w2 = %d\n",w2);
   assert(0);
 
   }
+//  printf ("h1 = %d,h2 = %d,w1 = %d,w2 = %d\n",h1,h2,w1,w2);
 
-*/
   if (h1 - 1 > 0 && w1 - 1 > 0)
   {
+
     val_A = get_val(img, h1 - 1, w1 - 1);
     if (val_A != 0) {
       //printf ("h1 - 1 = %d, w1 - 1 = %d, A = %lu\n", h1 - 1, w1 - 1, val_A);
     }
-    // previous code :
-    //SDL_GetRGB(getpixel(img,w1-1, h1-1), img->format, &val_A, &val_A, &val_A);
   }
 
   if (h1 - 1 > 0)
@@ -55,16 +54,12 @@ long sum_rect(Ulong_tab* img, int h1, int w1, int h2, int w2){
     if (val_B != 0) {
       //printf ("h1 - 1 = %d, w2 = %d, B = %lu\n", h1 - 1, w2, val_B);
     }
-    // previous code :
-    //SDL_GetRGB(getpixel(img,w2, h1 -1), img->format, &val_B, &val_B, &val_B);
   }
 
   val_C = get_val(img, h2, w2);
   if (val_C != 0) {
     //printf ("h2 = %d, w2 = %d, C = %lu\n", h2, w2, val_C);
   }
-  // previous code :
-  //SDL_GetRGB(getpixel(img,w2, h2), img->format, &val_C, &val_C, &val_C);
 
   if (w1 - 1 > 0)
   {
@@ -72,8 +67,6 @@ long sum_rect(Ulong_tab* img, int h1, int w1, int h2, int w2){
     if (val_D != 0) {
       //printf ("h2 = %d, w1 - 1 = %d, D = %lu\n", h2, w1 - 1, val_D);
     }
-    // previous code :
-    //SDL_GetRGB(getpixel(img,w1-1, h2), img->format, &val_D, &val_D, &val_D);
   }
 /*
   if (val_A - val_B + val_C - val_D != 0) {
@@ -84,11 +77,12 @@ long sum_rect(Ulong_tab* img, int h1, int w1, int h2, int w2){
   return val_A - val_B + val_C - val_D;
 }
 
-Haar_vect compute_haar_features(Ulong_tab *img){
+Haar_vect* compute_haar_features(Ulong_tab *img){
   //Haar *my_vect = malloc((sizeof(int) * 4 + sizeof(unsigned long)) * nbFeature);
   //Haar *res = my_vect;
-  Haar_vect haar_vect;
-  Haar_vect res = haar_vect;
+  printf ("malloc\n");
+  Haar_vect* haar_vect = malloc(sizeof(Haar_vect));
+  Haar_vect* res = haar_vect;
 
   //printf ("type a :\n");
   //type a avec les paramètres (1,i,j,w,h)
@@ -99,10 +93,13 @@ Haar_vect compute_haar_features(Ulong_tab *img){
 
           int sum1 = sum_rect(img,  i,  j,      i + h - 1,  j + w - 1    );
           int sum2 = sum_rect(img,  i,  j + w,  i + h - 1,  j + 2 * w - 1);
-
           Haar my_haar = create_Haar(1, i, j, w, h, sum1 - sum2);
-          haar_vect = create_Haar_vect(my_haar);
-          haar_vect = *haar_vect.next;
+
+          haar_vect->haar = my_haar;
+          haar_vect->next = malloc(sizeof(Haar_vect));
+          haar_vect = haar_vect->next;
+          //haar_vect = create_Haar_vect(my_haar);
+          //haar_vect = *haar_vect.next;
           if (sum1 - sum2 != 0) {
             //print_Haar(my_haar);
             //printf ("sum1 = %d, sum2 = %d\n",sum1, sum2);
@@ -112,6 +109,7 @@ Haar_vect compute_haar_features(Ulong_tab *img){
       }
     }
   }
+
 
 
   //printf ("type b :\n");
@@ -126,8 +124,11 @@ Haar_vect compute_haar_features(Ulong_tab *img){
           int sum3 = sum_rect(img, i, j + 2*w,  i + h - 1,  j + 3*w - 1);
 
           Haar my_haar = create_Haar(2, i, j, w, h, sum1 - sum2 + sum3);
-          haar_vect = create_Haar_vect(my_haar);
-          haar_vect = *haar_vect.next;
+          haar_vect->haar = my_haar;
+          haar_vect->next = malloc(sizeof(Haar_vect));
+          haar_vect = haar_vect->next;
+          //haar_vect = create_Haar_vect(my_haar);
+          //haar_vect = *haar_vect.next;
           if (sum1 - sum2 + sum3 != 0) {
             //print_Haar(my_haar);
             //printf ("sum1 = %d, sum2 = %d, sum3 = %d\n",sum1, sum2,sum3);
@@ -149,8 +150,11 @@ Haar_vect compute_haar_features(Ulong_tab *img){
           int sum2 = sum_rect(img,  i + h,  j,  i + 2*h - 1,  j + w - 1);
 
           Haar my_haar = create_Haar(3, i, j, w, h, sum1 - sum2);
-          haar_vect = create_Haar_vect(my_haar);
-          haar_vect = *haar_vect.next;
+          haar_vect->haar = my_haar;
+          haar_vect->next = malloc(sizeof(Haar_vect));
+          haar_vect = haar_vect->next;
+          //haar_vect = create_Haar_vect(my_haar);
+          //haar_vect = *haar_vect.next;
           if (sum1 - sum2 != 0) {
             //print_Haar(my_haar);
             //printf ("sum1 = %d, sum2 = %d\n",sum1, sum2);   }
@@ -173,8 +177,11 @@ Haar_vect compute_haar_features(Ulong_tab *img){
           int sum3 = sum_rect(img,  i + 2*h,  j,  i + 3*h - 1,  j + w - 1);
 
           Haar my_haar = create_Haar(4, i, j, w, h, sum1 - sum2 + sum3);
-          haar_vect = create_Haar_vect(my_haar);
-          haar_vect = *haar_vect.next;
+          haar_vect->haar = my_haar;
+          haar_vect->next = malloc(sizeof(Haar_vect));
+          haar_vect = haar_vect->next;
+          //haar_vect = create_Haar_vect(my_haar);
+          //haar_vect = *haar_vect.next;
           if (sum1 - sum2 + sum3 != 0) {
             //print_Haar(my_haar);
             //printf ("sum1 = %d, sum2 = %d,sum3 = %d\n",sum1, sum2,sum3);
@@ -198,8 +205,11 @@ Haar_vect compute_haar_features(Ulong_tab *img){
           int sum4 = sum_rect(img, i + h, j + w, i + 2*h - 1, j + 2*w - 1);
 
           Haar my_haar = create_Haar(5, i, j, w, h, sum1-sum2-sum3+sum4);
-          haar_vect = create_Haar_vect(my_haar);
-          haar_vect = *haar_vect.next;
+          haar_vect->haar = my_haar;
+          haar_vect->next = malloc(sizeof(Haar_vect));
+          haar_vect = haar_vect->next;
+          //haar_vect = create_Haar_vect(my_haar);
+          //haar_vect = *haar_vect.next;
           if (sum1 - sum2 - sum3 + sum4 != 0) {
             //print_Haar(my_haar);
             //printf ("sum1 = %d, sum2 = %d,sum3 = %d, sum4 = %d\n",

@@ -12,6 +12,7 @@
 # include "ViolaJones/haar.h"
 # include "ViolaJones/Ulong_tab.h"
 # include "ViolaJones/integral_image.h"
+# include "ViolaJones/adaboost.h"
 # include "Preprocessing/Image_OPs.h"
 # include <assert.h>
 
@@ -154,6 +155,8 @@ int main(int i, char** path)
   Ulong_tab* tab = create_Ulong_tab(surface->h, surface->w);
 
   integral_image(surface, tab);
+
+//  print(tab);
 
   Ulong_tab_to_SDL(tab, surface);
 
