@@ -11,24 +11,6 @@ Triplet create_Triplet(SDL_Surface img, int weight){
 }
 
 
-//void adaboost(char* directory)
-//{
-  //char** images = list_images(directory);
-
-  //Ulong_tab* img = integral_image(preprocessing(SDL_Load(images[0])))
-
-  //while(1)
-  //{
-    //Haar_vect* features = compute_haar_features(img);
-    //while (features != null)
-    //{
-      //features = features->next;
-//}
-    //Charger image suivante;
-//}
-
-//}
-
 
 // Images list:
 size_t dirLenght(char* path){
@@ -84,3 +66,25 @@ void print_images_list(char **list, size_t lenght){
     printf("%s\n", list[i]);
   }
 }
+
+
+/*
+void adaboost(char* directory)
+{
+  char** images = list_images(directory);
+
+  Ulong_tab* img = integral_image(preprocessing(SDL_Load(images[0])))
+
+  while(1)
+  {
+    Haar_vect* features = compute_haar_features(img);
+    while (features != null)
+    {
+
+      features = features->next;
+    }
+    Charger image suivante;
+  }
+
+}
+*/

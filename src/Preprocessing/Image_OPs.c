@@ -168,7 +168,7 @@ void normalize(SDL_Surface* img)
 
       SDL_GetRGB(getpixel(img, w, h), img->format, &val, &val, &val);
 
-      val = (val - mi)*255/(ma - mi);
+      val = (ma - mi)? (val - mi)*255/(ma - mi) : 255;
 
       putpixel(img, w, h, SDL_MapRGB(img->format, val, val, val));
     }

@@ -78,10 +78,8 @@ void Ulong_tab_to_SDL(Ulong_tab* tab, SDL_Surface* img)
     for (int w = 0; w < img->w; ++w)
     {
       unsigned long val = get_val(tab,h,w);
-      if (ma == 0) {
-        ma = 255;
-      }
-      val = 255*val/ma;
+
+      val = ma ? 255*val/ma : 255;
 
       printf("%lu",val);
 
