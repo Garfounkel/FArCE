@@ -1,13 +1,15 @@
 #include "adaboost.h"
 
-Triplet create_Triplet(SDL_Surface img, int weight){
+Triplet create_Triplet(Ulong_tab* img, int weight, int is_a_face)
+{
   Triplet triplet;
   triplet.img = img;
   triplet.weight = weight;
-  triplet.is_a_face = 42;
+  triplet.is_a_face = is_a_face;
 
   return triplet;
 }
+
 
 
 
@@ -66,24 +68,53 @@ void print_images_list(char **list, size_t lenght){
   }
 }
 
+
+
 // Adaboost pseudo-code:
-/*
-void adaboost(char* directory)
+
+Model adaboost(Triplet* imgs, size_t len)
 {
-  char** images = list_images(directory);
+  Model model;
+  model.coefs = malloc(sizeof(float) * 16000);
+  model.haars = malloc(sizeof(Haar) * 16000);
+  model.len_coefs = model.len_haars = 0;
 
-  Ulong_tab* img = integral_image(preprocessing(SDL_Load(images[0])))
+  Haar_vect* features = compute_haar_features(imgs->img);
+  unsigned long threshold = 10;
 
-  while(1)
-  {
-    Haar_vect* features = compute_haar_features(img);
-    while (features != null)
-    {
+  while (1) {
 
-      features = features->next;
+    Haar haar;
+    double errormin = 1;
+
+    while (features != NULL) {
+      double error = 0;
+
+      for (Triplet* i = imgs; i < imgs + len; ++i)
+      {
+        compute_haar_sum(i->img, &(*features).haar);
+        error +=
+          i->weight *
+          i->is_a_face *
+          (
+            ((*features).haar.sum > 0) ?
+            (*features).haar.sum :
+            -(*features).haar.sum
+           > threshold);
+      }
+
+      if (error <= errormin) {
+        errormin = error;
+        haar = (*features).haar;
+      }
+
     }
-    Charger image suivante;
-  }
 
+    if (errormin >= 0.5) {
+      return model;
+    }
+
+    //suite
+
+  }
 }
-*/

@@ -222,44 +222,47 @@ Haar_vect* compute_haar_features(Ulong_tab *img){
   return res;
 }
 
-void compute_haar_sum(Ulong_tab *img, Haar haar){
-  int i = haar.i;
-  int j = haar.j;
-  int h = haar.h;
-  int w = haar.w;
+void compute_haar_sum(Ulong_tab *img, Haar* haar){
+  int i = haar->i;
+  int j = haar->j;
+  int h = haar->h;
+  int w = haar->w;
 
   // Type a:
-  if (haar.type == 1) {
+  if (haar->type == 1) {
     int sum1 = sum_rect(img,  i,  j,      i + h - 1,  j + w - 1    );
     int sum2 = sum_rect(img,  i,  j + w,  i + h - 1,  j + 2 * w - 1);
-    haar.sum = sum1 - sum2;
+    haar->sum = sum1 - sum2;
   }
   // Type b:
-  else if (haar.type == 2) {
+  else if (haar->type == 2) {
     int sum1 = sum_rect(img, i, j,        i + h - 1,  j + w - 1  );
     int sum2 = sum_rect(img, i, j + w,    i + h - 1,  j + 2*w - 1);
     int sum3 = sum_rect(img, i, j + 2*w,  i + h - 1,  j + 3*w - 1);
-    haar.sum = sum1 - sum2 + sum3;
+    haar->sum = sum1 - sum2 + sum3;
   }
   // Type c:
-  else if (haar.type == 3) {
+  else if (haar->type == 3) {
     int sum1 = sum_rect(img,  i,      j,  i + h - 1,    j + w - 1);
     int sum2 = sum_rect(img,  i + h,  j,  i + 2*h - 1,  j + w - 1);
-    haar.sum = sum1 - sum2;
+    haar->sum = sum1 - sum2;
   }
   // Type d:
-  else if (haar.type == 4){
+  else if (haar->type == 4){
     int sum1 = sum_rect(img,  i,        j,  i + h - 1,    j + w - 1);
     int sum2 = sum_rect(img,  i + h,    j,  i + 2*h - 1,  j + w - 1);
     int sum3 = sum_rect(img,  i + 2*h,  j,  i + 3*h - 1,  j + w - 1);
-    haar.sum = sum1 - sum2 + sum3;
+    haar->sum = sum1 - sum2 + sum3;
   }
   // Type e:
-  else {
+  else if (haar->type == 4){
     int sum1 = sum_rect(img, i,     j,     i + h - 1,   j + w - 1);
     int sum2 = sum_rect(img, i + h, j,     i + 2*h - 1, j + w - 1);
     int sum3 = sum_rect(img, i,     j + w, i + h - 1,   j + 2*w - 1);
     int sum4 = sum_rect(img, i + h, j + w, i + 2*h - 1, j + 2*w - 1);
-    haar.sum = sum1 - sum2 - sum3 + sum4;
+    haar->sum = sum1 - sum2 - sum3 + sum4;
+  }
+  else {
+    // unknown feature
   }
 }

@@ -83,7 +83,7 @@ void Ulong_tab_to_SDL(Ulong_tab* tab, SDL_Surface* img)
 
       val = ma ? 255*val/ma : 255;
 
-      printf("%lu",val);
+//      printf("%lu",val);
 
       putpixel(img,w,h,SDL_MapRGB(img->format, val, val, val));
     }

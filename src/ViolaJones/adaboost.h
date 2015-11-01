@@ -11,17 +11,29 @@
 # include "Haar_type.h"
 # include "haar.h"
 # include "../SDL_operations/SDL_OPs.h"
+# include "../Preprocessing/Image_OPs.h"
+# include "integral_image.h"
+# include "Ulong_tab.h"
+
 
 typedef struct Triplet Triplet;
 struct Triplet{
-    SDL_Surface img;
-    int weight;
-    int is_a_face; // 1 = is a face, -1 = isn't a face, 42 = not initialized
+  Ulong_tab* img;
+  double weight;
+  int is_a_face; // 1 = is a face, -1 = isn't a face
 };
 
-Triplet create_Triplet(SDL_Surface img, int weight);
+typedef struct Model Model;
+struct Model{
+  double* coefs;
+  size_t len_coefs;
+  Haar* haars;
+  size_t len_haars;
+};
 
-void adaboost(char* directory);
+Triplet create_Triplet(Ulong_tab* img, int weight, int is_a_face);
+
+Model adaboost(Triplet* imgs, size_t len);
 size_t dirLenght(char* path);
 char** get_Files_List(char* path, size_t *nb);
 void print_images_list(char **list, size_t lenght);
