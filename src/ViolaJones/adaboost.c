@@ -84,3 +84,4 @@ void print_images_list(char **list, size_t lenght){
     printf("%s\n", list[i]);
   }
 }
+
