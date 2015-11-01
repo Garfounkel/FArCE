@@ -67,7 +67,7 @@ void print_images_list(char **list, size_t lenght){
   }
 }
 
-
+// Adaboost pseudo-code:
 /*
 void adaboost(char* directory)
 {
