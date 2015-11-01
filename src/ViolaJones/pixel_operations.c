@@ -13,6 +13,7 @@ Uint8* pixelref(SDL_Surface *surf, unsigned x, unsigned y) {
   return (Uint8*)surf->pixels + y * surf->pitch + x * bpp;
 }
 
+// Get the pixel at a given position
 Uint32 getpixel(SDL_Surface *surface, unsigned x, unsigned y) {
   Uint8 *p = pixelref(surface, x, y);
   switch(surface->format->BytesPerPixel) {
@@ -31,6 +32,7 @@ Uint32 getpixel(SDL_Surface *surface, unsigned x, unsigned y) {
   return 0;
 }
 
+// Set the pixel at a given position
 void putpixel(SDL_Surface *surface, unsigned x, unsigned y, Uint32 pixel) {
   Uint8 *p = pixelref(surface, x, y);
   switch(surface->format->BytesPerPixel) {

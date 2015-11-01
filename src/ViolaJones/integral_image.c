@@ -6,6 +6,7 @@
 
 # include "integral_image.h"
 
+// Compute the integral image
 Ulong_tab* integral_image (SDL_Surface *img, Ulong_tab* new)
 {
   for(int h = 0; h < img->h; h++)

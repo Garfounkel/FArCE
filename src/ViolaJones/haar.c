@@ -118,14 +118,7 @@ Haar_vect* compute_haar_features(Ulong_tab *img){
           haar_vect->haar = my_haar;
           haar_vect->next = malloc(sizeof(Haar_vect));
           haar_vect = haar_vect->next;
-          //haar_vect = create_Haar_vect(my_haar);
-          //haar_vect = *haar_vect.next;
-          if (sum1 - sum2 + sum3 != 0) {
-            //print_Haar(my_haar);
-            //printf ("sum1 = %d, sum2 = %d, sum3 = %d\n",sum1, sum2,sum3);
-          }
         }
-
       }
     }
   }
@@ -164,6 +157,7 @@ Haar_vect* compute_haar_features(Ulong_tab *img){
           haar_vect->haar = my_haar;
           haar_vect->next = malloc(sizeof(Haar_vect));
           haar_vect = haar_vect->next;
+        }
       }
     }
   }
@@ -184,10 +178,10 @@ Haar_vect* compute_haar_features(Ulong_tab *img){
           haar_vect->haar = my_haar;
           haar_vect->next = malloc(sizeof(Haar_vect));
           haar_vect = haar_vect->next;
+        }
       }
     }
   }
-
   return res;
 }
 
