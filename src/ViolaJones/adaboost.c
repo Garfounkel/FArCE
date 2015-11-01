@@ -1,4 +1,3 @@
-
 #include "adaboost.h"
 
 Triplet create_Triplet(SDL_Surface img, int weight){
@@ -67,8 +66,6 @@ void print_images_list(char **list, size_t lenght){
   }
 }
 
-<<<<<<< HEAD
-=======
 // Adaboost pseudo-code:
 /*
 void adaboost(char* directory)
@@ -90,4 +87,3 @@ void adaboost(char* directory)
 
 }
 */
->>>>>>> e0cb564317ba3ea753e4bd3509c246be33960ad0
