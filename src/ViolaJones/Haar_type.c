@@ -24,6 +24,17 @@ void fill_Haar(Haar* haar, int type, int i, int j, int w, int h, long sum){
   haar->sum_normalized = -1;
 }
 
+int is_present(Haar h, long threshold)
+{
+  if (h.sum > threshold)
+    return 1;
+  else if (-h.sum > threshold)
+    return -1;
+  else
+    return 0;
+}
+
+
 // Print a haar feature for debug purpose
 void print_Haar(Haar h){
   printf(

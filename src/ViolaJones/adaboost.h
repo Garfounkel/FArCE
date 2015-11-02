@@ -27,9 +27,7 @@ struct Triplet{
 typedef struct Model Model;
 struct Model{
   double* coefs;
-  size_t len_coefs;
   Haar* haars;
-  size_t len_haars;
 };
 
 Triplet create_Triplet(Ulong_tab* img, int weight, int is_a_face);

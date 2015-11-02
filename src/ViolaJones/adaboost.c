@@ -72,12 +72,11 @@ void print_images_list(char **list, size_t lenght){
 
 // Adaboost pseudo-code:
 
-Model adaboost(Triplet* imgs, size_t len)
+Model adaboost(Triplet* imgs, size_t len_imgs)
 {
   Model model;
-  model.coefs = malloc(sizeof(float) * 16000);
-  model.haars = malloc(sizeof(Haar) * 16000);
-  model.len_coefs = model.len_haars = 0;
+  model.coefs = malloc(sizeof(float) * 200000);
+  model.haars = malloc(sizeof(Haar) * 200000);
 
   size_t size_features;
   Haar* features = compute_haar_features(imgs->img, &size_features);
@@ -93,17 +92,13 @@ Model adaboost(Triplet* imgs, size_t len)
     {
       double error = 0;
 
-      for (Triplet* i = imgs; i < imgs + len; ++i)
+      for (Triplet* i = imgs; i < imgs + len_imgs; ++i)
       {
         compute_haar_sum(i->img, &features[f]);
         error +=
           i->weight *
           i->is_a_face *
-          (
-            (features[f].sum > 0) ?
-            features[f].sum :
-            -features[f].sum
-            > threshold);
+          is_present(features[f], threshold);
       }
 
       if (error <= errormin) {
@@ -121,8 +116,20 @@ Model adaboost(Triplet* imgs, size_t len)
     model.coefs[min] = 1/2*log((1 - errormin)/errormin);
     model.haars[min] = haar_min;
 
+    for (Triplet* i = imgs; i < imgs + len_imgs; ++i)
+    {
+      i->weight =
+        i->weight *
 
-    //On met ensuite à jour la pondération des exemples d'apprentissage
+        exp(
+          -model.coefs[min] *
+          i->is_a_face *
+          is_present(haar_min, threshold))
+
+        /
+
+        (2*sqrt(errormin*(1 - errormin)));
+    }
 
   }
 }

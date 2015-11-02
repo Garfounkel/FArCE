@@ -16,6 +16,7 @@ struct Haar
 Haar create_Haar(int type, int i, int j, int w, int h, long sum);
 void print_Haar(Haar h);
 void fill_Haar(Haar* haar, int type, int i, int j, int w, int h, long sum);
+int is_present(Haar h, long threshold);
 
 
 typedef struct Haar_vect Haar_vect;
