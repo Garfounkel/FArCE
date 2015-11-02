@@ -32,7 +32,7 @@ struct Model{
 
 Triplet create_Triplet(Ulong_tab* img, int weight, int is_a_face);
 
-Model adaboost(Triplet* imgs, size_t len);
+Model adaboost(Triplet* imgs, size_t len_imgs, long threshold);
 size_t dirLenght(char* path);
 char** get_Files_List(char* path, size_t *nb);
 void print_images_list(char **list, size_t lenght);

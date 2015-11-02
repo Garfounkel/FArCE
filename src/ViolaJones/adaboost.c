@@ -72,7 +72,7 @@ void print_images_list(char **list, size_t lenght){
 
 // Adaboost pseudo-code:
 
-Model adaboost(Triplet* imgs, size_t len_imgs)
+Model adaboost(Triplet* imgs, size_t len_imgs, long threshold)
 {
   Model model;
   model.coefs = malloc(sizeof(float) * 200000);
@@ -80,7 +80,6 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
 
   size_t size_features;
   Haar* features = compute_haar_features(imgs->img, &size_features);
-  long threshold = 10;
 
   while (1) {
 
