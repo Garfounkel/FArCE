@@ -108,6 +108,12 @@ int main(int i, char** path)
 
   init_sdl();
 
+  //Triplet* imgs = NULL;
+
+  //size_t size_imgs;
+
+  //generate_Triplet_vect(path[0], imgs, &size_imgs);
+
   SDL_Surface* surface = load_image(path[1]);
 
   display_image(surface);

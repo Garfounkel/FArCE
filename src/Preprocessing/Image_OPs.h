@@ -13,7 +13,8 @@ SDL_Surface* invert_grey(SDL_Surface* img);
 Uint8 mean(SDL_Surface* img);
 Uint8 standard_var(Uint8 mean, SDL_Surface* img);
 void normalize(SDL_Surface* img);
-void preprocessing(SDL_Surface* img);
+SDL_Surface* preprocessing(SDL_Surface* img);
+
 
 //void normalize_Ulong_tab(Ulong_tab* img);
 

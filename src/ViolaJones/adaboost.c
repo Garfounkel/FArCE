@@ -68,6 +68,43 @@ void print_images_list(char **list, size_t lenght){
   }
 }
 
+// Load an image
+SDL_Surface* load_img(char *path)
+{
+
+  SDL_Surface          *img;
+
+  // Load an image using SDL_image with format detection
+  img = IMG_Load(path);
+
+  if (!img)
+    // If it fails, die with an error message
+    errx(3, "can't load %s: %s", path, IMG_GetError());
+
+  return img;
+
+}
+
+
+void generate_Triplet_vect(char* directory, Triplet* imgs, size_t* size)
+{
+  char** file_list = get_Files_List(directory, size);
+
+  imgs = malloc(sizeof(Triplet) * *size);
+
+  for (size_t i = 0; i < *size; ++i)
+  {
+    SDL_Surface* img = preprocessing(load_img(file_list[i]));
+
+    Ulong_tab* tab = create_Ulong_tab(img->h, img->w);
+
+    integral_image(img, tab);
+
+    imgs[i].img = tab;
+    imgs[i].weight = 1 / *size;
+    imgs[i].is_a_face = *file_list[i] == 'f' ? 1 : -1;
+  }
+}
 
 
 // Adaboost pseudo-code:

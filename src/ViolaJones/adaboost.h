@@ -31,7 +31,7 @@ struct Model{
 };
 
 Triplet create_Triplet(Ulong_tab* img, int weight, int is_a_face);
-
+void generate_Triplet_vect(char* directory, Triplet* imgs, size_t* size);
 Model adaboost(Triplet* imgs, size_t len_imgs, long threshold);
 size_t dirLenght(char* path);
 char** get_Files_List(char* path, size_t *nb);
