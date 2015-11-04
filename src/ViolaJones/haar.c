@@ -201,7 +201,11 @@ Haar* compute_haar_features(Ulong_tab *img, size_t* size){
 
           fill_Haar(haar_vect, 5, i, j, w, h, sum1-sum2-sum3+sum4);
           haar_vect++;
-          printf ("index = %d\n",haar_vect - res);
+          // FUCKING RES GO FUCK YOURSELF AND DIE !!!
+          //printf ("index = %d\n",haar_vect - res);
+
+
+
           //haar_vect = create_Haar_vect(my_haar);
           //haar_vect = *haar_vect.next;
           if (sum1 - sum2 - sum3 + sum4 != 0) {

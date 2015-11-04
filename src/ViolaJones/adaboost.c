@@ -117,9 +117,9 @@ Model adaboost(Triplet* imgs, size_t len_imgs, long threshold)
 
   size_t size_features;
   Haar* features = compute_haar_features(imgs->img, &size_features);
-
-  while (1) {
-
+//il ne s'arret que quand optimisation impossble
+  while (1)
+  {
     int min = 0;
     Haar haar_min;
     double errormin = 1;
@@ -127,16 +127,18 @@ Model adaboost(Triplet* imgs, size_t len_imgs, long threshold)
     for (size_t f = 0; f < size_features; ++f)
     {
       double error = 0;
-
+      //parcour le tableau d'image
       for (Triplet* i = imgs; i < imgs + len_imgs; ++i)
       {
+        //valeur de l'haar
         compute_haar_sum(i->img, &features[f]);
+        // calcul l'erreur de l'Haar
         error +=
           i->weight *
           i->is_a_face *
           is_present(features[f], threshold);
       }
-
+      //s'assur que l'erreur min soit bien la minimal
       if (error <= errormin) {
         errormin = error;
         haar_min = features[f];
@@ -144,14 +146,14 @@ Model adaboost(Triplet* imgs, size_t len_imgs, long threshold)
       }
 
     }
-
+    //verifie si on peut utilise l'haar
     if (errormin >= 0.5) {
       return model;
     }
 
     model.coefs[min] = 1/2*log((1 - errormin)/errormin);
     model.haars[min] = haar_min;
-
+    // on ajoute le model
     for (Triplet* i = imgs; i < imgs + len_imgs; ++i)
     {
       i->weight =
