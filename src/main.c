@@ -49,7 +49,7 @@ void print(Ulong_tab* img)
     for (int w = 0; w < img->w; w++)
     {
       Uint8 m;
-
+      printf ("getval\n");
       m = get_val(img, h,w);
 
       printf ("%d|",m);
@@ -62,7 +62,7 @@ void print(Ulong_tab* img)
 // Convert an Ulongtab to SDL_Surface
 void Ulong_tab_to_SDL(Ulong_tab* tab, SDL_Surface* img)
 {
-  unsigned long ma;
+  unsigned long ma = 0;
 
   for (int h = 0; h < img->h; ++h)
   {
@@ -83,7 +83,7 @@ void Ulong_tab_to_SDL(Ulong_tab* tab, SDL_Surface* img)
 
       val = ma ? 255*val/ma : 255;
 
-//      printf("%lu",val);
+      //printf("%lu",val);
 
       putpixel(img,w,h,SDL_MapRGB(img->format, val, val, val));
     }
@@ -108,11 +108,19 @@ int main(int i, char** path)
 
   init_sdl();
 
-  //Triplet* imgs = NULL;
+  Triplet* imgs = NULL;
 
-  //size_t size_imgs;
+  size_t size_imgs;
 
-  //generate_Triplet_vect(path[0], imgs, &size_imgs);
+  generate_Triplet_vect(path[1], imgs, &size_imgs);
+
+  for (size_t i = 0; i < size_imgs; ++i)
+  {
+    printf ("display %d\n", i);
+    print(imgs[i].img);
+  }
+
+  printf ("finprint\n");
 
   SDL_Surface* surface = load_image(path[1]);
 

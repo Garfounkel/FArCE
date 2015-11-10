@@ -91,15 +91,9 @@ void standardize(SDL_Surface* img)
       Uint8 val;
       SDL_GetRGB(getpixel(img, w, h), img->format, &val, &val, &val);
 
-      Uint8 store = val;
+      //Uint8 store = val;
 
       int vall = (val - m) * 65/ /*ici >>>>*/(var)/*<<<< ici*/ + 127 ;
-
-      if (vall > 255 || (1 && vall < 0)) {
-
-
-        printf ("%d -> (%d-%d)*127/%d -> %f*127+127 %d\n",store,store,m,var,(double)(val - m)/(2*var), vall);
-      }
 
 
 
@@ -181,15 +175,15 @@ SDL_Surface* preprocessing(SDL_Surface* img)
 
   to_grey(img);
 
-  display_image(img);
+  //display_image(img);
 
   normalize(img);
 
-  display_image(img);
+  //display_image(img);
 
   invert_grey(img);
 
-  display_image(img);
+  //display_image(img);
 
   return img;
 

@@ -30,6 +30,7 @@ size_t dirLenght(char* path){
 }
 
 char** get_Files_List(char* path, size_t *nb){
+printf ("oppening %s\n",path);
   DIR *dir;
   struct dirent *ent;
   size_t pathLenght = strlen(path);
@@ -90,6 +91,12 @@ void generate_Triplet_vect(char* directory, Triplet* imgs, size_t* size)
 {
   char** file_list = get_Files_List(directory, size);
 
+  for (size_t i = 0; i < *size; ++i)
+  {
+    printf ("%d %s \n", i, file_list[i] + 19);// == 'f');
+  }
+  printf ("%d\n",*size);
+
   imgs = malloc(sizeof(Triplet) * *size);
 
   for (size_t i = 0; i < *size; ++i)
@@ -117,7 +124,7 @@ Model adaboost(Triplet* imgs, size_t len_imgs, long threshold)
 
   size_t size_features;
   Haar* features = compute_haar_features(imgs->img, &size_features);
-//il ne s'arret que quand optimisation impossble
+  //il ne s'arret que quand optimisation impossble
   while (1)
   {
     int min = 0;
@@ -126,26 +133,41 @@ Model adaboost(Triplet* imgs, size_t len_imgs, long threshold)
 
     for (size_t f = 0; f < size_features; ++f)
     {
-      double error = 0;
-      //parcour le tableau d'image
-      for (Triplet* i = imgs; i < imgs + len_imgs; ++i)
+      // 73440 = val max d'une sum en 24x24
+      for (features[f].threshold = -73440;
+           features[f].threshold < 73440;
+           ++features[f].threshold)
       {
-        //valeur de l'haar
-        compute_haar_sum(i->img, &features[f]);
-        // calcul l'erreur de l'Haar
-        error +=
-          i->weight *
-          i->is_a_face *
-          is_present(features[f], threshold);
+        double error = 0;
+        //parcour le tableau d'image
+        for (Triplet* i = imgs; i < imgs + len_imgs; ++i)
+        {
+          //valeur de l'haar
+          compute_haar_sum(i->img, &features[f]);
+          // calcul l'erreur de l'Haar
+          error +=
+            i->weight *
+            i->is_a_face *
+            is_present(features[f], features[f].threshold);
+        }
+        //s'assur que l'erreur min soit bien la minimal
+        if (error < errormin)
+        {
+          errormin = error;
+          haar_min = features[f];
+          haar_min.polarity = 1;
+          min = f;
+        }
+        else if (1/error < errormin)
+        {
+          errormin = error;
+          haar_min = features[f];
+          haar_min.polarity = -1;
+          min = f;
+        }
       }
-      //s'assur que l'erreur min soit bien la minimal
-      if (error <= errormin) {
-        errormin = error;
-        haar_min = features[f];
-        min = f;
-      }
-
     }
+
     //verifie si on peut utilise l'haar
     if (errormin >= 0.5) {
       return model;
