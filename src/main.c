@@ -126,7 +126,11 @@ int main(int i, char** path)
 
   display_image(surface);
 
-// Function to convert to grey, mean, invert color and normalize our image
+// Trying blur
+//  Blur(surface);
+//  display_image(surface);
+
+// Convert to grey, mean, invert color and normalize our image
   preprocessing(surface);
 
 // Create an Ulong_tab from an image
@@ -139,13 +143,12 @@ int main(int i, char** path)
 //  print(tab);
 
   Ulong_tab_to_SDL(tab, surface);
-
   display_image(surface);
 
 // Compute all haar features of the image
-  size_t size;
+//  size_t size;
 
-  compute_haar_features(tab, &size);
+//  compute_haar_features(tab, &size);
 
   SDL_FreeSurface(surface);
 
