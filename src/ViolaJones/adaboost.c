@@ -129,7 +129,8 @@ void write_model(Model* m, char* fname)
 
     for (int i = 0; i < 160337; ++i)
     {
-      warnx("%s>%f\n", Haar_to_str(m->haars[i]), m->coefs[i]);
+      if (m->coefs[i])
+        warnx("%s>%f\n", Haar_to_str(m->haars[i]), m->coefs[i]);
       fprintf(file, "%s>%f\n", Haar_to_str(m->haars[i]), m->coefs[i]);
     }
 
@@ -237,17 +238,18 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
     {
       warnx("def poids img n°%d\n", i - imgs);
 
-      i->weight =
-        i->weight *
+      assert(i->weight =
+             i->weight *
 
-        exp(
-          -model.coefs[min] *
-          i->is_a_face      *
-          is_present(haar_min))
+             exp(
+               -model.coefs[min] *
+               i->is_a_face      *
+               is_present(haar_min))
 
-        /
+             /
 
-        (2*sqrt(errormin*(1 - errormin)));
+             (2*sqrt(errormin*(1 - errormin))));
+
     }
 
     warnx("write model\n");
