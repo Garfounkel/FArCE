@@ -2,44 +2,90 @@
 # include "Haar_type.h"
 
 // Creates a Struct Haar, and initialize its attributes
-Haar create_Haar(int type, int i, int j, int w, int h, long sum){
+Haar create_Haar(int type,
+                 int i, int j,
+                 int w, int h,
+                 long sum,
+                 int polarity,
+                 long threshold){
   Haar haar; //= malloc(sizeof(int) * 5 + sizeof(unsigned long));
-  haar.type = type;
-  haar.i = i;
-  haar.j = j;
-  haar.w = w;
-  haar.h = h;
-  haar.sum = sum;
+  haar.type           = type;
+  haar.i              = i;
+  haar.j              = j;
+  haar.w              = w;
+  haar.h              = h;
+  haar.sum            = sum;
   haar.sum_normalized = -1;
+  haar.polarity       = polarity;
+  haar.threshold      = threshold;
   return haar;
 }
 
-void fill_Haar(Haar* haar, int type, int i, int j, int w, int h, long sum){
-  haar->type = type;
-  haar->i = i;
-  haar->j = j;
-  haar->w = w;
-  haar->h = h;
-  haar->sum = sum;
+void fill_Haar(Haar* haar,
+               int type,
+               int i, int j,
+               int w, int h,
+               long sum,
+               int polarity,
+               long threshold){
+  haar->type           = type;
+  haar->i              = i;
+  haar->j              = j;
+  haar->w              = w;
+  haar->h              = h;
+  haar->sum            = sum;
   haar->sum_normalized = -1;
+  haar->polarity       = polarity;
+  haar->threshold      = threshold;
 }
 
-int is_present(Haar h, long threshold)
+void copy_Haar(Haar* source, Haar* dest){
+  dest->type           = source->type;
+  dest->i              = source->i;
+  dest->j              = source->j;
+  dest->w              = source->w;
+  dest->h              = source->h;
+  dest->sum            = source->sum;
+  dest->sum_normalized = source->sum_normalized;
+  dest->polarity       = source->polarity;
+  dest->threshold      = source->threshold;
+}
+
+int is_present(Haar h)
 {
-  if (h.sum > threshold)
-    return 1;
-  else if (-h.sum > threshold)
-    return -1;
-  else
-    return 0;
+  return ((h.sum > h.threshold)?
+          1*h.polarity:
+          -1*h.polarity);
 }
 
 
 // Print a haar feature for debug purpose
 void print_Haar(Haar h){
   printf(
-    "| type = %d | i = %2d | j = %2d | w = %2d | h = %2d | sum = %4ld | sum_normalized = %ld\n",
-         h.type, h.i, h.j, h.w, h.h, h.sum, h.sum_normalized);
+    "\
+| type = %d \
+| i = %2d \
+| j = %2d \
+| w = %2d \
+| h = %2d \
+| sum = %4ld \
+| sum_normalized = %ld\n",
+    h.type, h.i, h.j, h.w, h.h, h.sum, h.sum_normalized);
+}
+
+char* Haar_to_str(Haar h){
+  char* str = malloc(sizeof(char) * 200);
+  sprintf(str,
+    "\
+| type = %d \
+| i = %2d \
+| j = %2d \
+| w = %2d \
+| h = %2d \
+| sum = %4ld \
+| sum_normalized = %ld",
+    h.type, h.i, h.j, h.w, h.h, h.sum, h.sum_normalized);
+  return str;
 }
 
 // Creates a Struc Haar Vect, and initialize its attributes

@@ -92,6 +92,8 @@ void Ulong_tab_to_SDL(Ulong_tab* tab, SDL_Surface* img)
 
 int main(int i, char** path)
 {
+
+
 // Parsing
   if(i > 2 || i == 1)
   {
@@ -112,15 +114,25 @@ int main(int i, char** path)
 
   size_t size_imgs;
 
-  generate_Triplet_vect(path[1], imgs, &size_imgs);
+  warnx("gen triplet\n");
+  generate_Triplet_vect(path[1], &imgs, &size_imgs);
+  warnx("end gen triplet\n");
+
 
   for (size_t i = 0; i < size_imgs; ++i)
   {
     printf ("display %d\n", i);
     print(imgs[i].img);
   }
+  warnx("adaboost");
 
-  printf ("finprint\n");
+  if (size_imgs)
+    adaboost(imgs, size_imgs);
+
+
+  warnx("finprint\n");
+
+  assert(0);
 
   SDL_Surface* surface = load_image(path[1]);
 
@@ -144,6 +156,11 @@ int main(int i, char** path)
 
   Ulong_tab_to_SDL(tab, surface);
   display_image(surface);
+
+  size_t ez;
+  compute_haar_features(tab, &ez);
+
+  printf ("%d\n",ez);
 
 // Compute all haar features of the image
 //  size_t size;

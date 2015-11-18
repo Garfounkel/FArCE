@@ -1,5 +1,6 @@
 #include "haar.h"
 
+
 // Compute the sum of pixels using integral image
 // in a rectangle defined by h1, w1, h2 and w2 inside img
 long sum_rect(Ulong_tab* img, int h1, int w1, int h2, int w2){
@@ -93,7 +94,7 @@ Haar* compute_haar_features(Ulong_tab *img, size_t* size){
           int sum1 = sum_rect(img,  i,  j,      i + h - 1,  j + w - 1    );
           int sum2 = sum_rect(img,  i,  j + w,  i + h - 1,  j + 2 * w - 1);
 
-          fill_Haar(haar_vect, 1, i, j, w, h, sum1 - sum2);
+          fill_Haar(haar_vect, 1, i, j, w, h, sum1 - sum2, 0, 0);
           haar_vect++;
           //printf ("index = %d\n",haar_vect - res);
           //haar_vect = create_Haar_vect(my_haar);
@@ -121,7 +122,7 @@ Haar* compute_haar_features(Ulong_tab *img, size_t* size){
           int sum2 = sum_rect(img, i, j + w,    i + h - 1,  j + 2*w - 1);
           int sum3 = sum_rect(img, i, j + 2*w,  i + h - 1,  j + 3*w - 1);
 
-          fill_Haar(haar_vect, 2, i, j, w, h, sum1 - sum2 + sum3);
+          fill_Haar(haar_vect, 2, i, j, w, h, sum1 - sum2 + sum3, 0, 0);
           haar_vect++;
           //printf ("index = %d\n",haar_vect - res);
           //haar_vect = create_Haar_vect(my_haar);
@@ -146,7 +147,7 @@ Haar* compute_haar_features(Ulong_tab *img, size_t* size){
           int sum1 = sum_rect(img,  i,      j,  i + h - 1,    j + w - 1);
           int sum2 = sum_rect(img,  i + h,  j,  i + 2*h - 1,  j + w - 1);
 
-          fill_Haar(haar_vect, 3, i, j, w, h, sum1 - sum2);
+          fill_Haar(haar_vect, 3, i, j, w, h, sum1 - sum2, 0, 0);
           haar_vect++;
           //printf ("index = %d\n",haar_vect - res);
           //haar_vect = create_Haar_vect(my_haar);
@@ -172,7 +173,7 @@ Haar* compute_haar_features(Ulong_tab *img, size_t* size){
           int sum2 = sum_rect(img,  i + h,    j,  i + 2*h - 1,  j + w - 1);
           int sum3 = sum_rect(img,  i + 2*h,  j,  i + 3*h - 1,  j + w - 1);
 
-          fill_Haar(haar_vect, 4, i, j, w, h, sum1 - sum2 + sum3);
+          fill_Haar(haar_vect, 4, i, j, w, h, sum1 - sum2 + sum3, 0, 0);
           haar_vect++;
           //printf ("index = %d\n",haar_vect - res);
           //haar_vect = create_Haar_vect(my_haar);
@@ -199,7 +200,7 @@ Haar* compute_haar_features(Ulong_tab *img, size_t* size){
           int sum3 = sum_rect(img, i,     j + w, i + h - 1,   j + 2*w - 1);
           int sum4 = sum_rect(img, i + h, j + w, i + 2*h - 1, j + 2*w - 1);
 
-          fill_Haar(haar_vect, 5, i, j, w, h, sum1-sum2-sum3+sum4);
+          fill_Haar(haar_vect, 5, i, j, w, h, sum1-sum2-sum3+sum4, 0, 0);
           haar_vect++;
           // FUCKING RES GO FUCK YOURSELF AND DIE !!!
           //printf ("index = %d\n",haar_vect - res);
@@ -218,13 +219,16 @@ Haar* compute_haar_features(Ulong_tab *img, size_t* size){
       }
     }
   }
-
+/*
   for (Haar* i = res; i < haar_vect; ++i)
   {
     print_Haar(*i);
 
   }
+
+*/
   *size = haar_vect - res;
+  //warnx("sortie compute haar");
   return res;
 }
 

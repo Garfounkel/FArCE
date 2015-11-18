@@ -1,6 +1,8 @@
 # ifndef HAAR_STRUCT_DEF
 # define HAAR_STRUCT_DEF
 
+# include <stdlib.h>
+
 typedef struct Haar Haar;
 struct Haar
 {
@@ -15,10 +17,23 @@ struct Haar
   char polarity;
 };
 
-Haar create_Haar(int type, int i, int j, int w, int h, long sum);
+Haar create_Haar(int type,
+                 int i, int j,
+                 int w, int h,
+                 long sum,
+                 int polarity,
+                 long threshold);
+void copy_Haar(Haar* source, Haar* dest);
+char* Haar_to_str(Haar h);
 void print_Haar(Haar h);
-void fill_Haar(Haar* haar, int type, int i, int j, int w, int h, long sum);
-int is_present(Haar h, long threshold);
+void fill_Haar(Haar* haar,
+               int type,
+               int i, int j,
+               int w, int h,
+               long sum,
+               int polarity,
+               long threshold);
+int is_present(Haar h);
 
 
 typedef struct Haar_vect Haar_vect;
