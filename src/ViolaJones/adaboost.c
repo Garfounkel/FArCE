@@ -92,9 +92,9 @@ void generate_Triplet_vect(char* directory, Triplet** imgs, size_t* size)
   char** file_list = get_Files_List(directory, size);
 
   for (size_t i = 0; i < *size; ++i)
-    printf ("%d %s \n", i, file_list[i] + 19);// == 'f');
+    printf ("%zu %s \n", i, file_list[i] + 19);// == 'f');
 
-  printf ("%d\n",*size);
+  printf ("%zu\n",*size);
 
   *imgs = malloc(sizeof(Triplet) * *size);
 
@@ -211,8 +211,8 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
           min               = f;
         }
       }
-      if (f%200 == 0)
-        warnx("it = %d | feature = %d\n",iterations, f);
+      /* if (f%200 == 0)
+	 warnx("it = %d | feature = %zu\n",iterations, f);*/
 
     }
     warnx("error min");
@@ -236,7 +236,7 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
     // on ajoute le model
     for (Triplet* i = imgs; i < imgs + len_imgs; ++i)
     {
-      warnx("def poids img n°%d\n", i - imgs);
+      warnx("def poids img n°%zu\n", i - imgs);
 
       assert(i->weight =
              i->weight *

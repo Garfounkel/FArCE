@@ -121,7 +121,7 @@ int main(int i, char** path)
 
   for (size_t i = 0; i < size_imgs; ++i)
   {
-    printf ("display %d\n", i);
+    printf ("display %zu\n", i);
     print(imgs[i].img);
   }
   warnx("adaboost");
@@ -160,7 +160,7 @@ int main(int i, char** path)
   size_t ez;
   compute_haar_features(tab, &ez);
 
-  printf ("%d\n",ez);
+  printf ("%zu\n",ez);
 
 // Compute all haar features of the image
 //  size_t size;
