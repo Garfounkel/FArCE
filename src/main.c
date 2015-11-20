@@ -17,7 +17,8 @@
 # include "Preprocessing/Image_OPs.h"
 # include "SDL_operations/SDL_OPs.h"
 # include <assert.h>
-
+# include <sys/stat.h>
+# include <unistd.h>
 //# include <warnx.h>
 
 // Load SDL library
@@ -101,6 +102,34 @@ int main(int i, char** path)
     return -1;
   }
 
+  init_sdl();
+  struct stat buf;
+  assert(stat(path[1], &buf) == 0);
+  if(S_ISDIR(buf.st_mode)){
+    Triplet* imgs = NULL;
+
+    size_t size_imgs;
+
+    warnx("gen triplet\n");
+    generate_Triplet_vect(path[1], &imgs, &size_imgs);
+    warnx("end gen triplet\n");
+
+
+    for (size_t i = 0; i < size_imgs; ++i)
+    {
+      printf ("display %zu\n", i);
+      print(imgs[i].img);
+    }
+    warnx("adaboost");
+
+    if (size_imgs)
+      adaboost(imgs, size_imgs);
+
+
+    warnx("finprint\n");
+
+  }
+  else {
 // Code to get a list of files and folders in /database/ and to print it
 /*
   size_t *lenght = malloc(sizeof(int));
@@ -108,66 +137,41 @@ int main(int i, char** path)
   print_images_list(list, *lenght);
 */
 
-  init_sdl();
+    SDL_Surface* surface = load_image(path[1]);
 
-  Triplet* imgs = NULL;
-
-  size_t size_imgs;
-
-  warnx("gen triplet\n");
-  generate_Triplet_vect(path[1], &imgs, &size_imgs);
-  warnx("end gen triplet\n");
-
-
-  for (size_t i = 0; i < size_imgs; ++i)
-  {
-    printf ("display %zu\n", i);
-    print(imgs[i].img);
-  }
-  warnx("adaboost");
-
-  if (size_imgs)
-    adaboost(imgs, size_imgs);
-
-
-  warnx("finprint\n");
-
-  assert(0);
-
-  SDL_Surface* surface = load_image(path[1]);
-
-  display_image(surface);
+    display_image(surface);
 
 // Trying blur
 //  Blur(surface);
 //  display_image(surface);
 
 // Convert to grey, mean, invert color and normalize our image
-  preprocessing(surface);
+    preprocessing(surface);
 
 // Create an Ulong_tab from an image
-  Ulong_tab* tab = create_Ulong_tab(surface->h, surface->w);
+    Ulong_tab* tab = create_Ulong_tab(surface->h, surface->w);
 
 // Compute the integral image
-  integral_image(surface, tab);
+    integral_image(surface, tab);
 
 // For debugging:
 //  print(tab);
 
-  Ulong_tab_to_SDL(tab, surface);
-  display_image(surface);
+    Ulong_tab_to_SDL(tab, surface);
+    display_image(surface);
 
-  size_t ez;
-  compute_haar_features(tab, &ez);
+    size_t ez;
+    compute_haar_features(tab, &ez);
 
-  printf ("%zu\n",ez);
+    printf ("%zu\n",ez);
 
 // Compute all haar features of the image
 //  size_t size;
 
 //  compute_haar_features(tab, &size);
 
-  SDL_FreeSurface(surface);
+    SDL_FreeSurface(surface);
 
-  return 0;
+    return 0;
+  }
 }
