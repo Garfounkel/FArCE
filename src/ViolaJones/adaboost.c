@@ -175,7 +175,7 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
       {
         //warnx("threshold\n");
 
-        double error = 1;
+        double error = 0;
         //parcour le tableau d'image
         for (Triplet* i = imgs; i < imgs + len_imgs; i++)
         {
@@ -197,6 +197,11 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
             i->is_a_face *
             is_present(features[f]);
         }
+        error = 1 + error / (2 * len_imgs);
+        warnx("%f", error);
+
+        assert(0);
+
         //s'assur que l'erreur min soit bien la minimal
         if (error < errormin)
         {
