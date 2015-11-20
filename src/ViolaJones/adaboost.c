@@ -207,6 +207,7 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
         {
           errormin          = error;
           copy_Haar(&features[f], &haar_min);
+          assert(features[f].type == haar_min.type && features[f].i == haar_min.i &&features[f].j == haar_min.j &&features[f].h == haar_min.h && features[f].w == haar_min.w);
           //haar_min          = features[f];
           haar_min.polarity = 1;
           min               = f;
@@ -215,6 +216,7 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
         {
           errormin          = 1/error;
           copy_Haar(&features[f], &haar_min);
+          assert(features[f].type == haar_min.type && features[f].i == haar_min.i &&features[f].j == haar_min.j &&features[f].h == haar_min.h && features[f].w == haar_min.w);
           //haar_min          = features[f];
           haar_min.polarity = -1;
           min               = f;
@@ -235,42 +237,43 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
       return model;
     }
 
-    warnx("calc coef\n");
+    //warnx("calc coef\n");
 
     if(errormin == 0)
     {
       warnx("ERRROR MIN ERROR MIN ERROR MIN");
     }
 
-    warnx("%f", errormin);
-    assert(model.coefs[min] = 1/2*log((double)(1 - errormin)/errormin));
-    warnx("%f", model.coefs[min]);
+    //warnx("errmin = %f, 1 - err / err = %f, log = %f, 1/2 = %f", errormin, (double)(1 - errormin)/errormin, log((double)(1 - errormin)/errormin), 1/2*log((double)(1 - errormin)/errormin));
 
-    warnx("asigne haar\n");
+    assert(model.coefs[min] = (double)((double)((double)1/(double)2)*log((double)(1 - errormin)/errormin)));
+    //warnx("%f", model.coefs[min]);
+
+    //warnx("asigne haar\n");
 
     model.haars[min] = haar_min;
 
-    printf ("haar min :\n");
-    print_Haar(model.haars[min]);
+    //printf ("haar min :\n");
+    //print_Haar(model.haars[min]);
 
-    fflush(stdout);
+    //fflush(stdout);
 
-// on ajoute le model
+    // on ajoute le model
     for (Triplet* i = imgs; i < imgs + len_imgs; ++i)
     {
       //warnx("def poids img n°%zu\n", i - imgs);
 
       assert(i->weight =
-             i->weight *
+             (double)i->weight *
 
-             exp(
+             (double)exp(
                -model.coefs[min] *
                i->is_a_face      *
                is_present(haar_min))
 
              /
 
-             (2*sqrt(errormin*(1 - errormin))));
+             (double)(2*sqrt((double)(errormin*((double)1 - errormin)))));
 
     }
 
