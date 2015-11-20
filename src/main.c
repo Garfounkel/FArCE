@@ -50,7 +50,7 @@ void print(Ulong_tab* img)
     for (int w = 0; w < img->w; w++)
     {
       Uint8 m;
-      printf ("getval\n");
+
       m = get_val(img, h,w);
 
       printf ("%d|",m);
@@ -105,7 +105,10 @@ int main(int i, char** path)
   init_sdl();
   struct stat buf;
   assert(stat(path[1], &buf) == 0);
-  if(S_ISDIR(buf.st_mode)){
+
+  if(S_ISDIR(buf.st_mode))
+  {
+
     Triplet* imgs = NULL;
 
     size_t size_imgs;
@@ -115,11 +118,14 @@ int main(int i, char** path)
     warnx("end gen triplet\n");
 
 
-    for (size_t i = 0; i < size_imgs; ++i)
+    /*
+      for (size_t i = 0; i < size_imgs; ++i)
     {
       printf ("display %zu\n", i);
       print(imgs[i].img);
     }
+    */
+
     warnx("adaboost");
 
     if (size_imgs)
