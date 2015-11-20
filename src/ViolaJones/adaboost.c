@@ -107,7 +107,9 @@ void generate_Triplet_vect(char* directory, Triplet** imgs, size_t* size)
     integral_image(img, tab);
 
     (*imgs)[i].img       = tab;
-    (*imgs)[i].weight    = 1 / *size;
+    printf ("size = %d | 1/size = %f\n",*size,(double)((double)(1) / (double)(*size)));
+    assert((*imgs)[i].weight    = (double)((double)(1) / (double)(*size)));
+
     (*imgs)[i].is_a_face = *file_list[i] == 'f' ? 1 : -1;
   }
 }
@@ -173,7 +175,7 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
       {
         //warnx("threshold\n");
 
-        double error = 0;
+        double error = 1;
         //parcour le tableau d'image
         for (Triplet* i = imgs; i < imgs + len_imgs; i++)
         {
@@ -188,6 +190,8 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
           features[f].polarity = 1;
 
           // calcul l'erreur de l'Haar
+          assert(i->weight);
+
           error +=
             i->weight    *
             i->is_a_face *
@@ -228,6 +232,12 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
 
     warnx("calc coef\n");
 
+    if(errormin == 0)
+    {
+      warnx("ERRROR MIN ERROR MIN ERROR MIN");
+    }
+
+    warnx("%f", errormin);
     model.coefs[min] = 1/2*log((1 - errormin)/errormin);
 
     warnx("asigne haar\n");
