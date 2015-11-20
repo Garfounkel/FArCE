@@ -107,7 +107,7 @@ void generate_Triplet_vect(char* directory, Triplet** imgs, size_t* size)
     integral_image(img, tab);
 
     (*imgs)[i].img       = tab;
-    printf ("size = %d | 1/size = %f\n",*size,(double)((double)(1) / (double)(*size)));
+    printf ("size = %zu | 1/size = %f\n",*size,(double)((double)(1) / (double)(*size)));
     assert((*imgs)[i].weight    = (double)((double)(1) / (double)(*size)));
 
     (*imgs)[i].is_a_face = *file_list[i] == 'f' ? 1 : -1;
