@@ -15,9 +15,10 @@ void wait_for_keypressed(void)
 
     // Switch on event type
     switch (event.type) {
-
+      // Someone closed the window -> leave the program
+      case SDL_QUIT: exit(0);
       // Someone pressed a key -> leave the function
-    case SDL_KEYDOWN: return;
+      case SDL_KEYDOWN: return;
 
     default: break;
 

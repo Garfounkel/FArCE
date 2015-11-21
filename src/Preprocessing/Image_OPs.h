@@ -17,10 +17,9 @@ void normalize(SDL_Surface* img);
 SDL_Surface* preprocessing(SDL_Surface* img);
 
 // Blur and Downscale:
-//double* boxesForGauss(double sigma, size_t n);
-void Blur(SDL_Surface *img);
+SDL_Surface* CreateTargetImgFormat(SDL_Surface* source, int w, int h);
+SDL_Surface* Blur(SDL_Surface *source);
 SDL_Surface* Downscale(SDL_Surface *img);
-
 
 //void normalize_Ulong_tab(Ulong_tab* img);
 
