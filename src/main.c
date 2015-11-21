@@ -93,8 +93,6 @@ void Ulong_tab_to_SDL(Ulong_tab* tab, SDL_Surface* img)
 
 int main(int i, char** path)
 {
-
-
 // Parsing
   if(i > 2 || i == 1)
   {
@@ -103,12 +101,10 @@ int main(int i, char** path)
   }
 
   init_sdl();
+
   struct stat buf;
   assert(stat(path[1], &buf) == 0);
-
-  if(S_ISDIR(buf.st_mode))
-  {
-
+  if(S_ISDIR(buf.st_mode)) {
     Triplet* imgs = NULL;
 
     size_t size_imgs;
@@ -116,7 +112,6 @@ int main(int i, char** path)
     warnx("gen triplet\n");
     generate_Triplet_vect(path[1], &imgs, &size_imgs);
     warnx("end gen triplet\n");
-
 
     /*
       for (size_t i = 0; i < size_imgs; ++i)
@@ -133,23 +128,19 @@ int main(int i, char** path)
 
 
     warnx("finprint\n");
-
   }
   else {
-// Code to get a list of files and folders in /database/ and to print it
-/*
-  size_t *lenght = malloc(sizeof(int));
-  char **list = get_Files_List("../database", lenght);
-  print_images_list(list, *lenght);
-*/
+  SDL_Surface* surface = load_image(path[1]);
 
-    SDL_Surface* surface = load_image(path[1]);
+  display_image(surface);
 
-    display_image(surface);
+// Uncomment if you want to try blur
+  //SDL_Surface* blurred = Blur(surface);
+  //display_image(blurred);
 
-// Trying blur
-//  Blur(surface);
-//  display_image(surface);
+// Uncomment if you want to try Downscale
+  //SDL_Surface* downsampled = Downscale(surface);
+  //display_image(downsampled);
 
 // Convert to grey, mean, invert color and normalize our image
     preprocessing(surface);

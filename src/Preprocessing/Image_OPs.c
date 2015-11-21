@@ -188,102 +188,59 @@ SDL_Surface* preprocessing(SDL_Surface* img)
 
 }
 
-
-// Blur and sub-functions:
-
-/* First try: probably too complicated (keep it for now until a better algo is implemented)
-// sigma = standard deviation = radius = r
-// n = number of boxes
-double* boxesForGauss(double sigma, size_t n) {
-  double wIdeal = sqrt((12*sigma*sigma/n)+1);  // Ideal averaging filter width
-  double wl = floor(wIdeal);
-  if((int)wl % 2 == 0) wl--;
-  double wu = wl+2;
-
-  double mIdeal = (12*sigma*sigma - n*wl*wl - 4*n*wl - 3*n)/(-4*wl - 4);
-  double m = round(mIdeal);
-  // double sigmaActual = sqrt( (m*wl*wl + (n-m)*wu*wu - n)/12 );
-
-  double *sizes = malloc(sizeof(float) * n);
-  for(size_t i = 0; i < n; i++)
-    sizes[i] = i < m ? wl : wu;
-  return sizes;
+// Return target surface so that it is the same format as source surface.
+SDL_Surface* CreateTargetImgFormat(SDL_Surface* source, int w, int h) {
+  int    depth = source->format->BitsPerPixel;
+  Uint32 Rmask = source->format->Rmask;
+  Uint32 Gmask = source->format->Gmask;
+  Uint32 Bmask = source->format->Bmask;
+  Uint32 Amask = source->format->Amask;
+  return SDL_CreateRGBSurface(SDL_SWSURFACE, w, h, depth, Rmask, Gmask, Bmask, Amask);
 }
 
-void boxBlur_4 (SDL_Surface *src, SDL_Surface *target, size_t w, size_t h, double r) {
-  for(var i=0; i<src.length; i++) target[i] = src[i];
-  boxBlurH_4(target, src, w, h, r);
-  boxBlurT_4(src, target, w, h, r);
-}
+// Blur
+SDL_Surface* Blur(SDL_Surface* source) {
+  SDL_Surface* target = CreateTargetImgFormat(source, source->w, source->h);
 
-void boxBlurH_4 (SDL_Surface *src, SDL_Surface *target, size_t w, size_t h, double r) {
-  var iarr = 1 / (r+r+1);
-  for(var i=0; i<h; i++) {
-    var ti = i*w, li = ti, ri = ti+r;
-    var fv = src[ti], lv = src[ti+w-1], val = (r+1)*fv;
-    for(var j=0; j<r; j++)
-      val += src[ti+j];
-    for(var j=0  ; j<=r ; j++) {
-      val += src[ri++] - fv       ;   target[ti++] = Math.round(val*iarr);
-    }
-    for(var j=r+1; j<w-r; j++) {
-      val += src[ri++] - src[li++];   target[ti++] = Math.round(val*iarr);
-    }
-    for(var j=w-r; j<w  ; j++) {
-      val += lv        - src[li++];   target[ti++] = Math.round(val*iarr);
+  // Compute the average of every group of 9 pixels surronding a single pixel p.
+  for(int y = 0; y < source->h; y++){
+    for(int x = 0; x < source->w; x++)
+    {
+      unsigned r = 0, g = 0, b = 0;
+      Uint8 rt, gt, bt;
+
+      for (int i = x-1; i <= x+1; i++) {
+        for (int j = y-1; j <= y+1; j++) {
+          SDL_GetRGB(getpixel(source, i, j), source->format, &rt, &gt, &bt);
+          r += rt;
+          g += gt;
+          b += bt;
+        }
+      }
+      r /= 9;
+      g /= 9;
+      b /= 9;
+      unsigned avg = SDL_MapRGB(target->format, r, g, b);
+
+      putpixel(target,x, y, avg);
     }
   }
+  return target;
 }
 
-void boxBlurT_4 (SDL_Surface *src, SDL_Surface *target, size_t w, size_t h, double r) {
-  size_t iarr = 1 / (r+r+1);
-  for(size_t i = 0; i < w; i++) {
-    size_t ti = i, li = ti, ri = ti+r*w;
-    size_t fv = src[ti], lv = src[ti+w*(h-1)], val = (r+1)*fv;
-    for(var j=0; j<r; j++)
-      val += src[ti+j*w];
-    for(var j=0  ; j<=r ; j++) {
-      val += src[ri] - fv     ;  target[ti] = Math.round(val*iarr);  ri+=w; ti+=w;
-    }
-    for(var j=r+1; j<h-r; j++) {
-      val += src[ri] - src[li];  target[ti] = Math.round(val*iarr);  li+=w; ri+=w; ti+=w;
-    }
-    for(var j=h-r; j<h  ; j++) {
-      val += lv      - src[li];  target[ti] = Math.round(val*iarr);  li+=w; ti+=w;
-    }
-  }
-}
+// Downscale img
+SDL_Surface* Downscale(SDL_Surface *source)
+{
+  SDL_Surface *target = CreateTargetImgFormat(source, 24, 24);
 
-void Blur(SDL_Surface *src, SDL_Surface *target, double r){
-  double bxs = boxesForGauss(r, 3);
-  size_t w = src->w, h = src->h;
-  boxBlur_4 (src, target, w, h, (bxs[0]-1)/2);
-  boxBlur_4 (target, src, w, h, (bxs[1]-1)/2);
-  boxBlur_4 (src, target, w, h, (bxs[2]-1)/2);
-}
-*/
+  double sx = (24  / (double)(source->w)); // Scale factor for width
+  double sy = (24 / (double)(source->h)); // Scale factor for height
 
-// Doesn't work
-void Blur(SDL_Surface *img) {
-  Uint8 *pixels = (Uint8 *)img->pixels;
-  size_t i = 0, width = img->w, height = img->h;
+  for(int y = 0; y < source->h; y++)
+    for(int x = 0; x < source->w; x++)
+      for(int o_y = 0; o_y < sy; ++o_y)
+        for(int o_x = 0; o_x < sx; ++o_x)
+          putpixel(target, (int)(sx * x) + o_x, (int)(sy * y) + o_y, getpixel(source, x, y));
 
-  for(; i < width * (height - 1); i++)
-    pixels[i] = (pixels[i] + pixels[i + 1] + pixels[i + width - 1] + pixels[i + width + 2]) >> 2;
-  for(; i < width * height; i++)
-    pixels[i] = 0;
-}
-
-// Downscale img using Blur
-SDL_Surface* Downscale(SDL_Surface *img){
-  if (img->h != img->w) {
-    printf("Can't downscale the image because it's not square (height != weight).\n");
-    return NULL;
-  }
-  if (img->h <= 24) {
-    printf("Didn't downscaled image because it's already less than 24x24 pixel wide.\n");
-    return img;
-  }
-
-  return NULL;
+  return target;
 }
