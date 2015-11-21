@@ -151,7 +151,7 @@ void normalize(SDL_Surface* img)
   Uint8 mi = min(img);
   Uint8 ma = max(img);
 
-  printf ("max = %d\nmin = %d\n",ma,mi);
+  //printf ("max = %d\nmin = %d\n",ma,mi);
 
   for (int h = 0; h < img->h; ++h)
   {
