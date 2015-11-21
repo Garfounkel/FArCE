@@ -91,8 +91,8 @@ void generate_Triplet_vect(char* directory, Triplet** imgs, size_t* size)
 {
   char** file_list = get_Files_List(directory, size);
 
-  for (size_t i = 0; i < *size; ++i)
-    printf ("%zu %s \n", i, file_list[i] + 19);// == 'f');
+  //for (size_t i = 0; i < *size; ++i)
+  //printf ("%zu %s \n", i, file_list[i] + 19);// == 'f');
 
   printf ("%zu\n",*size);
 
@@ -110,7 +110,10 @@ void generate_Triplet_vect(char* directory, Triplet** imgs, size_t* size)
     //printf ("size = %zu | 1/size = %f\n",*size,(double)((double)(1) / (double)(*size)));
     assert((*imgs)[i].weight    = (double)((double)(1) / (double)(*size)));
 
-    (*imgs)[i].is_a_face = *file_list[i] == 'f' ? 1 : -1;
+    (*imgs)[i].is_a_face = file_list[i][19] == 'f' ? 1 : -1;
+
+    warnx("%s, %s\n", ((*imgs)[i].is_a_face + 1)?"face":"non face", file_list[i] + 19 );
+
   }
 }
 
@@ -169,9 +172,9 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
       //warnx("feature\n");
 
       // 73440 = val max d'une sum en 24x24
-      for (features[f].threshold = -73440;
-           features[f].threshold <  73440;
-           features[f].threshold += 10000)
+      for (features[f].threshold = -3440;
+           features[f].threshold <  3440;
+           features[f].threshold +=  100)
       {
         //warnx("threshold\n");
 
@@ -187,6 +190,8 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
           */
 //valeur de l'haar
           compute_haar_sum(i->img, &features[f]);
+          //warnx("sum = %ld", features[f].sum);
+
           features[f].polarity = 1;
 
           // calcul l'erreur de l'Haar
@@ -202,6 +207,8 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
 
         assert(error > 0 && error < 1);
 
+        //warnx("err = %f", error);
+
         //s'assur que l'erreur min soit bien la minimal
         if (error < errormin)
         {
@@ -212,9 +219,9 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
           haar_min.polarity = 1;
           min               = f;
         }
-        else if ((double)(1/error) < errormin)
+        else if ((double)((double)(1)/error) < errormin)
         {
-          errormin          = 1/error;
+          errormin          = (double)((double)(1)/error);
           copy_Haar(&features[f], &haar_min);
           assert(features[f].type == haar_min.type && features[f].i == haar_min.i &&features[f].j == haar_min.j &&features[f].h == haar_min.h && features[f].w == haar_min.w);
           //haar_min          = features[f];
@@ -244,14 +251,13 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
       warnx("ERRROR MIN ERROR MIN ERROR MIN");
     }
 
-    //warnx("errmin = %f, 1 - err / err = %f, log = %f, 1/2 = %f", errormin, (double)(1 - errormin)/errormin, log((double)(1 - errormin)/errormin), 1/2*log((double)(1 - errormin)/errormin));
+    warnx("errmin = %f", errormin);
 
     assert(model.coefs[min] = (double)((double)((double)1/(double)2)*log((double)(1 - errormin)/errormin)));
     //warnx("%f", model.coefs[min]);
 
     //warnx("asigne haar\n");
-
-    model.haars[min] = haar_min;
+    copy_Haar(&haar_min, &model.haars[min]);
 
     //printf ("haar min :\n");
     //print_Haar(model.haars[min]);
@@ -274,6 +280,11 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
              /
 
              (double)(2*sqrt((double)(errormin*((double)1 - errormin)))));
+
+      if (i->weight != (double)1/len_imgs)
+      {
+        warnx("%f", i->weight);
+      }
 
     }
 
