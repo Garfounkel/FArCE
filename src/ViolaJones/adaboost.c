@@ -192,7 +192,7 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
           compute_haar_sum(i->img, &features[f]);
           //warnx("sum = %ld", features[f].sum);
 
-          features[f].polarity = 1;
+          ////features[f].polarity = 1;
 
           // calcul l'erreur de l'Haar
           assert(i->weight);
@@ -216,10 +216,11 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
           copy_Haar(&features[f], &haar_min);
           assert(features[f].type == haar_min.type && features[f].i == haar_min.i &&features[f].j == haar_min.j &&features[f].h == haar_min.h && features[f].w == haar_min.w);
           //haar_min          = features[f];
-          haar_min.polarity = 1;
+          ////haar_min.polarity = 1;
           min               = f;
         }
-        else if ((double)((double)(1)/error) < errormin)
+        /*
+          else if ((double)((double)(1)/error) < errormin)
         {
           errormin          = (double)((double)(1)/error);
           copy_Haar(&features[f], &haar_min);
@@ -228,6 +229,7 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
           haar_min.polarity = -1;
           min               = f;
         }
+        */
       }
       /* if (f%200 == 0)
 	 warnx("it = %d | feature = %zu\n",iterations, f);*/
@@ -253,7 +255,11 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
 
     warnx("errmin = %f", errormin);
 
-    assert(model.coefs[min] = (double)((double)((double)1/(double)2)*log((double)(1 - errormin)/errormin)));
+    assert(model.coefs[min] = (double)((double)
+                                       ((double)1
+                                        /
+                                        (double)2) *
+                                       log((double)((double)1 - errormin)/errormin))/* * haar_min.polarity */);
     //warnx("%f", model.coefs[min]);
 
     //warnx("asigne haar\n");
@@ -274,8 +280,8 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
 
              (double)exp(
                -model.coefs[min] *
-               i->is_a_face      *
-               is_present(haar_min))
+               (double)i->is_a_face      *
+               (double)is_present(haar_min))
 
              /
 
