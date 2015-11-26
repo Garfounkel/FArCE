@@ -21,13 +21,13 @@
 typedef struct Triplet Triplet;
 struct Triplet{
   Ulong_tab* img;
-  double weight;
+  float weight;
   int is_a_face; // 1 = is a face, -1 = isn't a face
 };
 
 typedef struct Model Model;
 struct Model{
-  double* coefs;
+  float* coefs;
   Haar* haars;
 };
 

@@ -150,7 +150,7 @@ void write_model(Model* m, char* fname)
 Model adaboost(Triplet* imgs, size_t len_imgs)
 {
   Model model;
-  model.coefs = calloc(162336, sizeof(float));
+  model.coefs = calloc(162336, sizeof(double));
   model.haars = malloc(sizeof(Haar)  * 162336);
 
   write_model(&model, "model.farce");
@@ -165,7 +165,7 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
     //warnx("adaboost next level\n");
     int min = 0;
     Haar haar_min;
-    float errormin = 1;
+    double errormin = 1;
 
     for (size_t f = 0; f < size_features; ++f)
     {
@@ -178,7 +178,7 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
       {
         //warnx("threshold\n");
 
-        float error = 0;
+        double error = 0;
         //parcour le tableau d'image
         for (Triplet* i = imgs; i < imgs + len_imgs; i++)
         {
@@ -198,12 +198,12 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
           assert(i->weight);
 
           error +=
-            (float)i->weight    *
-            (float)i->is_a_face *
-            (float)is_present(features[f]);
+            (double)i->weight    *
+            (double)i->is_a_face *
+            (double)is_present(features[f]);
         }
 
-        error = 0.5 + ((float)error / (float)(2 * len_imgs));
+        error = 0.5 + ((double)error / (2 * len_imgs));
 
         assert(error > 0 && error < 1);
 
@@ -220,9 +220,9 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
           min               = f;
         }
         /*
-          else if ((float)((float)(1)/error) < errormin)
+          else if ((double)((double)(1)/error) < errormin)
         {
-          errormin          = (float)((float)(1)/error);
+          errormin          = (double)((double)(1)/error);
           copy_Haar(&features[f], &haar_min);
           assert(features[f].type == haar_min.type && features[f].i == haar_min.i &&features[f].j == haar_min.j &&features[f].h == haar_min.h && features[f].w == haar_min.w);
           //haar_min          = features[f];
@@ -255,11 +255,11 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
 
     warnx("errmin = %f", errormin);
 
-    assert(model.coefs[min] = (float)((float)
-                                       ((float)1
+    assert(model.coefs[min] = (double)((double)
+                                       ((double)1
                                         /
-                                        (float)2) *
-                                       log((float)((float)1 - errormin)/errormin))/* * haar_min.polarity */);
+                                        (double)2) *
+                                       log((double)((double)1 - errormin)/errormin))/* * haar_min.polarity */);
     //warnx("%f", model.coefs[min]);
 
     //warnx("asigne haar\n");
@@ -276,18 +276,18 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
       //warnx("def poids img n°%zu\n", i - imgs);
 
       assert(i->weight =
-             (float)i->weight *
+             (double)i->weight *
 
-             (float)exp(
+             (double)exp(
                -model.coefs[min] *
-               (float)i->is_a_face      *
-               (float)is_present(haar_min))
+               (double)i->is_a_face      *
+               (double)is_present(haar_min))
 
              /
 
-             (float)(2*sqrt((float)(errormin*((float)1 - errormin)))));
+             (double)(2*sqrt((double)(errormin*((double)1 - errormin)))));
 
-      if (i->weight != (float)1/len_imgs)
+      if (i->weight != (double)1/len_imgs)
       {
         warnx("%f", i->weight);
       }
