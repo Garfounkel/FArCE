@@ -20,9 +20,10 @@
 
 typedef struct Triplet Triplet;
 struct Triplet{
-  Ulong_tab* img;
-  float weight;
-  int is_a_face; // 1 = is a face, -1 = isn't a face
+    Ulong_tab* img;
+    float weight;
+    int is_a_face; // 1 = is a face, -1 = isn't a face
+    int sum;
 };
 
 typedef struct Model Model;
