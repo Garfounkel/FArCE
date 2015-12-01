@@ -15,22 +15,30 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n, Haar haar) {
   int e = 2; // Error
 
   //Sum up the weights of the positive (resp. negative) examples whose f-th feature is bigger than the present threshold
-  int WpSup = 0, WnSup = 0 WpInf = 0, WnInf = 0;
+  int WpSup = 0, WnSup = 0, WpInf = 0, WnInf = 0;
   for (size_t i = 0; i < n; i++) {
 
     if (train_exp[i].is_a_face) {
       if (train_exp[i].sum > t)
         WpSup += train_exp[i].sum;
       else
-        WnSup += train_exp[i].sum;
+        WpInf += train_exp[i].sum;
     }
     else {
       if (train_exp[i].sum > t)
-        WpInf += train_exp[i].sum;
+        WnSup += train_exp[i].sum;
       else
         WnInf += train_exp[i].sum;
     }
   }
 
   size_t j = 0;
+  int tbar = t;
+  int mbar = m;
+
+  while (1) {
+    int errorp = WpInf + WnSup;
+    int errorn = WpSup + WnInf;
+    int T = errorp > errorn ? 1 : -1;
+  }
 }
