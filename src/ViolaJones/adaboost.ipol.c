@@ -12,7 +12,7 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n, Haar haar) {
   }
 
   int M = 0; // Margin
-  int e = 2; // Error
+  int error = 2; // Error
 
   //Sum up the weights of the positive (resp. negative) examples whose f-th feature is bigger than the present threshold
   int WpSup = 0, WnSup = 0, WpInf = 0, WnInf = 0;
@@ -40,5 +40,31 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n, Haar haar) {
     int errorp = WpInf + WnSup;
     int errorn = WpSup + WnInf;
     int T = errorp > errorn ? 1 : -1;
+
+    int errorbar;
+    int Tbar;
+
+    if (errorp < errorm)
+    {
+      errorbar = errorp;
+      Tbar = 1;
+    }
+    else
+    {
+      errorbar = errorm;
+      Tbar = -1;
+    }
+
+    if (errorbar < error || (errorbar = error && mbar > m))
+    {
+      error = errorbar;
+      t = tbar;
+      m = mbar;
+      T = Tbar;
+    }
+
+    if (j == n) {
+
+    }
   }
 }
