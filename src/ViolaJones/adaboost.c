@@ -197,15 +197,14 @@ Model adaboost(Triplet* imgs, size_t len_imgs)
           // calcul l'erreur de l'Haar
           assert(i->weight);
 
-          error +=
-            (float)i->weight    *
-            (float)i->is_a_face *
-            (float)is_present(features[f]);
+          if (i->is_a_face != is_present(features[f]))
+            error +=
+              (float)i->weight;
         }
 
-        error = 0.5 + ((float)error / (float)(2 * len_imgs));
+        //error = 0.5 + ((float)error / (float)(2 * len_imgs));
 
-        assert(error > 0 && error < 1);
+        //assert(error > 0 && error < 1);
 
         //warnx("err = %f", error);
 

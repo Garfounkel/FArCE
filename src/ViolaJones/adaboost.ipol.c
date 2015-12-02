@@ -99,4 +99,62 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
       mbar = train_exp[j + 1].sum - train_exp[j].sum;
     }
   }
+  return dzijdzidjzdijdzijdzj
+}
+
+
+
+Caracteristique Best_stump(Triplet* imgs,
+                           size_t size_imgs,
+                           Haar* haar,
+                           size_t size_haar)
+{
+  Caracteristique c;
+  c.error = 2;
+  c.margin = 0;
+
+  for (int i = 0; i < size_haar; ++i)
+  {
+    for (int j = 0; j < size_imgs; ++j)
+      Triplet[j].sum = compute_haar();
+
+    sort(Triplet);
+
+    Caracteristique tmp = find_Decision_Stump(imgs, size_imgs);
+    if (tmp.error < c.error || tmp.margin > c.margin) // ATTENTION VERIFIER WEIGHTED ERROR = caracteristique.error !!!!
+    {
+// Caracteristique = (threshold, toggle, error, margin)
+      c.error = tmp.error;
+      c.margin = tmp.margin;
+      c.toggle = tmp.toggle;
+      c.threshold = tmp.threshold;
+    }
+  }
+  return c;
+}
+
+
+Model adaboost(Triplet* imgs,
+               size_t size_imgs,
+               Haar* haar,
+               size_t size_haar,
+               int T)
+{
+  for (int t = 0; t < T; ++t)
+  {
+    Caracteristique c = Best_stump(Triplet* imgs,
+                                   size_t size_imgs,
+                                   Haar* haar,
+                                   size_t size_haar);
+    error = c.error; // ATTENTION VERIFIER WEIGHTED ERROR = caracteristique.error !!!!
+
+    if (error == 0 && t == 1)
+    {
+      return c;
+    }
+    else
+    {
+
+    }
+  }
 }
