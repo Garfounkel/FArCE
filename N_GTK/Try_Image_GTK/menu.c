@@ -17,7 +17,7 @@ int main (int argc, char** argv) {
   GtkWidget *Menu;
   // GtkWidget *label;
   GtkWidget *MenuItem;
-  GtkWidget *VBox;
+  // GtkWidget *VBox;
   GtkWidget *Image_box;
  
   
@@ -38,8 +38,8 @@ int main (int argc, char** argv) {
 
   
   //vertical box
-  VBox = gtk_vbox_new(FALSE,6);
-
+  /* VBox = gtk_vbox_new(FALSE,6);
+     gtk_box_pack_start(GTK_BOX(Image_box),Vbox,FALSE,TRUE,0);*/
  
   MenuBar = gtk_menu_bar_new();
   Menu = gtk_menu_new();
@@ -51,6 +51,8 @@ int main (int argc, char** argv) {
   MenuItem = gtk_menu_item_new_with_label("Add");
   gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItem);
   
+   gtk_signal_connect(GTK_OBJECT (window), "destroy", GTK_SIGNAL_FUNC (destroy), NULL);
+   
   MenuItem = gtk_menu_item_new_with_label("Leave"); 
    gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItem);
   ///////////////////////////////////////////////////////
@@ -62,15 +64,14 @@ int main (int argc, char** argv) {
   //ADD file top window
   gtk_menu_shell_append(GTK_MENU_SHELL(MenuBar), MenuItem);
   
+    
+  gtk_box_pack_start(GTK_BOX(Image_box), MenuBar, FALSE, FALSE, 0);
   
-  
-  gtk_box_pack_start(GTK_BOX(VBox), MenuBar, FALSE, FALSE, 0);
-  
-  gtk_container_add(GTK_CONTAINER(window), VBox);
+  //gtk_container_add(GTK_CONTAINER(window), VBox);
   
   gtk_signal_connect(GTK_OBJECT (window), "destroy", GTK_SIGNAL_FUNC (destroy), NULL);
   // g_signal_connect(G_OBJECT(Button), "clicked",G_CALLBACK(destroy), args);  
-   gtk_container_add(GTK_CONTAINER (window), image);  
+  // gtk_container_add(GTK_CONTAINER (window), image);  
   
   gtk_widget_show_all(window);
   gtk_main();
