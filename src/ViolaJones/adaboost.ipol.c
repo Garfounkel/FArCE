@@ -3,7 +3,7 @@
 
 // algorithme 4
 
-Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n, Haar haar) {
+Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
 
   int t = 0; // Treshold
   for (size_t i = 0; i < n; i++) {
@@ -69,12 +69,34 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n, Haar haar) {
     j++;
 
     while (1) {
-      if (train_exp) {
-        
+      if (train_exp[j].is_a_face == -1)
+      {
+        WnInf += train_exp[j].weight;
+        WnSup -= train_exp[j].weight;
       }
+      else
+      {
+        WpInf += train_exp[j].weight;
+        WpSup += train_exp[j].weight;
+      }
+
+      if (j == n || train_exp[j].sum != train_exp[j + 1].sum) {
+        break;
+      }
+      else {
+        j++;
+      }
+    }
+
+    if (j == n) {
+      for (size_t i = 0; i < n; i++)
+        if (train_exp[i].sum < t)
+          tbar = train_exp[i].sum + 1;
+      mbar = 0;
+    }
+    else {
+      tbar = (train_exp[j].sum + train_exp[j + 1].sum)/2;
+      mbar = train_exp[j + 1].sum - train_exp[j].sum;
     }
   }
 }
-
-
-
