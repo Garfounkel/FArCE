@@ -104,11 +104,12 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
 
 
 
-Caracteristique Best_stump(Triplet* imgs,
+size_t Best_stump(Triplet* imgs,
                            size_t size_imgs,
                            Haar* haar,
                            size_t size_haar)
 {
+
   Caracteristique c;
   c.error = 2;
   c.margin = 0;
@@ -128,9 +129,14 @@ Caracteristique Best_stump(Triplet* imgs,
       c.margin = tmp.margin;
       c.toggle = tmp.toggle;
       c.threshold = tmp.threshold;
+      Haar[i].error = tmp.error;
+      Haar[i].margin = tmp.margin;
+      Haar[i].polarity = tmp.toggle;
+      Haar[i].threshold = tmp.threshold;
+      min = i;
     }
   }
-  return c;
+  return i;
 }
 
 
@@ -140,21 +146,53 @@ Model adaboost(Triplet* imgs,
                size_t size_haar,
                int T)
 {
+  Model model;
+
+  model.coefs = calloc(162336, sizeof(float));
+  model.haars = malloc(sizeof(Haar)  * 162336);
+
+  write_model(&model, "model.farce");
+
+
   for (int t = 0; t < T; ++t)
   {
-    Caracteristique c = Best_stump(Triplet* imgs,
+    size_t best = Best_stump(Triplet* imgs,
                                    size_t size_imgs,
                                    Haar* haar,
                                    size_t size_haar);
+
+    model.haars[best] = haar[best];
+
     error = c.error; // ATTENTION VERIFIER WEIGHTED ERROR = caracteristique.error !!!!
 
     if (error == 0 && t == 1)
     {
-      return c;
+      return c; // INCORRECT
     }
     else
     {
+      assert(model.coefs[min] = (float)((float)
+                                        ((float)1
+                                         /
+                                         (float)2) *
+                                        log((float)((float)1 - error)/error)));
 
+      for (Triplet* i = imgs; i < imgs + len_imgs; ++i)
+      {
+
+        //warnx("def poids img n°%zu\n", i - imgs);
+
+        assert(i->weight = (float)i->weight/2 *
+          ((is_present(Haar[t],i) == i->is_a_face)?
+           (float)((float)1/((float)1 - error)):
+           (float)((float)1/((float)error))));
+
+        if (i->weight != (float)1/len_imgs)
+        {
+          warnx("%f", i->weight);
+        }
+      }
     }
   }
+  return Model;
 }
