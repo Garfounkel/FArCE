@@ -6,15 +6,17 @@
 typedef struct Haar Haar;
 struct Haar
 {
-  int type;
-  int i;
-  int j;
-  int w;
-  int h;
-  long sum;
-  long sum_normalized;
-  int threshold;
-  char polarity;
+    int type;
+    int i;
+    int j;
+    int w;
+    int h;
+    long sum;
+    long sum_normalized;
+    int threshold;
+    int polarity;
+    int error;
+    int margin;
 };
 
 Haar create_Haar(int type,

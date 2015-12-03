@@ -9,5 +9,4 @@ struct Caracteristique{
     int margin;
 };
 
-
 #endif /* !ADABOOST_IPOL_H_ */
