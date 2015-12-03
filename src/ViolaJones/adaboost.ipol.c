@@ -121,9 +121,9 @@ Caracteristique Best_stump(Triplet* imgs,
   for (int i = 0; i < size_haar; ++i)
   {
     for (int j = 0; j < size_imgs; ++j)
-      Triplet[j].sum = compute_haar();
+      Triplet[j].sum = compute_haar_sum(imgs[j].img, haar[i]);
 
-    sort(Triplet);
+    sort(Triplet); // ATTENTION APPEL ADABOOST
 
     Caracteristique tmp = find_Decision_Stump(imgs, size_imgs);
     if (tmp.error < c.error || (tmp.error == c.error && tmp.margin > c.margin)) // ATTENTION VERIFIER WEIGHTED ERROR = caracteristique.error !!!!
@@ -163,3 +163,25 @@ Model adaboost(Triplet* imgs,
     }
   }
 }
+
+Windows FaceDetection(UlongTab img, Cascade cascade, float scalecoef) {
+  Windows P;
+  P.i1 = ?;
+  P.i2 = ?;
+  P.j1 = ?;
+  P.j2 = ?;
+
+  for (size_t l = 0; l < cascade.lenght; l++) {
+   
+  }
+
+}
+
+
+
+
+
+
+
+
+
