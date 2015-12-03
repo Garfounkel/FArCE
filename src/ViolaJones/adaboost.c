@@ -130,7 +130,7 @@ size_t Best_stump(Triplet* imgs,
       imgs[j].sum = haar[i].sum;
     }
 
-    sort(imgs); // ATTENTION APPEL ADABOOST
+    quickSort(imgs, 0, size_imgs - 1); // ATTENTION APPEL ADABOOST
 
     Caracteristique tmp = find_Decision_Stump(imgs, size_imgs);
     if (tmp.error < c.error || (tmp.error == c.error && tmp.margin > c.margin)) // ATTENTION VERIFIER WEIGHTED ERROR = caracteristique.error !!!!
@@ -253,17 +253,16 @@ Model adaboost(Triplet* imgs,
   return model;
 }
 
-void BONUS_QuickSort(int arr[], int left, int right)
+void quickSort(Triplet arr[], size_t left, size_t right)
 {
   while (1)
   {
-
     if (left >= right)
       return;
 
-    int pivot = arr[left];
-    int tmpleft = left;
-    int tmpright = right;
+    Triplet pivot = arr[left];
+    size_t tmpleft = left;
+    size_t tmpright = right;
 
     while (1)
     {
@@ -278,7 +277,7 @@ void BONUS_QuickSort(int arr[], int left, int right)
 
       if (tmpleft < tmpright)
       {
-        int temp = arr[tmpright];
+        Triplet temp = arr[tmpright];
         arr[tmpright] = arr[tmpleft];
         arr[tmpleft] = temp;
       }
@@ -290,7 +289,7 @@ void BONUS_QuickSort(int arr[], int left, int right)
     }
 
     if (pivot > 1)
-      BONUS_QuickSort(arr, left, pivot - 1);
+      quickSort(arr, left, pivot - 1);
 
     if (pivot + 1 < right)
     {
