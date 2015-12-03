@@ -252,3 +252,51 @@ Model adaboost(Triplet* imgs,
   }
   return model;
 }
+
+void BONUS_QuickSort(int arr[], int left, int right)
+{
+  while (1)
+  {
+
+    if (left >= right)
+      return;
+
+    int pivot = arr[left];
+    int tmpleft = left;
+    int tmpright = right;
+
+    while (1)
+    {
+      while (arr[tmpleft] < pivot)
+        tmpleft++;
+
+      while (arr[tmpright] > pivot)
+        tmpright--;
+
+      if (arr[tmpright] == pivot && arr[tmpleft] == pivot)
+        tmpleft++;
+
+      if (tmpleft < tmpright)
+      {
+        int temp = arr[tmpright];
+        arr[tmpright] = arr[tmpleft];
+        arr[tmpleft] = temp;
+      }
+      else
+      {
+        pivot =  tmpright;
+        break;
+      }
+    }
+
+    if (pivot > 1)
+      BONUS_QuickSort(arr, left, pivot - 1);
+
+    if (pivot + 1 < right)
+    {
+      left = pivot + 1;
+      continue;
+    }
+    break;
+  }
+}
