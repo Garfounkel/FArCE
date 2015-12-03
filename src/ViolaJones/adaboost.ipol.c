@@ -99,7 +99,12 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
       mbar = train_exp[j + 1].sum - train_exp[j].sum;
     }
   }
-  return dzijdzidjzdijdzijdzj
+  Caracteristique c;
+  c.error = error;
+  c.toggle = T;
+  c.treshold = t;
+  c.margin = m;
+  return c;
 }
 
 
@@ -121,7 +126,7 @@ Caracteristique Best_stump(Triplet* imgs,
     sort(Triplet);
 
     Caracteristique tmp = find_Decision_Stump(imgs, size_imgs);
-    if (tmp.error < c.error || tmp.margin > c.margin) // ATTENTION VERIFIER WEIGHTED ERROR = caracteristique.error !!!!
+    if (tmp.error < c.error || (tmp.error == c.error && tmp.margin > c.margin)) // ATTENTION VERIFIER WEIGHTED ERROR = caracteristique.error !!!!
     {
 // Caracteristique = (threshold, toggle, error, margin)
       c.error = tmp.error;
