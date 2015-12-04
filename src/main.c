@@ -151,6 +151,10 @@ int main(int i, char** path)
 
   display_image(surface);
 
+// drawWindow test
+//  drawWindow(surface, 30, 30, 50);
+//  display_image(surface);
+
 // Uncomment if you want to try blur
   //SDL_Surface* blurred = Blur(surface);
   //display_image(blurred);

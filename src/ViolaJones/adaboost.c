@@ -153,7 +153,7 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
   }
 
   int M = 0; // Margin
-  int error = 2; // Error
+  float error = 2; // Error
 
   //Sum up the weights of the positive (resp. negative) examples whose f-th feature is bigger than the present threshold
   float WpSup = 0, WnSup = 0, WpInf = 0, WnInf = 0;
@@ -179,11 +179,11 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
   int T;
 
   while (1) {
-    int errorp = WpInf + WnSup;
-    int errorn = WpSup + WnInf;
+    float errorp = WpInf + WnSup;
+    float errorn = WpSup + WnInf;
     T = errorp > errorn ? 1 : -1;
 
-    int errorbar;
+    float errorbar;
     int Tbar;
 
     if (errorp < errorn)
@@ -197,7 +197,7 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
       Tbar = -1;
     }
 
-    if (errorbar < error || (errorbar = error && Mbar > M))
+    if (errorbar < error || (errorbar == error && Mbar > M))
     {
       error = errorbar;
       t = tbar;
@@ -219,7 +219,7 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
       else
       {
         WpInf += train_exp[j].weight;
-        WpSup += train_exp[j].weight;
+        WpSup -= train_exp[j].weight;
       }
 
       if (j == n || train_exp[j].sum != train_exp[j + 1].sum) {
@@ -232,7 +232,7 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
 
     if (j == n) {
       for (size_t i = 0; i < n; i++)
-        if (train_exp[i].sum < t)
+        if (train_exp[i].sum > t)
           tbar = train_exp[i].sum + 1;
       Mbar = 0;
     }
@@ -243,6 +243,7 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
   }
   Caracteristique c;
   c.error = error;
+  warnx("error = %f", error);
   c.toggle = T;
   c.threshold = t;
   c.margin = M;
@@ -321,7 +322,7 @@ Model adaboost(Triplet* imgs, size_t size_imgs, int T)
         model.coefs[i] = 0;
       }
       model.coefs[best] = 1;
-      return model; // INCORRECT
+      return model;
     }
     else
     {
