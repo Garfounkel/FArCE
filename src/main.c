@@ -96,7 +96,7 @@ int main(int i, char** path)
 // Parsing
   if(i > 2 || i == 1)
   {
-    printf("please specify an image to display\n");
+    warnx("please specify an image to display\n");
     return -1;
   }
 
@@ -104,6 +104,7 @@ int main(int i, char** path)
 
   struct stat buf;
   assert(stat(path[1], &buf) == 0);
+  // Arg is a dir
   if(S_ISDIR(buf.st_mode)) {
     Triplet* imgs = NULL;
 
@@ -122,13 +123,14 @@ int main(int i, char** path)
     */
 
     warnx("adaboost");
-
+    warnx("size_imgs = %zu\n", size_imgs);
     if (size_imgs)
-      adaboost(imgs, size_imgs);
+      adaboost(imgs, size_imgs, 10); // 10 = arbitrary number of training rounds
 
 
     warnx("finprint\n");
   }
+  // Arg is a file
   else {
   SDL_Surface* surface = load_image(path[1]);
 

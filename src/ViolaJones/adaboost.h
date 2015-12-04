@@ -1,11 +1,21 @@
 #ifndef ADABOOST_IPOL_H_
 # define ADABOOST_IPOL_H_
 
-#include "Ulong_tab.h"
-#include "Haar_type.h"
-#include "haar.h"
-#include <math.h>
-#include <err.h>
+# include <stdlib.h>
+# include <stddef.h>
+# include <stdio.h>
+# include <SDL/SDL.h>
+# include <SDL/SDL_image.h>
+# include <err.h>
+# include <dirent.h>
+# include <math.h>
+# include "pixel_operations.h"
+# include "Haar_type.h"
+# include "haar.h"
+# include "../SDL_operations/SDL_OPs.h"
+# include "../Preprocessing/Image_OPs.h"
+# include "integral_image.h"
+# include "Ulong_tab.h"
 
 typedef struct Triplet Triplet;
 
@@ -45,10 +55,11 @@ struct Caracteristique{
 
 Triplet create_Triplet(Ulong_tab* img, int weight, int is_a_face);
 void generate_Triplet_vect(char* directory, Triplet** imgs, size_t* size);
-Model adaboost(Triplet* imgs, size_t len_imgs);
+Model adaboost(Triplet* imgs, size_t size_imgs, int T);
 size_t dirLenght(char* path);
 char** get_Files_List(char* path, size_t *nb);
 void print_images_list(char **list, size_t lenght);
-
+//void quickSort(Triplet arr[], size_t left, size_t right);
+void quickSort(Triplet *begin, Triplet *end);
 
 #endif /* !ADABOOST_IPOL_H_ */

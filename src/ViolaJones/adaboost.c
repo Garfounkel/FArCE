@@ -32,7 +32,7 @@ size_t dirLenght(char* path){
 }
 
 char** get_Files_List(char* path, size_t *nb){
-  printf ("oppening %s\n",path);
+  warnx("oppening %s\n",path);
   DIR *dir;
   struct dirent *ent;
   size_t pathLenght = strlen(path);
@@ -55,7 +55,7 @@ char** get_Files_List(char* path, size_t *nb){
   }
   else {
     *nb = 0;
-    printf("Couldn't open directory :(\n");
+    warnx("Couldn't open directory :(\n");
     return NULL;
   }
 }
@@ -227,7 +227,6 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
 }
 
 
-
 size_t Best_stump(Triplet* imgs,
                            size_t size_imgs,
                            Haar* haar,
@@ -247,7 +246,8 @@ size_t Best_stump(Triplet* imgs,
       imgs[j].sum = haar[i].sum;
     }
 
-    quickSort(imgs, 0, size_imgs - 1); // ATTENTION APPEL ADABOOST
+    //quickSort(imgs, 0, size_imgs - 1); // ATTENTION APPEL ADABOOST
+    quickSort(imgs, (imgs + size_imgs));
 
     Caracteristique tmp = find_Decision_Stump(imgs, size_imgs);
     if (tmp.error < c.error || (tmp.error == c.error && tmp.margin > c.margin)) // ATTENTION VERIFIER WEIGHTED ERROR = caracteristique.error !!!!
@@ -306,11 +306,7 @@ void write_model(Model* m, char* fname)
 }
 
 
-Model adaboost(Triplet* imgs,
-               size_t size_imgs,
-               Haar* haar,
-               size_t size_haar,
-               int T)
+Model adaboost(Triplet* imgs, size_t size_imgs, int T)
 {
   Model model;
 
@@ -319,6 +315,8 @@ Model adaboost(Triplet* imgs,
 
   write_model(&model, "model.farce");
 
+  size_t size_haar;
+  Haar* haar = compute_haar_features(imgs->img, &size_haar);
 
   for (int t = 0; t < T; ++t)
   {
@@ -370,7 +368,7 @@ Model adaboost(Triplet* imgs,
   return model;
 }
 
-void quickSort(Triplet arr[], size_t left, size_t right)
+/*void quickSort(Triplet arr[], size_t left, size_t right)
 {
   while (1)
   {
@@ -380,19 +378,20 @@ void quickSort(Triplet arr[], size_t left, size_t right)
     Triplet pivot = arr[left];
     size_t tmpleft = left;
     size_t tmpright = right;
+    size_t tmptmpright;
 
     while (1)
     {
-      while (arr[tmpleft] < pivot)
+      while (arr[tmpleft].sum < pivot.sum)
         tmpleft++;
 
-      while (arr[tmpright] > pivot)
+      while (arr[tmpright].sum > pivot.sum)
         tmpright--;
 
-      if (arr[tmpright] == pivot && arr[tmpleft] == pivot)
+      if (arr[tmpright].sum == pivot.sum && arr[tmpleft].sum == pivot.sum)
         tmpleft++;
 
-      if (tmpleft < tmpright)
+      if (tmpleft.sum < tmpright.sum)
       {
         Triplet temp = arr[tmpright];
         arr[tmpright] = arr[tmpleft];
@@ -400,19 +399,69 @@ void quickSort(Triplet arr[], size_t left, size_t right)
       }
       else
       {
-        pivot =  tmpright;
+        tmptmprightpivot =  tmpright;
         break;
       }
     }
 
-    if (pivot > 1)
-      quickSort(arr, left, pivot - 1);
+    if (pivot.sum > 1)
+      quickSort(arr, left, pivot.sum - 1);
 
-    if (pivot + 1 < right)
+    if (pivot.sum + 1 < right.sum)
     {
       left = pivot + 1;
       continue;
     }
     break;
+  }
+}
+*/
+// Quick sort Sim:
+Triplet* choose_pivot(Triplet *begin, Triplet *end){
+  Triplet* mid = (begin + (end - begin)/2);
+  if(begin->sum > mid->sum){
+    if(mid->sum > end->sum)
+      return mid;
+    else if(begin->sum > end->sum)
+      return end;
+    else
+      return begin;
+  }
+  else{
+    if(begin->sum > end->sum)
+      return begin;
+    else if(mid->sum > end->sum)
+      return end;
+    else
+      return mid;
+  }
+}
+
+void swap(Triplet* a, Triplet* b){
+  Triplet c = *b;
+  *b = *a;
+  *a = c;
+}
+
+Triplet* partition(Triplet *begin, Triplet *end, Triplet *pivot){
+  Triplet pval = *(pivot);
+  swap(pivot, end-1);
+  pivot = begin;
+  for (Triplet* i = begin; i < end-1; i++) {
+    if (i->sum < pval.sum) {
+      swap(pivot, i);
+      pivot++;
+    }
+  }
+  swap(pivot, end-1);
+  return pivot;
+}
+
+void quickSort(Triplet *begin, Triplet *end){
+  if (end - begin > 1) {
+    Triplet* pivot = choose_pivot(begin, end-1);
+    pivot = partition(begin, end, pivot);
+    quickSort(begin, pivot);
+    quickSort(pivot + 1, end);
   }
 }
