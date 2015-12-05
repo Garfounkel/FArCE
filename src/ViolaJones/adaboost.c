@@ -357,6 +357,8 @@ Model adaboost(Triplet* imgs, size_t size_imgs, int T)
 
   for (int t = 0; t < T; ++t)
   {
+    warnx("iteration n°%d",t);
+
     write_model(&model, "modele.frc");
 
     size_t best = Best_stump(imgs,
