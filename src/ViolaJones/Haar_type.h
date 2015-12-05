@@ -1,6 +1,7 @@
 # ifndef HAAR_STRUCT_DEF
 # define HAAR_STRUCT_DEF
 
+# include <err.h>
 # include <stdlib.h>
 
 typedef struct Haar Haar;

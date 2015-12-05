@@ -125,17 +125,44 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
 
   int t = 0; // Treshold
   for (size_t i = 0; i < n; i++) {
-    if (train_exp[i].sum < t)
-      t = train_exp[i].sum;
+    if (train_exp[i].sum - 1 < t)
+      t = train_exp[i].sum - 1;
   }
+  //warnx("init t = %d", t);
+
 
   int M = 0; // Margin
-  int error = 2; // Error
+  float error = 2; // Error
 
   //Sum up the weights of the positive (resp. negative) examples whose f-th feature is bigger than the present threshold
-  float WpSup = 0, WnSup = 0, WpInf = 0, WnInf = 0;
+  float WpSup = 0;
+  float WnSup = 0;
+  float WpInf = 0;
+  float WnInf = 0;
   for (size_t i = 0; i < n; i++) {
 
+    //warnx("%d", train_exp[i].sum);
+
+    if (train_exp[i].sum > t)
+    {
+      if (train_exp[i].is_a_face == 1) {
+        WpSup += train_exp[i].weight;
+      }
+      else {
+        WnSup += train_exp[i].weight;
+      }
+    }
+    else {
+      if (train_exp[i].is_a_face == 1) {
+        WpInf += train_exp[i].weight;
+      }
+      else {
+        WnInf += train_exp[i].weight;
+      }
+    }
+
+
+    /*
     if (train_exp[i].is_a_face) {
       if (train_exp[i].sum > t)
         WpSup += train_exp[i].weight;
@@ -148,7 +175,20 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
       else
         WnInf += train_exp[i].weight;
     }
+    */
   }
+
+
+
+  //assert(WnInf > 0);
+  //assert(WnSup > 0);
+  //assert(WpInf > 0);
+  //assert(WpSup > 0);
+
+  //warnx("WnInf = %f", WnInf);
+  //warnx("WnSup = %f", WnSup);
+  //warnx("WpInf = %f", WpInf);
+  //warnx("WpSup = %f", WpSup);
 
   size_t j = 0;
   int tbar = t;
@@ -156,11 +196,18 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
   int T;
 
   while (1) {
-    int errorp = WpInf + WnSup;
-    int errorn = WpSup + WnInf;
-    T = errorp > errorn ? 1 : -1;
+    float errorp = WpInf + WnSup;
+    float errorn = WpSup + WnInf;
+    if (errorn == 0 || errorp == 0) {
+      warnx("error feature");
+      break;
+    }
+    assert(errorp > 0);
+    assert(errorn > 0);
 
-    int errorbar;
+    T = errorp < errorn ? 1 : -1;
+
+    float errorbar;
     int Tbar;
 
     if (errorp < errorn)
@@ -174,7 +221,7 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
       Tbar = -1;
     }
 
-    if (errorbar < error || (errorbar = error && Mbar > M))
+    if (errorbar < error || (errorbar == error && Mbar > M))
     {
       error = errorbar;
       t = tbar;
@@ -196,7 +243,7 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
       else
       {
         WpInf += train_exp[j].weight;
-        WpSup += train_exp[j].weight;
+        WpSup -= train_exp[j].weight;
       }
 
       if (j == n || train_exp[j].sum != train_exp[j + 1].sum) {
@@ -209,7 +256,7 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
 
     if (j == n) {
       for (size_t i = 0; i < n; i++)
-        if (train_exp[i].sum < t)
+        if (train_exp[i].sum + 1 > tbar)
           tbar = train_exp[i].sum + 1;
       Mbar = 0;
     }
@@ -228,15 +275,15 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
 
 
 size_t Best_stump(Triplet* imgs,
-                           size_t size_imgs,
-                           Haar* haar,
-                           size_t size_haar)
+                  size_t size_imgs,
+                  Haar* haar,
+                  size_t size_haar)
 {
 
   Caracteristique c;
   c.error = 2;
   c.margin = 0;
-  int min;
+  size_t min = 0;
 
 
   for (size_t i = 0; i < size_haar; ++i)
@@ -318,14 +365,23 @@ Model adaboost(Triplet* imgs, size_t size_imgs, int T)
   size_t size_haar;
   Haar* haar = compute_haar_features(imgs->img, &size_haar);
 
+  warnx("size %zu", size_haar);
+
   for (int t = 0; t < T; ++t)
   {
+    write_model(&model, "modele.frc");
+
     size_t best = Best_stump(imgs,
                              size_imgs,
                              haar,
                              size_haar);
 
+    warnx("%zu", best);
+    assert(best > 0 && best < 162336);
+
     model.haars[best] = haar[best];
+
+    print_Haar(model.haars[best]);
 
     float error = haar[best].error; // ATTENTION VERIFIER WEIGHTED ERROR = caracteristique.error !!!!
 
@@ -336,7 +392,7 @@ Model adaboost(Triplet* imgs, size_t size_imgs, int T)
         model.coefs[i] = 0;
       }
       model.coefs[best] = 1;
-      return model; // INCORRECT
+      return model;
     }
     else
     {
@@ -353,15 +409,22 @@ Model adaboost(Triplet* imgs, size_t size_imgs, int T)
 
         compute_haar_sum(i->img, haar + t);
 
-        assert(i->weight = (float)i->weight/2 *
+        warnx("img%d : %f ->", i - imgs,  i->weight);
+
+        assert(i->weight != INFINITY && i->weight != -INFINITY);
+        assert(i->weight = (float)i->weight/2.0 *
           ((is_present(haar[t]) == i->is_a_face)?
            (float)((float)1/((float)1 - error)):
            (float)((float)1/((float)error))));
 
-        if (i->weight != (float)1/size_imgs)
+
+        if (i->weight != (float)((float)1/(float)size_imgs))
         {
           warnx("%f", i->weight);
         }
+if (i->weight == INFINITY || i->weight == -INFINITY) {
+  warnx("error : %f, face? : %d, present? : %d", error, i->is_a_face, is_present(haar[t]));
+}
       }
     }
   }

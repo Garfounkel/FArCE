@@ -61,7 +61,7 @@ int is_present(Haar h)
 
 // Print a haar feature for debug purpose
 void print_Haar(Haar h){
-  printf(
+  warnx(
     "\
 | type = %d \
 | i = %2d \

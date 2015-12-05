@@ -227,6 +227,7 @@ Haar* compute_haar_features(Ulong_tab *img, size_t* size){
   }
 
 */
+
   *size = haar_vect - res;
   //warnx("sortie compute haar");
   return res;
@@ -240,6 +241,9 @@ void compute_haar_sum(Ulong_tab *img, Haar* haar){
   int h = haar->h;
   int w = haar->w;
 
+  if (i < 0 || j < 0 || h < 0 || w < 0) {
+    print_Haar(*haar);
+  }
   // Type a:
   if (haar->type == 1) {
     int sum1 = sum_rect(img,  i,  j,      i + h - 1,  j + w - 1    );
