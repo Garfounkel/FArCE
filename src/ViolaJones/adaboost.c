@@ -366,7 +366,7 @@ Model adaboost(Triplet* imgs, size_t size_imgs, int T)
                              haar,
                              size_haar);
 
-    warnx("%zu", best);
+    warnx("best : %zu", best);
     assert(best > 0 && best < 162336);
 
     model.haars[best] = haar[best];
