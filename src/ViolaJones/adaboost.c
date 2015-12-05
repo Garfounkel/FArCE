@@ -221,7 +221,7 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
   while (1) {
     float errorp = WpInf + WnSup;
     float errorn = WpSup + WnInf;
-<<<<<<< HEAD
+    
     if (errorn == 0 || errorp == 0) {
       warnx("error feature");
       break;
@@ -230,11 +230,7 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
     assert(errorn > 0);
 
     T = errorp < errorn ? 1 : -1;
-
-=======
-    T = errorp > errorn ? 1 : -1;
-
->>>>>>> 8c414f206abea192fe392a669582a75fb169afcb
+    
     float errorbar;
     int Tbar;
 
@@ -284,11 +280,7 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
 
     if (j == n) {
       for (size_t i = 0; i < n; i++)
-<<<<<<< HEAD
         if (train_exp[i].sum + 1 > tbar)
-=======
-        if (train_exp[i].sum > t)
->>>>>>> 8c414f206abea192fe392a669582a75fb169afcb
           tbar = train_exp[i].sum + 1;
       Mbar = 0;
     }
