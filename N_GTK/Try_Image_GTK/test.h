@@ -4,5 +4,5 @@
 
 void file_ok_sel (GtkWidget *w, GtkFileSelection *fs);
 void destroy (GtkWidget *widget, gpointer *data);
-int yolo();
+void yolo(Screen steven);
 # endif

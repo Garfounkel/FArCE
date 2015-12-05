@@ -12,13 +12,13 @@
    gtk_main_quit ();
  }
 
-int main (int argc, char **argv)
+void yolo(Screen steven)
  {
     GtkWidget *filew;
      
-    gtk_init (&argc,&argv);
+    //gtk_init_check (&argc,&argv);
     //gtk_init();
-     
+    steven->Window=gtk_window_new(GTK_WINDOW_TOPLEVEL);
     /* Création d'un widget de sélection de fichier. */
  
     filew = gtk_file_selection_new ("File selection");
