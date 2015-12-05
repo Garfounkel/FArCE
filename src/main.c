@@ -19,7 +19,7 @@
 # include <assert.h>
 # include <sys/stat.h>
 # include <unistd.h>
-//# include <warnx.h>
+# include "ViolaJones/cascade.h"
 
 // Load SDL library
 void init_sdl(void) {
@@ -168,6 +168,18 @@ int main(int i, char** path)
 
 // Create an Ulong_tab from an image
     Ulong_tab* tab = create_Ulong_tab(surface->h, surface->w);
+
+
+// test faceDetect
+  Model m;
+  m.coefs = malloc(sizeof(float));
+  m.coefs[0] = 1;
+  m.haars = malloc(sizeof(Haar));
+  m.haars[0] = create_Haar(1, 0, 0, 12, 12, -42, -42, -42);
+  print_Haar(m.haars[0]);
+  int foo = faceDetect(m, 1, tab, 0, 0);
+  warnx("face = %d", foo);
+
 
 // Compute the integral image
     integral_image(surface, tab);

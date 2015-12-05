@@ -15,15 +15,17 @@ Window* FaceDetection(UlongTab img, Cascade cascade, float scalecoef) {
 }
 */
 
-int faceDetect(Model M, size_t nbHaarsInM, UlongTab *img, size_t x, size_t y) {
-  int sum;
+int faceDetect(Model M, size_t nbHaarsInM, Ulong_tab *img, size_t x, size_t y) {
+  int sum = 0;
   for (size_t i = 0; i < nbHaarsInM; i++) {
-    if (M.coef[i] != 0) {
+    if (M.coefs[i] != 0) {
       Haar h = M.haars[i];
       h.i += x;
       h.j += y;
+      print_Haar(M.haars[i]);
       compute_haar_sum(img, &h);
       sum += h.sum;
+      warnx("sum = %d", sum);
     }
   }
   return sum > 0 ? 1 : -1;
