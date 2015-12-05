@@ -2,15 +2,16 @@
 # include <stdlib.h>
 # include <stdio.h>
 
-static GtkWidget* Picture =NULL;
-static GtkWidget* image;
+//static GtkWidget* Picture =NULL;
+//static GtkWidget* image;
 
 
 typedef struct Screen Screen;
 struct Screen
 {
  GtkWidget* Window; 
- GtkWidget* image; 
+ GtkWidget* image;
+  //GtkWidget *Image_box;
 };
 
   
@@ -26,10 +27,16 @@ void supp(void) {
   gtk_main_quit();
 }
 
-GtkWidget* choose(void) {
+static void choose(GtkWidget *button,GtkImage  *image) {
 
-  Picture =  gtk_image_new_from_file("rees_a");  
-  return Picture;
+  static gboolean state = TRUE;
+
+   if( state )
+      gtk_image_set_from_file( image,"renaud_e");
+   else
+      gtk_image_set_from_file( image,"daumal_l");
+
+   state = ! state;
 }
 
 
@@ -38,6 +45,7 @@ Screen* init_screen(GtkWidget* title)
   Screen *screen=malloc(sizeof(struct Screen));
   screen->image = title;
   screen->Window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+  // screen->Image_box-NULL;
   return screen;
   
 }
@@ -66,9 +74,9 @@ int main (int argc, char** argv) {
   gtk_window_set_default_size(GTK_WINDOW(scre->Window), 320,200); 
  
   //image
-  Image_box = gtk_vbox_new(FALSE, 5 );
+  Image_box = gtk_vbox_new(FALSE, 0 );
   gtk_container_add(GTK_CONTAINER(scre->Window),Image_box);
-  image = gtk_image_new_from_file(argv[1]);
+  // image = gtk_image_new_from_file(argv[1]);
   // gtk_box_pack_start(GTK_BOX(Image_box), image,FALSE,TRUE,0);
 
  
@@ -79,10 +87,8 @@ int main (int argc, char** argv) {
    
   MenuItem = gtk_menu_item_new_with_label("Choose");
   gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItem);
-  gtk_signal_connect(GTK_OBJECT (MenuItem), "activate",  G_CALLBACK(choose), NULL);
-  
- if(Picture != NULL)
-    {image = Picture;}
+  gtk_signal_connect(GTK_OBJECT (MenuItem), "activate", G_CALLBACK(choose), GTK_IMAGE(scre->image));  
+
 
     
   MenuItem = gtk_menu_item_new_with_label("Save");
@@ -105,10 +111,7 @@ int main (int argc, char** argv) {
   gtk_signal_connect(GTK_OBJECT (MenuItem), "activate",  GTK_SIGNAL_FUNC(destroy), NULL);
   
   ///////////////////////////////////////////////////////
-
-
-  /* if(Picture != NULL)
-     {image = Picture;}*/
+  
   
    //ADD Menu
   MenuItem = gtk_menu_item_new_with_label("File");
