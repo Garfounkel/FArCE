@@ -76,7 +76,7 @@ int main (int argc, char** argv) {
  
   GtkWidget *MenuBar;
   GtkWidget *Menu;
-  
+  //GtkWidget *button;
   GtkWidget *MenuItem;
  
   GtkWidget *Image_box;
@@ -101,18 +101,18 @@ int main (int argc, char** argv) {
  
   MenuBar = gtk_menu_bar_new();
   Menu = gtk_menu_new();
-  
+
     //////////////////////MENU/////////////////////////  
    
   MenuItem = gtk_menu_item_new_with_label("Choose");
   gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItem);
   gtk_signal_connect(GTK_OBJECT (MenuItem), "activate", G_CALLBACK(choose), GTK_IMAGE(scre->image));  
-
+  
 
     
-  MenuItem = gtk_menu_item_new_with_label("Navigate");
+  MenuItem =gtk_menu_item_new_with_mnemonic (("_Add Pictures"));
   gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItem);
-  gtk_signal_connect(GTK_OBJECT (MenuItem), "activate", /* (GtkSignalFunc)yolo*/ G_CALLBACK(Navigate) ,&scre);
+  gtk_signal_connect(GTK_OBJECT (MenuItem), "activate", /* (GtkSignalFunc)yolo*/ G_CALLBACK(Navigate),NULL);
 
     
   MenuItem = gtk_menu_item_new_with_label("Supp");
