@@ -244,3 +244,29 @@ SDL_Surface* Downscale(SDL_Surface *source)
 
   return target;
 }
+
+// Draw Window
+void drawLine(SDL_Surface *Screen, int x0, int y0, int x1, int y1, Uint32 pixel) {
+  int i;
+  double x = x1 - x0;
+  double y = y1 - y0;
+  double length = sqrt( x*x + y*y );
+  double addx = x / length;
+  double addy = y / length;
+  x = x0;
+  y = y0;
+
+  for ( i = 0; i < length; i += 1) {
+    putpixel(Screen, x, y, pixel);
+    x += addx;
+    y += addy;
+  }
+}
+
+void drawWindow(SDL_Surface *src, int x, int y, size_t sidelenght) {
+  Uint32 pixel = 0x0000FF00; // this is for green, red would be: 0x00FF0000
+  drawLine(src, x,              y,              x,              y + sidelenght, pixel);
+  drawLine(src, x,              y,              x + sidelenght, y             , pixel);
+  drawLine(src, x,              y + sidelenght, x + sidelenght, y + sidelenght, pixel);
+  drawLine(src, x + sidelenght, y,              x + sidelenght, y + sidelenght, pixel);
+}

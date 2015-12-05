@@ -12,8 +12,31 @@ Triplet create_Triplet(Ulong_tab* img, int weight, int is_a_face)
   return triplet;
 }
 
+void write_model(Model* m, char* fname)
+{
 
+  if (m)
+  {
+    FILE *file;
+    // open file in create/replace mode
+    if ((file = fopen(fname, "w")) == NULL)
+    {
+      warnx("error ");
+      err(3, "Error while creating %s", fname);
+    }
 
+    for (int i = 0; i < 162336; ++i)
+    {
+      if (m->coefs[i])
+        warnx("%s>%f\n", Haar_to_str(m->haars[i]), m->coefs[i]);
+
+      fprintf(file, "%s>%f\n", Haar_to_str(m->haars[i]), m->coefs[i]);
+    }
+
+    // close the file
+    fclose(file);
+  }
+}
 
 // Images list:
 size_t dirLenght(char* path){
@@ -198,6 +221,7 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
   while (1) {
     float errorp = WpInf + WnSup;
     float errorn = WpSup + WnInf;
+<<<<<<< HEAD
     if (errorn == 0 || errorp == 0) {
       warnx("error feature");
       break;
@@ -207,6 +231,10 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
 
     T = errorp < errorn ? 1 : -1;
 
+=======
+    T = errorp > errorn ? 1 : -1;
+
+>>>>>>> 8c414f206abea192fe392a669582a75fb169afcb
     float errorbar;
     int Tbar;
 
@@ -256,7 +284,11 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
 
     if (j == n) {
       for (size_t i = 0; i < n; i++)
+<<<<<<< HEAD
         if (train_exp[i].sum + 1 > tbar)
+=======
+        if (train_exp[i].sum > t)
+>>>>>>> 8c414f206abea192fe392a669582a75fb169afcb
           tbar = train_exp[i].sum + 1;
       Mbar = 0;
     }
@@ -267,6 +299,7 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
   }
   Caracteristique c;
   c.error = error;
+  warnx("error = %f", error);
   c.toggle = T;
   c.threshold = t;
   c.margin = M;
@@ -312,44 +345,6 @@ size_t Best_stump(Triplet* imgs,
     }
   }
   return min;
-}
-
-void write_model(Model* m, char* fname)
-{
-
-  if (m)
-  {
-
-    FILE *file;
-
-    // open file in create/replace mode
-    if ((file = fopen(fname, "w")) == NULL)
-    {
-
-      warnx("error ");
-
-      err(3, "Error while creating %s", fname);
-
-    }
-
-
-
-    for (int i = 0; i < 162336; ++i)
-    {
-
-      if (m->coefs[i])
-        warnx("%s>%f\n", Haar_to_str(m->haars[i]), m->coefs[i]);
-
-      fprintf(file, "%s>%f\n", Haar_to_str(m->haars[i]), m->coefs[i]);
-
-    }
-
-
-    // close the file
-    fclose(file);
-
-  }
-
 }
 
 
@@ -431,54 +426,6 @@ if (i->weight == INFINITY || i->weight == -INFINITY) {
   return model;
 }
 
-/*void quickSort(Triplet arr[], size_t left, size_t right)
-{
-  while (1)
-  {
-    if (left >= right)
-      return;
-
-    Triplet pivot = arr[left];
-    size_t tmpleft = left;
-    size_t tmpright = right;
-    size_t tmptmpright;
-
-    while (1)
-    {
-      while (arr[tmpleft].sum < pivot.sum)
-        tmpleft++;
-
-      while (arr[tmpright].sum > pivot.sum)
-        tmpright--;
-
-      if (arr[tmpright].sum == pivot.sum && arr[tmpleft].sum == pivot.sum)
-        tmpleft++;
-
-      if (tmpleft.sum < tmpright.sum)
-      {
-        Triplet temp = arr[tmpright];
-        arr[tmpright] = arr[tmpleft];
-        arr[tmpleft] = temp;
-      }
-      else
-      {
-        tmptmprightpivot =  tmpright;
-        break;
-      }
-    }
-
-    if (pivot.sum > 1)
-      quickSort(arr, left, pivot.sum - 1);
-
-    if (pivot.sum + 1 < right.sum)
-    {
-      left = pivot + 1;
-      continue;
-    }
-    break;
-  }
-}
-*/
 // Quick sort Sim:
 Triplet* choose_pivot(Triplet *begin, Triplet *end){
   Triplet* mid = (begin + (end - begin)/2);

@@ -93,6 +93,21 @@ void Ulong_tab_to_SDL(Ulong_tab* tab, SDL_Surface* img)
 
 int main(int i, char** path)
 {
+
+//testing quicksort
+/*  Triplet* t = malloc(sizeof(Triplet) * 10);
+  for (size_t i = 0; i < 10; i++) {
+    t[i].sum = i * pow(-1, i);
+  }
+  for (size_t i = 0; i < 10; i++) {
+    warnx("%d", t[i].sum);
+  }
+  quickSort(t, t + 10);
+  for (size_t i = 0; i < 10; i++) {
+    warnx("%d", t[i].sum);
+  }
+*/
+
 // Parsing
   if(i > 2 || i == 1)
   {
@@ -135,6 +150,10 @@ int main(int i, char** path)
   SDL_Surface* surface = load_image(path[1]);
 
   display_image(surface);
+
+// drawWindow test
+//  drawWindow(surface, 30, 30, 50);
+//  display_image(surface);
 
 // Uncomment if you want to try blur
   //SDL_Surface* blurred = Blur(surface);

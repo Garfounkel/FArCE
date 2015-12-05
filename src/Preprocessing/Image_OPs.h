@@ -21,7 +21,8 @@ SDL_Surface* CreateTargetImgFormat(SDL_Surface* source, int w, int h);
 SDL_Surface* Blur(SDL_Surface *source);
 SDL_Surface* Downscale(SDL_Surface *img);
 
-//void normalize_Ulong_tab(Ulong_tab* img);
-
+// Draw Window
+void drawLine(SDL_Surface *Screen, int x0, int y0, int x1, int y1, Uint32 pixel);
+void drawWindow(SDL_Surface *src, int x, int y, size_t sidelenght);
 
 # endif
