@@ -123,6 +123,10 @@ void generate_Triplet_vect(char* directory, Triplet** imgs, size_t* size)
 
   *imgs = malloc(sizeof(Triplet) * *size);
 
+  size_t face_count = 0;
+
+    
+  
   for (size_t i = 0; i < *size; ++i)
   {
 
@@ -133,13 +137,23 @@ void generate_Triplet_vect(char* directory, Triplet** imgs, size_t* size)
 
     (*imgs)[i].img       = tab;
     //printf ("size = %zu | 1/size = %f\n",*size,(double)((double)(1) / (double)(*size)));
-    assert((*imgs)[i].weight    = (double)((double)(1) / (double)(*size)));
 
-    (*imgs)[i].is_a_face = file_list[i][19] == 'f' ? 1 : -1;
+    
+    for (char* c = file_list[i]; *c != '\0'; c++)
+	if(*c == '/')
+	  (*imgs)[i].is_a_face = (c[1] == 'f') ? 1 : -1;    
+
+    if((*imgs)[i].is_a_face + 1)
+      face_count++;
 
     warnx("%s, %s\n", ((*imgs)[i].is_a_face + 1)?"face":"non face", file_list[i] + 19 );
 
   }
+
+  for (size_t i = 0; i < *size; ++i)
+    {
+      assert((*imgs)[i].weight = ((*imgs)[i].is_a_face == 1)? (double)((double)(1) / (double)(face_count)) : (double)((double)(1) / (double)(*size - face_count)) );
+    }
 }
 
 // algorithme 4
@@ -379,6 +393,8 @@ Model adaboost(Triplet* imgs, size_t size_imgs, int T)
 
     float error = haar[best].error; // ATTENTION VERIFIER WEIGHTED ERROR = caracteristique.error !!!!
 
+    if(error > 0.5)
+      break;
 
     if (error == 0 && t == 1)
     {
@@ -412,7 +428,7 @@ Model adaboost(Triplet* imgs, size_t size_imgs, int T)
 
         //warnx("def poids img n°%zu\n", i - imgs);
 
-        compute_haar_sum(i->img, haar + t);
+        compute_haar_sum(i->img, haar + best);
 
         warnx("img%zu : %f ->", i - imgs,  i->weight);
 
