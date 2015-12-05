@@ -324,6 +324,7 @@ size_t Best_stump(Triplet* imgs,
     Caracteristique tmp = find_Decision_Stump(imgs, size_imgs);
     if (tmp.error && (tmp.error < c.error || (tmp.error == c.error && tmp.margin > c.margin))) // ATTENTION VERIFIER WEIGHTED ERROR = caracteristique.error !!!!
     {
+      assert(tmp.error);
 // Caracteristique = (threshold, toggle, error, margin)
       c.error = tmp.error;
       c.margin = tmp.margin;
@@ -335,8 +336,11 @@ size_t Best_stump(Triplet* imgs,
       haar[i].threshold = tmp.threshold;
       min = i;
       print_Haar(haar[i]);
+      warnx("tmp = %f, haar min = %f",tmp.error,haar[i].error);
+      assert(haar[i].error);
     }
   }
+  assert(haar[min].error);
   return min;
 }
 
@@ -378,6 +382,7 @@ Model adaboost(Triplet* imgs, size_t size_imgs, int T)
 
     if (error == 0 && t == 1)
     {
+      warnx("perfect feature");
       for (int i = 0; i < 162336; ++i)
       {
         model.coefs[i] = 0;
@@ -388,8 +393,10 @@ Model adaboost(Triplet* imgs, size_t size_imgs, int T)
     else
     {
       if(!error)
-        continue;
-
+	{
+	  warnx("error = 0");
+	  continue;
+	}
       assert(error);
 
       assert(model.coefs[best] = (float)((float)
@@ -407,7 +414,7 @@ Model adaboost(Triplet* imgs, size_t size_imgs, int T)
 
         compute_haar_sum(i->img, haar + t);
 
-        warnx("img%d : %f ->", i - imgs,  i->weight);
+        warnx("img%zu : %f ->", i - imgs,  i->weight);
 
         assert(i->weight != INFINITY && i->weight != -INFINITY);
         assert(i->weight = (float)i->weight/2.0 *
@@ -425,6 +432,7 @@ Model adaboost(Triplet* imgs, size_t size_imgs, int T)
         }
       }
     }
+    warnx("fin it");
   }
   return model;
 }
