@@ -221,7 +221,7 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
   while (1) {
     float errorp = WpInf + WnSup;
     float errorn = WpSup + WnInf;
-    
+
     if (errorn == 0 || errorp == 0) {
       warnx("error feature");
       break;
@@ -230,9 +230,10 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
     assert(errorn > 0);
 
     T = errorp < errorn ? 1 : -1;
-    
+
     float errorbar;
     int Tbar;
+
 
     if (errorp < errorn)
     {
@@ -291,7 +292,6 @@ Caracteristique find_Decision_Stump(Triplet* train_exp, size_t n) {
   }
   Caracteristique c;
   c.error = error;
-  warnx("error = %f", error);
   c.toggle = T;
   c.threshold = t;
   c.margin = M;
@@ -322,7 +322,7 @@ size_t Best_stump(Triplet* imgs,
     quickSort(imgs, (imgs + size_imgs));
 
     Caracteristique tmp = find_Decision_Stump(imgs, size_imgs);
-    if (tmp.error < c.error || (tmp.error == c.error && tmp.margin > c.margin)) // ATTENTION VERIFIER WEIGHTED ERROR = caracteristique.error !!!!
+    if (tmp.error && (tmp.error < c.error || (tmp.error == c.error && tmp.margin > c.margin))) // ATTENTION VERIFIER WEIGHTED ERROR = caracteristique.error !!!!
     {
 // Caracteristique = (threshold, toggle, error, margin)
       c.error = tmp.error;
@@ -334,6 +334,7 @@ size_t Best_stump(Triplet* imgs,
       haar[i].polarity = tmp.toggle;
       haar[i].threshold = tmp.threshold;
       min = i;
+      print_Haar(haar[i]);
     }
   }
   return min;
@@ -372,6 +373,7 @@ Model adaboost(Triplet* imgs, size_t size_imgs, int T)
 
     float error = haar[best].error; // ATTENTION VERIFIER WEIGHTED ERROR = caracteristique.error !!!!
 
+
     if (error == 0 && t == 1)
     {
       for (int i = 0; i < 162336; ++i)
@@ -383,11 +385,18 @@ Model adaboost(Triplet* imgs, size_t size_imgs, int T)
     }
     else
     {
+      if(!error)
+        continue;
+
+      assert(error);
+
       assert(model.coefs[best] = (float)((float)
                                         ((float)1
                                          /
                                          (float)2) *
                                         log((float)((float)1 - error)/error)));
+
+      assert(model.coefs[best] != INFINITY && model.coefs[best] != -INFINITY);
 
       for (Triplet* i = imgs; i < imgs + size_imgs; ++i)
       {
@@ -409,9 +418,9 @@ Model adaboost(Triplet* imgs, size_t size_imgs, int T)
         {
           warnx("%f", i->weight);
         }
-if (i->weight == INFINITY || i->weight == -INFINITY) {
-  warnx("error : %f, face? : %d, present? : %d", error, i->is_a_face, is_present(haar[t]));
-}
+        if (i->weight == INFINITY || i->weight == -INFINITY) {
+          warnx("error : %f, face? : %d, present? : %d", error, i->is_a_face, is_present(haar[t]));
+        }
       }
     }
   }
