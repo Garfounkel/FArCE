@@ -16,7 +16,7 @@ struct Haar
     long sum_normalized;
     int threshold;
     int polarity;
-    int error;
+    float error;
     int margin;
 };
 

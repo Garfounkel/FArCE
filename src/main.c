@@ -140,7 +140,7 @@ int main(int i, char** path)
     warnx("adaboost");
     warnx("size_imgs = %zu\n", size_imgs);
     if (size_imgs)
-      adaboost(imgs, size_imgs, 10); // 10 = arbitrary number of training rounds
+      adaboost(imgs, size_imgs, 1000); // 10 = arbitrary number of training rounds
 
 
     warnx("finprint\n");
