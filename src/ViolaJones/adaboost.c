@@ -123,6 +123,10 @@ void generate_Triplet_vect(char* directory, Triplet** imgs, size_t* size)
 
   *imgs = malloc(sizeof(Triplet) * *size);
 
+  size_t face_count = 0;
+
+    
+  
   for (size_t i = 0; i < *size; ++i)
   {
 
@@ -133,13 +137,23 @@ void generate_Triplet_vect(char* directory, Triplet** imgs, size_t* size)
 
     (*imgs)[i].img       = tab;
     //printf ("size = %zu | 1/size = %f\n",*size,(double)((double)(1) / (double)(*size)));
-    assert((*imgs)[i].weight    = (double)((double)(1) / (double)(*size)));
 
-    (*imgs)[i].is_a_face = file_list[i][19] == 'f' ? 1 : -1;
+    
+    for (char* c = file_list[i]; *c != '\0'; c++)
+	if(*c == '/')
+	  (*imgs)[i].is_a_face = (c[1] == 'f') ? 1 : -1;    
+
+    if((*imgs)[i].is_a_face + 1)
+      face_count++;
 
     warnx("%s, %s\n", ((*imgs)[i].is_a_face + 1)?"face":"non face", file_list[i] + 19 );
 
   }
+
+  for (size_t i = 0; i < *size; ++i)
+    {
+      assert((*imgs)[i].weight = ((*imgs)[i].is_a_face == 1)? (double)((double)(1) / (double)(face_count)) : (double)((double)(1) / (double)(*size - face_count)) );
+    }
 }
 
 // algorithme 4
@@ -324,6 +338,7 @@ size_t Best_stump(Triplet* imgs,
     Caracteristique tmp = find_Decision_Stump(imgs, size_imgs);
     if (tmp.error && (tmp.error < c.error || (tmp.error == c.error && tmp.margin > c.margin))) // ATTENTION VERIFIER WEIGHTED ERROR = caracteristique.error !!!!
     {
+      assert(tmp.error);
 // Caracteristique = (threshold, toggle, error, margin)
       c.error = tmp.error;
       c.margin = tmp.margin;
@@ -335,8 +350,11 @@ size_t Best_stump(Triplet* imgs,
       haar[i].threshold = tmp.threshold;
       min = i;
       print_Haar(haar[i]);
+      warnx("tmp = %f, haar min = %f",tmp.error,haar[i].error);
+      assert(haar[i].error);
     }
   }
+  assert(haar[min].error);
   return min;
 }
 
@@ -375,9 +393,12 @@ Model adaboost(Triplet* imgs, size_t size_imgs, int T)
 
     float error = haar[best].error; // ATTENTION VERIFIER WEIGHTED ERROR = caracteristique.error !!!!
 
+    if(error > 0.5)
+      break;
 
     if (error == 0 && t == 1)
     {
+      warnx("perfect feature");
       for (int i = 0; i < 162336; ++i)
       {
         model.coefs[i] = 0;
@@ -388,8 +409,10 @@ Model adaboost(Triplet* imgs, size_t size_imgs, int T)
     else
     {
       if(!error)
-        continue;
-
+	{
+	  warnx("error = 0");
+	  continue;
+	}
       assert(error);
 
       assert(model.coefs[best] = (float)((float)
@@ -405,9 +428,9 @@ Model adaboost(Triplet* imgs, size_t size_imgs, int T)
 
         //warnx("def poids img n°%zu\n", i - imgs);
 
-        compute_haar_sum(i->img, haar + t);
+        compute_haar_sum(i->img, haar + best);
 
-        warnx("img%d : %f ->", i - imgs,  i->weight);
+        warnx("img%zu : %f ->", i - imgs,  i->weight);
 
         assert(i->weight != INFINITY && i->weight != -INFINITY);
         assert(i->weight = (float)i->weight/2.0 *
@@ -425,6 +448,7 @@ Model adaboost(Triplet* imgs, size_t size_imgs, int T)
         }
       }
     }
+    warnx("fin it");
   }
   return model;
 }
