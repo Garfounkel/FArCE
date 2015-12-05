@@ -12,7 +12,7 @@
    gtk_main_quit ();
  }
 
-void yolo(Screen steven)
+void yolo  (GtkWidge to)
  {
     GtkWidget *filew;
      

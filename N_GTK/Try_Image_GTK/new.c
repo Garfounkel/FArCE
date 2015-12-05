@@ -2,7 +2,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 
-//# include "test.h"
+# include "test.h"
 
 
 typedef struct Screen Screen;
@@ -35,24 +35,24 @@ static void choose(GtkWidget *button,GtkImage  *image) {
    state = ! state;
 }
 
-void Navigate(){
-  GtkWidget *filew;
-     
+void Navigate(void){
+  //GtkWidget *filew;
+  yolo(scre->Window) ;
     /* Création d'un widget de sélection de fichier. */
  
-    filew = gtk_file_selection_new ("File selection");
+    //filew = gtk_file_selection_new ("File selection");
      
-    gtk_signal_connect (GTK_OBJECT (filew), "destroy",
-                        G_CALLBACK( Destroy), filew);
+    //gtk_signal_connect (GTK_OBJECT (filew), "destroy",
+    //                  G_CALLBACK( Destroy), filew);
  
     /* Connexion de ok_button à la fonction file_ok_sel() */
  
-    gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (filew)->ok_button),
-                        "clicked", G_CALLBACK(choose),  GTK_IMAGE(gtk_image_new_from_file("daumal_l")) );
+    // gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (filew)->ok_button),
+    //                  "clicked", G_CALLBACK(choose),  GTK_IMAGE(gtk_image_new_from_file("daumal_l")) );
     
     /* Connexion de cancel_button pour détruire le widget */
  
-    gtk_signal_connect_object (GTK_OBJECT (GTK_FILE_SELECTION (filew)->cancel_button),
+    //    gtk_signal_connect_object (GTK_OBJECT (GTK_FILE_SELECTION (filew)->cancel_button),
                                "clicked", G_CALLBACK(Destroy),filew);
     
     /* Configuration du nom de fichier, comme s'il s'agissait d'un dialogue de
@@ -76,9 +76,8 @@ int main (int argc, char** argv) {
  
   GtkWidget *MenuBar;
   GtkWidget *Menu;
-  //GtkWidget *button;
+  GtkWidget *button;
   GtkWidget *MenuItem;
- 
   GtkWidget *Image_box;
    
   gtk_init (&argc, &argv);
@@ -92,12 +91,15 @@ int main (int argc, char** argv) {
   ////////////post Window/////////////////
   gtk_window_set_position(GTK_WINDOW(scre->Window), GTK_WIN_POS_CENTER);
   gtk_window_set_default_size(GTK_WINDOW(scre->Window), 320,200); 
- 
-  //image
+
+  button = gtk_button_new_with_mnemonic("_gggg");
+  g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(Navigate),NULL );
+  
+  /////////////image/////////////
   Image_box = gtk_vbox_new(FALSE, 0 );
   gtk_container_add(GTK_CONTAINER(scre->Window),Image_box);
  
-
+  
  
   MenuBar = gtk_menu_bar_new();
   Menu = gtk_menu_new();
@@ -107,12 +109,11 @@ int main (int argc, char** argv) {
   MenuItem = gtk_menu_item_new_with_label("Choose");
   gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItem);
   gtk_signal_connect(GTK_OBJECT (MenuItem), "activate", G_CALLBACK(choose), GTK_IMAGE(scre->image));  
-  
 
     
-  MenuItem =gtk_menu_item_new_with_mnemonic (("_Add Pictures"));
+  /* MenuItem =gtk_menu_item_new_with_mnemonic (("_Add Pictures"));
   gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItem);
-  gtk_signal_connect(GTK_OBJECT (MenuItem), "activate", /* (GtkSignalFunc)yolo*/ G_CALLBACK(Navigate),NULL);
+  gtk_signal_connect(GTK_OBJECT (MenuItem), "activate",G_CALLBACK(Navigate),NULL);*/
 
     
   MenuItem = gtk_menu_item_new_with_label("Supp");
@@ -131,6 +132,7 @@ int main (int argc, char** argv) {
   
   ///////////////////////////////////////////////////////
   
+    
   
    //ADD Menu
   MenuItem = gtk_menu_item_new_with_label("File");
@@ -142,6 +144,7 @@ int main (int argc, char** argv) {
   // Menu au dessus image//
   gtk_box_pack_start(GTK_BOX(Image_box), MenuBar, FALSE, FALSE, 0);  
   gtk_box_pack_start(GTK_BOX(Image_box),scre->image,TRUE,FALSE,0);
+  gtk_box_pack_end(GTK_BOX(Image_box),button,FALSE,FALSE,0);
   //gtk_box_pack_start(GTK_BOX(Image_box), MenuBar, FALSE, FALSE, 0);  
 
   gtk_signal_connect(GTK_OBJECT (scre->Window), "destroy", GTK_SIGNAL_FUNC (Destroy), NULL);
