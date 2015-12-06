@@ -26,6 +26,15 @@ Haar create_Haar(int type,
                  long sum,
                  int polarity,
                  long threshold);
+Haar create_Full_Haar(int type,
+                      int i, int j,
+                      int w, int h,
+                      long sum,
+                      long sum_normalized,
+                      int polarity,
+                      long threshold,
+                      float error,
+                      int margin);
 void copy_Haar(Haar* source, Haar* dest);
 char* Haar_to_str(Haar h);
 void print_Haar(Haar h);

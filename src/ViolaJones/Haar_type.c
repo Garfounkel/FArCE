@@ -8,7 +8,7 @@ Haar create_Haar(int type,
                  long sum,
                  int polarity,
                  long threshold){
-  Haar haar; //= malloc(sizeof(int) * 5 + sizeof(unsigned long));
+  Haar haar;
   haar.type           = type;
   haar.i              = i;
   haar.j              = j;
@@ -19,6 +19,31 @@ Haar create_Haar(int type,
   haar.polarity       = polarity;
   haar.threshold      = threshold;
   return haar;
+}
+
+Haar create_Full_Haar(int type,
+                      int i, int j,
+                      int w, int h,
+                      long sum,
+                      long sum_normalized,
+                      int polarity,
+                      long threshold,
+                      float error,
+                      int margin) {
+  Haar haar;
+  haar.type           = type;
+  haar.i              = i;
+  haar.j              = j;
+  haar.w              = w;
+  haar.h              = h;
+  haar.sum            = sum;
+  haar.sum_normalized = sum_normalized;
+  haar.polarity       = polarity;
+  haar.threshold      = threshold;
+  haar.error          = error;
+  haar.margin         = margin;
+  return haar;
+
 }
 
 void fill_Haar(Haar* haar,
