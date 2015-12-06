@@ -31,51 +31,84 @@ int faceDetect(Model M, size_t nbHaarsInM, Ulong_tab *img, size_t x, size_t y) {
   return sum > 0 ? 1 : -1;
 }
 
-int Detect_in_image(SDL_Surface* img, Model M, size_t nbHaarsInM)
+
+void Update_m_integ(Ulong_tab* initial, size_t m, Ulong_tab* new)
 {
-  img = preprocessing(img);
 
-  Ulong_tab* integ = create_Ulong_tab(img->h, img->w);
-  integ = integral_image(img, integ);
-  int detected = 0;
-
-  size_t size = min(integ->w, integ->h);
-  int m = 1;
-
-  while (m * 24 <= size) {
-
-    Ulong_tab* m_integ;
-    Update_m_integ(integ, m, m_integ);
-
-    for (int i = 0; i < m_integ->w - 24; ++i)
-    {
-      for (int j = 0; j < m_integ->h - 24; ++j)
-      {
-        if (1 + faceDetect(M, nbHaarsInM, m_integ, i, j)) {
-          // trace rectangle
-          detected++;
-        }
-      }
-    }
-
-    multiplier++;
-
-  }
-  return detected;
-}
-
-void Update_m_integ(Ulong_tab* initial, int m, Ulong_tab* new)
-{
   free(new->arr);
+
   free(new);
 
-  new = create_Ulong_tab(img->h/m, img->w/m);
+
+  new = create_Ulong_tab(initial->h/m, initial->w/m);
+
 
   for (int i = 0; i < new->h; ++i)
   {
+
     for (int j = 0; j < new->w; ++j)
     {
+
       set_val(new, get_val(initial, i * m, j * m)/(m * m), i, j);
+
     }
+
   }
+
+}
+
+
+
+int Detect_in_image(SDL_Surface* img, Model M, size_t nbHaarsInM)
+{
+
+  img = preprocessing(img);
+
+
+  Ulong_tab* integ = create_Ulong_tab(img->h, img->w);
+
+  integ = integral_image(img, integ);
+
+  int detected = 0;
+
+
+  size_t size = (integ->w > integ->h)? integ->h : integ->w;
+
+  size_t m = 1;
+
+
+  Ulong_tab* m_integ = NULL;
+
+
+  while (m * 24 <= size) {
+
+
+    Update_m_integ(integ, m, m_integ);
+
+
+    for (int i = 0; i < m_integ->w - 24; ++i)
+    {
+
+      for (int j = 0; j < m_integ->h - 24; ++j)
+      {
+
+        if (1 + faceDetect(M, nbHaarsInM, m_integ, i, j)) {
+
+          // trace rectangle
+          detected++;
+
+        }
+
+      }
+
+    }
+
+
+    m++;
+
+
+  }
+
+  return detected;
+
 }

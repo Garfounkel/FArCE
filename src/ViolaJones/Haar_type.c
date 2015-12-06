@@ -111,7 +111,7 @@ char* Haar_to_str(Haar h){
 | polarity = %d\
 | margin = %d\
 | sum = %4ld",
-          h.type, h.i, h.j, h.w, h.h, h.sum, h.threshold, h.polarity, h.margin);
+          h.type, h.i, h.j, h.w, h.h, h.threshold, h.polarity, h.margin, h.sum);
   return str;
 }
 
