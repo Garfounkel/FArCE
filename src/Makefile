@@ -26,4 +26,5 @@ clean:
 	rm -fr ViolaJones/*~ ViolaJones/*.o
 	rm -fr Preprocessing/*~ Preprocessing/*.o
 	rm -f main
+	rm -f graphical
 # END
