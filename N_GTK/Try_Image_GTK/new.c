@@ -1,10 +1,15 @@
 # include <gtk/gtk.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <err.h>
 # include <SDL/SDL.h>
 # include <SDL/SDL_image.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
+# include <unistd.h>
 
-
+void DataBase(char *path);
 
 typedef struct Screen Screen;
 struct Screen
@@ -36,7 +41,9 @@ void recuperer_chemin(GtkWidget *bouton, GtkWidget *file_selection)
  
   scre->title = g_path_get_basename(chemin);  
   gtk_image_set_from_file(GTK_IMAGE(scre->image),chemin);
- 
+
+  char* path = (char*)chemin;
+  DataBase(path);
   
   gtk_dialog_run(GTK_DIALOG(dialog));
   gtk_widget_destroy(dialog);
@@ -70,6 +77,44 @@ Screen* init_screen(GtkWidget* title)
   return screen;
  }
 
+
+void DataBase(char *path)
+{
+  const char* src_path;
+  const char* dst_path;
+  int src_fd, dst_fd, err;
+  unsigned char buffer[4096];
+
+  src_path = path;
+  dst_path = "database/";
+
+  src_fd = open(src_path, O_RDONLY);
+  dst_fd = open(dst_path, O_WRONLY);
+  
+ while (1) {
+    err = read(src_fd, buffer, 4096);
+    if (err == -1) {
+      printf("Error reading file.\n");
+      exit(1);
+    }
+
+    if (err == 0) break;
+
+    err = write(dst_fd, buffer, err);
+    if (err == -1) {
+      printf("Error writing to file.\n");
+      exit(1);
+    }
+    exit(1);
+    }
+  
+ //  execve(src_path], newargv, newenviron);
+  
+ //free(buffer);
+  close(src_fd);
+  close(dst_fd);
+
+}
 
 
 int main (int argc, char** argv) {   
