@@ -132,6 +132,8 @@ int main(int i, char** path)
   assert(stat(path[1], &buf) == 0);
   // Arg is a dir
   if(S_ISDIR(buf.st_mode)) {
+
+
     Triplet* imgs = NULL;
 
     size_t size_imgs;
