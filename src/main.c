@@ -103,7 +103,7 @@ void FaceDetection(char* pathimg, char* pathmodel){
 
   display_image(surface);
 
-    SDL_FreeSurface(surface);
+  SDL_FreeSurface(surface);
 }
 
 int main(int i, char** path)
