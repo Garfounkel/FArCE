@@ -181,8 +181,11 @@ int main(int i, char** path)
     Ulong_tab* tab = create_Ulong_tab(surface->h, surface->w);
 
 
+// Compute the integral image
+    integral_image(surface, tab);
+
 // test faceDetect
-/*  Model m;
+  Model m;
   m.coefs = malloc(sizeof(float));
   m.coefs[0] = 1;
   m.haars = malloc(sizeof(Haar));
@@ -190,10 +193,6 @@ int main(int i, char** path)
   print_Haar(m.haars[0]);
   int foo = faceDetect(m, 1, tab, 0, 0);
   warnx("face = %d", foo);
-*/
-
-// Compute the integral image
-    integral_image(surface, tab);
 
 // For debugging:
 //  print(tab);

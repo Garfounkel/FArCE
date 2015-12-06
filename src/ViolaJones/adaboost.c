@@ -81,14 +81,14 @@ Model read_model(char* fname) {
   char line[128];
   FILE *file;
   Model M;
+  M.haars = malloc(sizeof(Haar) * 162336);
+  M.coefs = malloc(sizeof(float) * 162336);
 
   if ((file = fopen(fname, "r")) == NULL) {
     warnx("Error while loading model file: %s", fname);
     return M;
   }
 
-  M.haars = malloc(sizeof(Haar) * 162336);
-  M.coefs = malloc(sizeof(float) * 162336);
   size_t i = 0;
 
   while (fgets(line, 128, file)) {
