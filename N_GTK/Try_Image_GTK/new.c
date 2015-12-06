@@ -1,8 +1,23 @@
 # include <gtk/gtk.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <string.h>
+# include <err.h>
 # include <SDL/SDL.h>
 # include <SDL/SDL_image.h>
+# include "../../src/ViolaJones/pixel_operations.h"
+# include "../../src/ViolaJones/haar.h"
+# include "../../src/ViolaJones/Ulong_tab.h"
+# include "../../src/ViolaJones/integral_image.h"
+# include "../../src/ViolaJones/adaboost.h"
+# include "../../src/Preprocessing/Image_OPs.h"
+# include "../../src/SDL_operations/SDL_OPs.h"
+# include "../../src/yolo.h"
+# include <assert.h>
+# include <sys/stat.h>
+# include <unistd.h>
+# include "../../src/ViolaJones/cascade.h"
+
 
 
 
@@ -11,16 +26,21 @@ struct Screen
 {
   GtkWidget* Window; 
   GtkWidget* image; 
-  gchar *title; 
+  char *title,*name,*chemin; 
   
 };
 static Screen *scre;
   
 void Destroy(void) {
+ 
   gtk_main_quit();
 }
 
-
+void  Analyse(char* name)
+{
+  
+  yolo(&name);
+}
 void recuperer_chemin(GtkWidget *bouton, GtkWidget *file_selection)
 {
   const gchar* chemin; 
@@ -33,14 +53,14 @@ void recuperer_chemin(GtkWidget *bouton, GtkWidget *file_selection)
 				  GTK_MESSAGE_INFO,
 				  GTK_BUTTONS_OK,
 				  "Vous avez choisi :\n%s", chemin);
- 
-  scre->title = g_path_get_basename(chemin);  
+  scre->chemin=(char*)chemin;
+  scre->name = g_path_get_basename(chemin);  
   gtk_image_set_from_file(GTK_IMAGE(scre->image),chemin);
- 
   
   gtk_dialog_run(GTK_DIALOG(dialog));
   gtk_widget_destroy(dialog);
   gtk_widget_destroy(file_selection);
+
   }
 }
 
@@ -50,7 +70,7 @@ void Navigate(){
   selection = gtk_file_selection_new( g_locale_to_utf8( "Sélectionnez un fichier", -1, NULL, NULL, NULL) );
   gtk_widget_show(selection);
      
-  //On interdit l'utilisation des autres fenêtres.
+
   gtk_window_set_modal(GTK_WINDOW(selection), TRUE);
      
   g_signal_connect(G_OBJECT(GTK_FILE_SELECTION(selection)->ok_button), "clicked",
@@ -61,12 +81,13 @@ void Navigate(){
 }
 
 
-Screen* init_screen(GtkWidget* title)
+Screen* init_screen(GtkWidget* image)
 {
   Screen *screen=malloc(sizeof(struct Screen));
-  screen->image = title;
+  screen->image = image;
   screen->Window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
   screen->title ="Farce Project";
+  screen->name=NULL;
   return screen;
  }
 
@@ -108,7 +129,7 @@ int main (int argc, char** argv) {
 
   MenuItem = gtk_menu_item_new_with_label("Analyse");
   gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItem);
-  //gtk_signal_connect(GTK_OBJECT (MenuItem), "activate",  GTK_SIGNAL_FUNC(Analyse), NULL);//appel la detection
+  gtk_signal_connect(GTK_OBJECT (MenuItem), "activate",  GTK_SIGNAL_FUNC(Analyse),scre->chemin);
   
   MenuItem = gtk_menu_item_new_with_label("Leave"); 
   gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItem);
@@ -125,6 +146,8 @@ int main (int argc, char** argv) {
   MenuItem = gtk_menu_item_new_with_label("File");
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(MenuItem), Menu);
 
+  
+  
   //ADD file top window
   gtk_menu_shell_append(GTK_MENU_SHELL(MenuBar), MenuItem);
   
