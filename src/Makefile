@@ -12,10 +12,10 @@ SRC= SDL_operations/SDL_OPs.c ViolaJones/adaboost.c ViolaJones/haar.c ViolaJones
 OBJ= ${SRC:.c=.o}
 
 all:
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJ) main.c $(GTK_CFLAGS) $(LDLIBS) $(LDFLAGS) -o main
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(SRC) main.c $(GTK_CFLAGS) $(LDLIBS) $(LDFLAGS) -o main
 
 main:
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJ) main.c $(GTK_CFLAGS) $(LDLIBS) $(LDFLAGS) -o main
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(SRC) main.c $(GTK_CFLAGS) $(LDLIBS) $(LDFLAGS) -o main
 
 graphical:
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(SRC) new.c $(GTK_CFLAGS) $(LDLIBS) $(LDFLAGS) -o graphical
