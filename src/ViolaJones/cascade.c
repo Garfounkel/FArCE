@@ -93,8 +93,7 @@ int Detect_in_image(SDL_Surface* img, Model M, size_t nbHaarsInM)
       {
 
         if (1 + faceDetect(M, nbHaarsInM, m_integ, i, j)) {
-
-          // trace rectangle
+          drawWindow(initial, i, j, 24 * m);
           detected++;
 
         }

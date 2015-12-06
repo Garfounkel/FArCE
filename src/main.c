@@ -91,6 +91,21 @@ void Ulong_tab_to_SDL(Ulong_tab* tab, SDL_Surface* img)
   }
 }
 
+
+void FaceDetection(char* pathimg, char* pathmodel){
+  SDL_Surface* surface = load_image(pathimg);
+  size_t nbHaarsinM = 0;
+  Model M = read_model(pathmodel, &nbHaarsinM);
+
+  display_image(surface);
+
+  Detect_in_image(surface, M, nbHaarsinM);
+
+  display_image(surface);
+
+    SDL_FreeSurface(surface);
+}
+
 int main(int i, char** path)
 {
 // test atoiKey
@@ -120,7 +135,7 @@ int main(int i, char** path)
 */
 
 // Parsing
-  if(i > 2 || i == 1)
+  if(i > 3 || i == 1)
   {
     warnx("please specify an image to display\n");
     return -1;
@@ -160,38 +175,11 @@ int main(int i, char** path)
   }
   // Arg is a file
   else {
-    FaceDetection(path[1]);
+    FaceDetection(path[1], path[2]);
     return 0;
   }
 }
 
-void FaceDetection(char* path){
-  SDL_Surface* surface = load_image(path);
-
-  display_image(surface);
-
-// Convert to grey, mean, invert color and normalize our image
-    preprocessing(surface);
-
-// Create an Ulong_tab from an image
-    Ulong_tab* tab = create_Ulong_tab(surface->h, surface->w);
-
-// Compute the integral image
-    integral_image(surface, tab);
-
-    Ulong_tab_to_SDL(tab, surface);
-    display_image(surface);
-
-// Compute all haar features of the image
-    size_t nbHaars;
-    compute_haar_features(tab, &nbHaars);
-
-    printf ("%zu\n", nbHaars);
-
-    //Detect_in_image();
-
-    SDL_FreeSurface(surface);
-}
 
 // Test:
 // drawWindow test
