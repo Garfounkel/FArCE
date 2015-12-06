@@ -81,7 +81,7 @@ float atoiKeyFloat(char *str, char *key) {
   return res;
 }
 
-Model read_model(char* fname) {
+Model read_model(char* fname, size_t *nbHaar) {
   char line[128];
   FILE *file;
   Model M;
@@ -112,6 +112,8 @@ Model read_model(char* fname) {
     M.coefs[i] = atoiKeyFloat(line, ">");
     i++;
   }
+
+  *nbHaar = i;
   return M;
 }
 

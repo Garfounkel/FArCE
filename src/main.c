@@ -100,7 +100,8 @@ int main(int i, char** path)
 */
 
 // test readModel
-  Model M = read_model("model.farce");
+  size_t nbHaar = 0;
+  Model M = read_model("model.farce", &nbHaar);
   print_Haar(M.haars[4]);
   warnx("coef = %f\n", M.coefs[4]);
 
