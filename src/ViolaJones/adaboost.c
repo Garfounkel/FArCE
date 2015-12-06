@@ -54,6 +54,8 @@ int atoiKey(char *str, char *key) {
     end = word + i;
 
     res = (int) strtol(begin, &end, 10);
+    if (*(begin - 1) == '-')
+      res *= -1;
   }
   return res;
 }
@@ -73,6 +75,8 @@ float atoiKeyFloat(char *str, char *key) {
     for (; word[i] && ((word[i] >= '0' && word[i] <= '9') || word[i] == '.'); i++) {}
     end = word + i;
     res = (float) strtod(begin, &end);
+    if (*(begin - 1) == '-')
+      res *= (float)-1;
   }
   return res;
 }
