@@ -100,10 +100,10 @@ int main(int i, char** path)
 */
 
 // test readModel
-/*  Model M = read_model("model.farce");
+  Model M = read_model("model.farce");
   print_Haar(M.haars[4]);
   warnx("coef = %f\n", M.coefs[4]);
-*/
+
 
 //testing quicksort
 /*  Triplet* t = malloc(sizeof(Triplet) * 10);
@@ -187,7 +187,7 @@ int main(int i, char** path)
     integral_image(surface, tab);
 
 // test faceDetect
-  Model m;
+/*  Model m;
   m.coefs = malloc(sizeof(float));
   m.coefs[0] = 1;
   m.haars = malloc(sizeof(Haar));
@@ -195,7 +195,7 @@ int main(int i, char** path)
   print_Haar(m.haars[0]);
   int foo = faceDetect(m, 1, tab, 0, 0);
   warnx("face = %d", foo);
-
+*/
 // For debugging:
 //  print(tab);
 
