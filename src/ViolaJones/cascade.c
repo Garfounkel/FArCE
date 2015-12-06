@@ -15,6 +15,39 @@ Window* FaceDetection(UlongTab img, Cascade cascade, float scalecoef) {
 }
 */
 
+SDL_Surface* load_image(char *path)
+{
+
+  SDL_Surface          *img;
+
+  // Load an image using SDL_image with format detection
+  img = IMG_Load(path);
+
+  if (!img)
+    // If it fails, die with an error message
+    errx(3, "can't load %s: %s", path, IMG_GetError());
+
+  return img;
+
+}
+
+
+void FaceDetection(char* pathimg, char* pathmodel)
+{
+  SDL_Surface* surface = load_image(pathimg);
+  size_t nbHaarsinM = 0;
+  Model M = read_model(pathmodel, &nbHaarsinM);
+
+  display_image(surface);
+
+  printf ("%d visage(s) detectés\n", Detect_in_image(surface, M, nbHaarsinM));
+
+  display_image(surface);
+
+  SDL_FreeSurface(surface);
+}
+
+
 int faceDetect(Model M, size_t nbHaarsInM, Ulong_tab *img, size_t x, size_t y) {
   int sum = 0;
   for (size_t i = 0; i < nbHaarsInM; i++) {

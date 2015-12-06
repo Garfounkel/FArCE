@@ -32,7 +32,8 @@ void init_sdl(void) {
 }
 
 // Load an image
-SDL_Surface* load_image(char *path) {
+/*
+  SDL_Surface* load_image(char *path) {
   SDL_Surface          *img;
   // Load an image using SDL_image with format detection
   img = IMG_Load(path);
@@ -41,6 +42,7 @@ SDL_Surface* load_image(char *path) {
     errx(3, "can't load %s: %s", path, IMG_GetError());
   return img;
 }
+*/
 
 // Print an Ulong_tab
 void print(Ulong_tab* img)
@@ -91,20 +93,6 @@ void Ulong_tab_to_SDL(Ulong_tab* tab, SDL_Surface* img)
   }
 }
 
-
-void FaceDetection(char* pathimg, char* pathmodel){
-  SDL_Surface* surface = load_image(pathimg);
-  size_t nbHaarsinM = 0;
-  Model M = read_model(pathmodel, &nbHaarsinM);
-
-  display_image(surface);
-
-  Detect_in_image(surface, M, nbHaarsinM);
-
-  display_image(surface);
-
-  SDL_FreeSurface(surface);
-}
 
 int main(int i, char** path)
 {

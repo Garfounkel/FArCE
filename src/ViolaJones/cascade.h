@@ -27,6 +27,8 @@ struct Windows{
     size_t j2;
 };
 
+void FaceDetection(char* pathimg, char* pathmodel);
+
 int faceDetect(Model M, size_t nbHaarsInM, Ulong_tab *img, size_t x, size_t y);
 
 int Detect_in_image(SDL_Surface* img, Model M, size_t nbHaarsInM);
