@@ -107,9 +107,11 @@ char* Haar_to_str(Haar h){
 | j = %2d \
 | w = %2d \
 | h = %2d \
-| sum = %4ld \
-| sum_normalized = %ld",
-    h.type, h.i, h.j, h.w, h.h, h.sum, h.sum_normalized);
+| threshold = %d\
+| polarity = %d\
+| margin = %d\
+| sum = %4ld",
+          h.type, h.i, h.j, h.w, h.h, h.threshold, h.polarity, h.margin, h.sum);
   return str;
 }
 

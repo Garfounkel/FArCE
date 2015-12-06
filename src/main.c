@@ -91,6 +91,21 @@ void Ulong_tab_to_SDL(Ulong_tab* tab, SDL_Surface* img)
   }
 }
 
+
+void FaceDetection(char* pathimg, char* pathmodel){
+  SDL_Surface* surface = load_image(pathimg);
+  size_t nbHaarsinM = 0;
+  Model M = read_model(pathmodel, &nbHaarsinM);
+
+  display_image(surface);
+
+  Detect_in_image(surface, M, nbHaarsinM);
+
+  display_image(surface);
+
+    SDL_FreeSurface(surface);
+}
+
 int main(int i, char** path)
 {
 // test atoiKey
@@ -100,10 +115,11 @@ int main(int i, char** path)
 */
 
 // test readModel
-/*  Model M = read_model("model.farce");
-  print_Haar(M.haars[4]);
-  warnx("coef = %f\n", M.coefs[4]);
-*/
+//  size_t nbHaar = 0;
+//  Model M = read_model("model.farce", &nbHaar);
+//  print_Haar(M.haars[4]);
+//  warnx("coef = %f\n", M.coefs[4]);
+
 
 //testing quicksort
 /*  Triplet* t = malloc(sizeof(Triplet) * 10);
@@ -120,7 +136,7 @@ int main(int i, char** path)
 */
 
 // Parsing
-  if(i > 2 || i == 1)
+  if(i > 3 || i == 1)
   {
     warnx("please specify an image to display\n");
     return -1;
@@ -132,6 +148,8 @@ int main(int i, char** path)
   assert(stat(path[1], &buf) == 0);
   // Arg is a dir
   if(S_ISDIR(buf.st_mode)) {
+
+
     Triplet* imgs = NULL;
 
     size_t size_imgs;
@@ -158,10 +176,13 @@ int main(int i, char** path)
   }
   // Arg is a file
   else {
-  SDL_Surface* surface = load_image(path[1]);
+    FaceDetection(path[1], path[2]);
+    return 0;
+  }
+}
 
-  display_image(surface);
 
+// Test:
 // drawWindow test
 //  drawWindow(surface, 30, 30, 50);
 //  display_image(surface);
@@ -174,18 +195,8 @@ int main(int i, char** path)
   //SDL_Surface* downsampled = Downscale(surface);
   //display_image(downsampled);
 
-// Convert to grey, mean, invert color and normalize our image
-    preprocessing(surface);
-
-// Create an Ulong_tab from an image
-    Ulong_tab* tab = create_Ulong_tab(surface->h, surface->w);
-
-
-// Compute the integral image
-    integral_image(surface, tab);
-
 // test faceDetect
-  Model m;
+/*  Model m;
   m.coefs = malloc(sizeof(float));
   m.coefs[0] = 1;
   m.haars = malloc(sizeof(Haar));
@@ -193,25 +204,4 @@ int main(int i, char** path)
   print_Haar(m.haars[0]);
   int foo = faceDetect(m, 1, tab, 0, 0);
   warnx("face = %d", foo);
-
-// For debugging:
-//  print(tab);
-
-    Ulong_tab_to_SDL(tab, surface);
-    display_image(surface);
-
-    size_t ez;
-    compute_haar_features(tab, &ez);
-
-    printf ("%zu\n",ez);
-
-// Compute all haar features of the image
-//  size_t size;
-
-//  compute_haar_features(tab, &size);
-
-    SDL_FreeSurface(surface);
-
-    return 0;
-  }
-}
+*/

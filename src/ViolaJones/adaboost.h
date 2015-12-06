@@ -61,6 +61,6 @@ char** get_Files_List(char* path, size_t *nb);
 void print_images_list(char **list, size_t lenght);
 void quickSort(Triplet *begin, Triplet *end);
 int atoiKey(char *str, char *key);
-Model read_model(char* fname);
+Model read_model(char* fname, size_t *nbHaar);
 
 #endif /* !ADABOOST_IPOL_H_ */

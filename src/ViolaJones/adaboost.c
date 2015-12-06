@@ -54,6 +54,8 @@ int atoiKey(char *str, char *key) {
     end = word + i;
 
     res = (int) strtol(begin, &end, 10);
+    if (*(begin - 1) == '-')
+      res *= -1;
   }
   return res;
 }
@@ -73,11 +75,13 @@ float atoiKeyFloat(char *str, char *key) {
     for (; word[i] && ((word[i] >= '0' && word[i] <= '9') || word[i] == '.'); i++) {}
     end = word + i;
     res = (float) strtod(begin, &end);
+    if (*(begin - 1) == '-')
+      res *= (float)-1;
   }
   return res;
 }
 
-Model read_model(char* fname) {
+Model read_model(char* fname, size_t *nbHaar) {
   char line[128];
   FILE *file;
   Model M;
@@ -92,14 +96,24 @@ Model read_model(char* fname) {
   size_t i = 0;
 
   while (fgets(line, 128, file)) {
-    M.haars[i] = create_Full_Haar(atoiKey(line, "type"), atoiKey(line, "i"), atoiKey(line, "j"),
-                                  atoiKey(line, "w"), atoiKey(line, "h"), atoiKey(line, "sum"),
-                                  atoiKey(line, "sum_normalized"), atoiKey(line, "polarity"),
-                                  atoiKey(line, "threshold"), atoiKeyFloat(line, "error"),
-                                  atoiKey(line, "margin"));
+    M.haars[i] =
+      create_Full_Haar(
+        atoiKey(line, "type"),
+        atoiKey(line, "i"),
+        atoiKey(line, "j"),
+        atoiKey(line, "w"),
+        atoiKey(line, "h"),
+        atoiKey(line, "sum"),
+        atoiKey(line, "sum_normalized"),
+        atoiKey(line, "polarity"),
+        atoiKey(line, "threshold"),
+        atoiKeyFloat(line, "error"),
+        atoiKey(line, "margin"));
     M.coefs[i] = atoiKeyFloat(line, ">");
     i++;
   }
+
+  *nbHaar = i;
   return M;
 }
 
@@ -191,8 +205,8 @@ void generate_Triplet_vect(char* directory, Triplet** imgs, size_t* size)
 
   size_t face_count = 0;
 
-    
-  
+
+
   for (size_t i = 0; i < *size; ++i)
   {
 
@@ -204,10 +218,10 @@ void generate_Triplet_vect(char* directory, Triplet** imgs, size_t* size)
     (*imgs)[i].img       = tab;
     //printf ("size = %zu | 1/size = %f\n",*size,(double)((double)(1) / (double)(*size)));
 
-    
+
     for (char* c = file_list[i]; *c != '\0'; c++)
 	if(*c == '/')
-	  (*imgs)[i].is_a_face = (c[1] == 'f') ? 1 : -1;    
+	  (*imgs)[i].is_a_face = (c[1] == 'f') ? 1 : -1;
 
     if((*imgs)[i].is_a_face + 1)
       face_count++;
