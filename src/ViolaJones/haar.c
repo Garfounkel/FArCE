@@ -8,6 +8,7 @@ long sum_rect(Ulong_tab* img, int h1, int w1, int h2, int w2){
   // A B
   // D C
 
+  /*
   if (h1 > 24 || h1 < 0) {
 
   printf ("h1 = %d,",h1);
@@ -38,6 +39,7 @@ long sum_rect(Ulong_tab* img, int h1, int w1, int h2, int w2){
   assert(0);
 
   }
+  */
 //  printf ("h1 = %d,h2 = %d,w1 = %d,w2 = %d\n",h1,h2,w1,w2);
 
   if (h1 - 1 > 0 && w1 - 1 > 0)

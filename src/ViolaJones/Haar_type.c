@@ -78,9 +78,9 @@ void copy_Haar(Haar* source, Haar* dest){
 
 int is_present(Haar h)
 {
-  return ((h.sum > h.threshold)?
-          1/**h.polarity*/:
-          -1/**h.polarity*/);
+  return (h.polarity * ((h.sum > h.threshold)?
+                        1:
+                        -1));
 }
 
 

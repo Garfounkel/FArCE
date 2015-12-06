@@ -36,7 +36,17 @@ void FaceDetection(char* pathimg, char* pathmodel)
 {
   SDL_Surface* surface = load_image(pathimg);
   size_t nbHaarsinM = 0;
+
+  warnx("chargement model");
+
   Model M = read_model(pathmodel, &nbHaarsinM);
+
+  for (size_t i = 0; i < nbHaarsinM; ++i)
+  {
+    print_Haar(M.haars[i]);
+  }
+
+  warnx("%zu classificateurs trouvés", nbHaarsinM);
 
   display_image(surface);
 
@@ -49,94 +59,87 @@ void FaceDetection(char* pathimg, char* pathmodel)
 
 
 int faceDetect(Model M, size_t nbHaarsInM, Ulong_tab *img, size_t x, size_t y) {
-  int sum = 0;
+
+  //warnx("enter face detect");
+
+  float sum = 0;
   for (size_t i = 0; i < nbHaarsInM; i++) {
+
     if (M.coefs[i] != 0) {
+
       Haar h = M.haars[i];
       h.i += x;
       h.j += y;
-      print_Haar(M.haars[i]);
+      //print_Haar(M.haars[i]);
       compute_haar_sum(img, &h);
-      sum += h.sum;
-      warnx("sum = %d", sum);
+      sum += M.coefs[i] * is_present(h);
+      warnx("sum = %ld, present ? %d", h.sum, is_present(h));
     }
   }
   return sum > 0 ? 1 : -1;
 }
 
 
-void Update_m_integ(Ulong_tab* initial, size_t m, Ulong_tab* new)
+void Update_m_integ(Ulong_tab* initial, size_t m, Ulong_tab** new)
 {
+    warnx("update");
   //warnx("free");
 
 
-  if (new)
-    free(new->arr);
-  free(new);
+    if (*new)
+      free((*new)->arr);
+    free(*new);
 
   //warnx("create_Ulong_tab");
-  new = create_Ulong_tab(initial->h/m, initial->w/m);
+  *new = create_Ulong_tab(initial->h/m, initial->w/m);
 
+  //warnx("w = %zu",  (*new)->w);
 
-  for (int i = 0; i < new->h; ++i)
+  for (int i = 0; i < (*new)->h; ++i)
   {
-
-    for (int j = 0; j < new->w; ++j)
+    for (int j = 0; j < (*new)->w; ++j)
     {
       //warnx("set get val");
-
-      set_val(new, get_val(initial, i * m, j * m)/(m * m), i, j);
+      set_val(*new, get_val(initial, i * m, j * m)/(m * m), i, j);
 
     }
-
   }
-
 }
 
 
 
 int Detect_in_image(SDL_Surface* img, Model M, size_t nbHaarsInM)
 {
-
+    warnx("detect in image");
   img = preprocessing(img);
-
 
   Ulong_tab* integ = create_Ulong_tab(img->h, img->w);
 
-  integ = integral_image(img, integ);
 
+  integ = integral_image(img, integ);
   int detected = 0;
 
-
   size_t size = (integ->w > integ->h)? integ->h : integ->w;
-
   size_t m = 1;
-
 
   Ulong_tab* m_integ = NULL;
 
-
   while (m * 24 <= size) {
 
+    Update_m_integ(integ, m, &m_integ);
 
-    Update_m_integ(integ, m, m_integ);
+    warnx("w = %zu",  m_integ->w);
 
-
-    for (int i = 0; i < m_integ->w - 24; ++i)
+    for (int i = 0; i <= m_integ->w - 24; ++i)
     {
-
-      for (int j = 0; j < m_integ->h - 24; ++j)
+      for (int j = 0; j <= m_integ->h - 24; ++j)
       {
-
         if (1 + faceDetect(M, nbHaarsInM, m_integ, i, j)) {
-          drawWindow(img, i, j, 24 * m);
-          warnx("face detected");
+          drawWindow(img, i, j, 24 * m - 1);
+          //warnx("face detected");
           detected++;
-
         }
-
       }
-
     }
 
 
