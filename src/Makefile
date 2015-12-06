@@ -7,7 +7,7 @@ CFLAGS= -Wall -Wextra -Werror -std=c99 -O3 -pedantic
 LDFLAGS= -lm
 LDLIBS= `pkg-config --libs sdl` -lSDL_image
 
-SRC= main.c SDL_operations/SDL_OPs.c ViolaJones/adaboost.c ViolaJones/haar.c ViolaJones/integral_image.c ViolaJones/pixel_operations.c ViolaJones/Ulong_tab.c ViolaJones/Haar_type.c Preprocessing/Image_OPs.c
+SRC= main.c SDL_operations/SDL_OPs.c ViolaJones/adaboost.c ViolaJones/haar.c ViolaJones/integral_image.c ViolaJones/pixel_operations.c ViolaJones/Ulong_tab.c ViolaJones/Haar_type.c Preprocessing/Image_OPs.c ViolaJones/cascade.c
 OBJ= ${SRC:.c=.o}
 
 all: main
