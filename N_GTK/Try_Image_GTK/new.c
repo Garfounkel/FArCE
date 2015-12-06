@@ -1,7 +1,7 @@
 # include <gtk/gtk.h>
 # include <stdlib.h>
 # include <stdio.h>
-<<<<<<< HEAD
+
 # include <err.h>
 # include <SDL/SDL.h>
 # include <SDL/SDL_image.h>
@@ -9,9 +9,6 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <unistd.h>
-
-void DataBase(char *path);
-=======
 # include <string.h>
 # include <err.h>
 # include <SDL/SDL.h>
@@ -29,7 +26,6 @@ void DataBase(char *path);
 # include <unistd.h>
 # include "../../src/ViolaJones/cascade.h"
 
->>>>>>> d73975cb80a15958a14cd83638d71863195ad781
 
 typedef struct Screen Screen;
 struct Screen
@@ -48,7 +44,6 @@ void Destroy(void) {
 
 void  Analyse(char* name)
 {
-
   yolo(&name);
 }
 void recuperer_chemin(GtkWidget *bouton, GtkWidget *file_selection)
@@ -67,13 +62,7 @@ void recuperer_chemin(GtkWidget *bouton, GtkWidget *file_selection)
   scre->name = g_path_get_basename(chemin);
   gtk_image_set_from_file(GTK_IMAGE(scre->image),chemin);
 
-<<<<<<< HEAD
-  char* path = (char*)chemin;
-  DataBase(path);
-  
-=======
->>>>>>> d73975cb80a15958a14cd83638d71863195ad781
-  gtk_dialog_run(GTK_DIALOG(dialog));
+
   gtk_widget_destroy(dialog);
   gtk_widget_destroy(file_selection);
 
@@ -108,8 +97,9 @@ Screen* init_screen(GtkWidget* image)
  }
 
 
-void DataBase(char *path)
+void Add_DataBase()
 {
+  char* path = (char*)scre->chemin; 
   const char* src_path;
   const char* dst_path;
   int src_fd, dst_fd, err;
@@ -138,8 +128,7 @@ void DataBase(char *path)
     exit(1);
     }
   
- //  execve(src_path], newargv, newenviron);
-  
+ //  execve(src_path], newargv, newenviron);  
  //free(buffer);
   close(src_fd);
   close(dst_fd);
@@ -177,9 +166,13 @@ int main (int argc, char** argv) {
   //////////////////////MENU/////////////////////////
 
 
-  MenuItem =gtk_menu_item_new_with_mnemonic(("_Add Pictures"));
+  MenuItem =gtk_menu_item_new_with_mnemonic(("_Choose"));
   gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItem);
   gtk_signal_connect(GTK_OBJECT (MenuItem), "activate",GTK_SIGNAL_FUNC(Navigate),NULL);
+
+   MenuItem = gtk_menu_item_new_with_label("Add");
+  gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItem);
+  gtk_signal_connect(GTK_OBJECT (MenuItem), "activate",  GTK_SIGNAL_FUNC(Add_DataBase),NULL);
 
   MenuItem = gtk_menu_item_new_with_label("Analyse");
   gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItem);
