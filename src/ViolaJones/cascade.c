@@ -34,12 +34,14 @@ int faceDetect(Model M, size_t nbHaarsInM, Ulong_tab *img, size_t x, size_t y) {
 
 void Update_m_integ(Ulong_tab* initial, size_t m, Ulong_tab* new)
 {
+  //warnx("free");
 
-  free(new->arr);
 
+  if (new)
+    free(new->arr);
   free(new);
 
-
+  //warnx("create_Ulong_tab");
   new = create_Ulong_tab(initial->h/m, initial->w/m);
 
 
@@ -48,6 +50,7 @@ void Update_m_integ(Ulong_tab* initial, size_t m, Ulong_tab* new)
 
     for (int j = 0; j < new->w; ++j)
     {
+      //warnx("set get val");
 
       set_val(new, get_val(initial, i * m, j * m)/(m * m), i, j);
 
@@ -93,7 +96,8 @@ int Detect_in_image(SDL_Surface* img, Model M, size_t nbHaarsInM)
       {
 
         if (1 + faceDetect(M, nbHaarsInM, m_integ, i, j)) {
-          drawWindow(initial, i, j, 24 * m);
+          drawWindow(img, i, j, 24 * m);
+          warnx("face detected");
           detected++;
 
         }
