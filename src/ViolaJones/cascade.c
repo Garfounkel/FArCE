@@ -18,7 +18,7 @@ Window* FaceDetection(UlongTab img, Cascade cascade, float scalecoef) {
 int faceDetect(Model M, size_t nbHaarsInM, UlongTab *img, size_t x, size_t y) {
   int sum;
   for (size_t i = 0; i < nbHaarsInM; i++) {
-    if (M.coef[i] != 0) {
+    if (M.coef[i] != 0.0) {
       Haar h = M.haars[i];
       h.i += x;
       h.j += y;
