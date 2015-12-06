@@ -93,6 +93,17 @@ void Ulong_tab_to_SDL(Ulong_tab* tab, SDL_Surface* img)
 
 int main(int i, char** path)
 {
+// test atoiKey
+/*  char *foos = "key = 954cle = 27";
+  warnx("atoi: %d\n", atoiKey(foos, "key ="));
+  warnx("atoi: %d\n", atoiKey(foos, "cle"));
+*/
+
+// test readModel
+/*  Model M = read_model("model.farce");
+  print_Haar(M.haars[4]);
+  warnx("coef = %f\n", M.coefs[4]);
+*/
 
 //testing quicksort
 /*  Triplet* t = malloc(sizeof(Triplet) * 10);
@@ -171,7 +182,7 @@ int main(int i, char** path)
 
 
 // test faceDetect
-  Model m;
+/*  Model m;
   m.coefs = malloc(sizeof(float));
   m.coefs[0] = 1;
   m.haars = malloc(sizeof(Haar));
@@ -179,7 +190,7 @@ int main(int i, char** path)
   print_Haar(m.haars[0]);
   int foo = faceDetect(m, 1, tab, 0, 0);
   warnx("face = %d", foo);
-
+*/
 
 // Compute the integral image
     integral_image(surface, tab);

@@ -38,6 +38,72 @@ void write_model(Model* m, char* fname)
   }
 }
 
+int atoiKey(char *str, char *key) {
+  char *word;
+  char *begin;
+  char *end;
+  int res = 0;
+
+  if ((word = strstr(str, key))) {
+    size_t i = 0;
+
+    for (; word[i] && (word[i] < '0' || word[i] > '9'); i++) {}
+    begin = word + i;
+
+    for (; word[i] && (word[i] >= '0' && word[i] <= '9'); i++) {}
+    end = word + i;
+
+    res = (int) strtol(begin, &end, 10);
+  }
+  return res;
+}
+
+float atoiKeyFloat(char *str, char *key) {
+  char *word;
+  char *begin;
+  char *end;
+  float res = 0;
+
+  if ((word = strstr(str, key))) {
+    size_t i = 0;
+
+    for (; word[i] && (word[i] < '0' || word[i] > '9'); i++) {}
+    begin = word + i;
+
+    for (; word[i] && ((word[i] >= '0' && word[i] <= '9') || word[i] == '.'); i++) {}
+    end = word + i;
+    res = (float) strtod(begin, &end);
+  }
+  return res;
+}
+
+Model read_model(char* fname) {
+  char line[128];
+  FILE *file;
+  Model M;
+
+  if ((file = fopen(fname, "r")) == NULL) {
+    warnx("Error while loading model file: %s", fname);
+    return M;
+  }
+
+  M.haars = malloc(sizeof(Haar) * 162336);
+  M.coefs = malloc(sizeof(float) * 162336);
+  size_t i = 0;
+
+  while (fgets(line, 128, file)) {
+    M.haars[i] = create_Full_Haar(atoiKey(line, "type"), atoiKey(line, "i"), atoiKey(line, "j"),
+                                  atoiKey(line, "w"), atoiKey(line, "h"), atoiKey(line, "sum"),
+                                  atoiKey(line, "sum_normalized"), atoiKey(line, "polarity"),
+                                  atoiKey(line, "threshold"), atoiKeyFloat(line, "error"),
+                                  atoiKey(line, "margin"));
+    M.coefs[i] = atoiKeyFloat(line, ">");
+    i++;
+  }
+  return M;
+}
+
+
 // Images list:
 size_t dirLenght(char* path){
   DIR *dir;
