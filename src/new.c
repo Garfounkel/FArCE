@@ -174,9 +174,9 @@ int main (int argc, char** argv) {
   gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItem);
   gtk_signal_connect(GTK_OBJECT (MenuItem), "activate",GTK_SIGNAL_FUNC(Navigate),NULL);
 
-   MenuItem = gtk_menu_item_new_with_label("Add");
-  gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItem);
-  gtk_signal_connect(GTK_OBJECT (MenuItem), "activate",  GTK_SIGNAL_FUNC(Add_DataBase),NULL);
+  //MenuItem = gtk_menu_item_new_with_label("Add");
+  //gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItem);
+  //gtk_signal_connect(GTK_OBJECT (MenuItem), "activate",  GTK_SIGNAL_FUNC(Add_DataBase),NULL);
 
   MenuItem = gtk_menu_item_new_with_label("Analyse");
   gtk_menu_shell_append(GTK_MENU_SHELL(Menu), MenuItem);
